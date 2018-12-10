@@ -20,10 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BattleshipGameCell.cpp" />
+    <ClCompile Include="ComputerPlayer.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Screen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleshipGameCell.h" />
+    <ClInclude Include="ComputerPlayer.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Screen.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
