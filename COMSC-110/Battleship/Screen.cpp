@@ -28,16 +28,52 @@
    SOFTWARE.
 */
 
-#include <string>
-#include <Windows.h>
 #include "Screen.h"
 using namespace std;
 
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+CONSOLE_SCREEN_BUFFER_INFO csbi;
 
 void ClearScreen()
 {
 	system("cls");
+}
+
+void PrintLogo()
+{
+	GetConsoleScreenBufferInfo(hStdOut, &csbi);
+
+	const int charsPerRow = 77;
+	const string BattleshipTitle = { (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)187 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)187 , (char)32 , (char)32 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)32 , '\n' ,
+			(char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)219 , (char)219 , (char)187 , (char)200 , (char)205 , (char)205 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)188 , (char)200 , (char)205 , (char)205 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)188 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)205 , (char)205 , (char)188 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)205 , (char)205 , (char)188 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)219 , (char)219 , (char)187 , '\n' ,
+			(char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)201 , (char)188 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)201 , (char)188 , '\n' ,
+			(char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)188 , (char)32 , (char)32 , (char)200 , (char)205 , (char)205 , (char)205 , (char)205 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)201 , (char)205 , (char)205 , (char)205 , (char)188 , (char)32 , '\n' ,
+			(char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)201 , (char)188 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)187 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)186 , (char)219 , (char)219 , (char)186 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , '\n' ,
+			(char)200 , (char)205 , (char)205 , (char)205 , (char)205 , (char)205 , (char)188 , (char)32 , (char)200 , (char)205 , (char)188 , (char)32 , (char)32 , (char)200 , (char)205 , (char)188 , (char)32 , (char)32 , (char)32 , (char)200 , (char)205 , (char)188 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)200 , (char)205 , (char)188 , (char)32 , (char)32 , (char)32 , (char)200 , (char)205 , (char)205 , (char)205 , (char)205 , (char)205 , (char)205 , (char)188 , (char)200 , (char)205 , (char)205 , (char)205 , (char)205 , (char)205 , (char)205 , (char)188 , (char)200 , (char)205 , (char)205 , (char)205 , (char)205 , (char)205 , (char)205 , (char)188 , (char)200 , (char)205 , (char)188 , (char)32 , (char)32 , (char)200 , (char)205 , (char)188 , (char)200 , (char)205 , (char)188 , (char)200 , (char)205 , (char)188 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 };
+
+	int x = (csbi.dwSize.X - charsPerRow) / 2;
+	PrintAtScreenPosition(BattleshipTitle, x, 3, DEFAULT);
+	cout << endl << endl;
+}
+
+void PrintAtScreenPosition(string input, int x, int y, WORD attributes)
+{
+	COORD ScreenPosition;
+	ScreenPosition.X = (x < 0) ? csbi.dwSize.X + x : x;
+	ScreenPosition.Y = (y < 0) ? csbi.dwSize.Y + y : y;
+	SetConsoleCursorPosition(hStdOut, ScreenPosition);
+	for (int x = 0; x < input.length(); x++)
+	{
+		if (input[x] == '\n')
+		{
+			ScreenPosition.Y += 1;
+			SetConsoleCursorPosition(hStdOut, ScreenPosition);
+			continue;
+		}
+		change_font_color(attributes);
+		cout << input[x];
+	}
+	cout << endl;
 }
 
 void change_console_color(WORD attributes)
@@ -47,4 +83,9 @@ void change_console_color(WORD attributes)
 	GetConsoleScreenBufferInfoEx(hStdOut, &cbi);
 	cbi.wAttributes = attributes;
 	SetConsoleScreenBufferInfoEx(hStdOut, &cbi);
+}
+
+void change_font_color(WORD attributes)
+{
+	SetConsoleTextAttribute(hStdOut, attributes);
 }

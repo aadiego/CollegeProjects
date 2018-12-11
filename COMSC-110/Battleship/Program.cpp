@@ -33,49 +33,66 @@ using namespace std;
 
 int main()
 {
+	// Set the Command Prompt Title Bar, clear screen of any previous text, change background color to blue, and font color to white.
 	SetConsoleTitle("Battleship");
+	change_console_color(BACKGROUND_BLUE);
+	change_font_color(DEFAULT);
 
-	//Display menu to the user, with instructions to pick one item from the list by hitting the
-	//appropriate number on their keyboard.
-	const int  MAX_INPUT = 3, MIN_INPUT = 1;
+	// Constants and menu choices
+	const int PLAY_GAME = 1, HOW_TO_PLAY = 2, EXIT_GAME = 3;
+
+	// User selection variable declaration.
 	int userselection;
 
-	cout << "Please select 1, 2 or 3 from the following menu:\n\n";
-	cout << "1. Play Game!\n";
-	cout << "2. How To Play\n";
-	cout << "3. Exit Game\n\n";
-	cout << "Your selection: ";
-	cin >> userselection;
-
-	// validate user input with while loop
-	while (userselection < 1 || userselection > 3)
+	do
 	{
-		cout << "\n\nInvalid Input!\n";
-		cout << "Enter only a number listed in the above menu.\n";
+		ClearScreen();
+		PrintLogo();
+
+		//Display menu to the user, with instructions to pick one item from the list by hitting the
+		//appropriate number on their keyboard.
+		cout << "Please select 1, 2 or 3 from the following menu:\n\n";
+		cout << "1. Play Game!\n";
+		cout << "2. How To Play\n";
+		cout << "3. Exit Game\n\n";
+		cout << "Your selection: ";
+
+		// Prompt user for selection and store in selection variable
 		cin >> userselection;
-	}
 
-	// print out corresponding statement for each item using switch statement 
-	switch (userselection)
-	{
-	case 1:
-		SetupGame();
+		// validate user input with while loop
+		while (userselection < PLAY_GAME || userselection > EXIT_GAME)
+		{
+			cout << "\n\nInvalid Input!\n";
+			cout << "Enter only a number listed in the above menu.\n";
+			cin.clear();
+			cin.ignore(INT_MAX, '\n');
+			cin >> userselection;
+		}
 
-		break;
-	case 2:
-		cout << "Game Objective:\n -Find and Sink all" << NUMBEROFSHIPS << " ships hidden on the board\n\n";
-		cout << "Rules:\n1-Fire shots at the board by calling out grid coordinates location. Ex: A 1 \n";
-		cout << "\n2-A hit indicates that a ship has been sunk,\nwhile a miss indicates that the shot missed and there is no ship \nat that coordinate.\n";
-		cout << "\n3-Input another coordinate and try to find and sink all the ships!\n";
-		cout << "\nHAPPY HUNTING!!\n\n";
-		/////////select 1 to return to the main menu//////////??????????
-		break;
-	case 3:
-		cout << "You have exited the game!";
-		/////////select 1 to return to the main menu//////////??????????
-		break;
+		if (userselection != EXIT_GAME)
+		{
+			// print out corresponding statement for each item using switch statement 
+			switch (userselection)
+			{
+				case PLAY_GAME:
+					SetupGame();
+					break;
+				case HOW_TO_PLAY:
+					ClearScreen();
+					PrintLogo();
 
-	}
+					cout << "Game Objective: Find and sink all " << NUMBEROFSHIPS << " ships hidden on the board.\n\n";
+					cout << "Rules:\n #1 - Fire shots at the board by calling out grid coordinates location. Ex: A1 \n";
+					cout << " #2 - A hit indicates that a ship has been sunk, while a miss indicates that the shot missed and there is no ship at that coordinate.\n";
+					cout << " #3 - Input another coordinate and try to find and sink all the ships!\n";
+					cout << "\nHAPPY HUNTING!!\n\n";
+					cout << "Please press any key to return to the main menu.";
+					_getch();
+					break;
+			}
+		}
+	} while (userselection != EXIT_GAME);
 
 	return 0;
 }
