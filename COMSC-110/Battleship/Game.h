@@ -30,8 +30,9 @@
 
 #ifndef Game_H
 #define Game_H
-#include <iostream>
+#include <conio.h>
 #include <ctime>
+#include <iostream>
 #include <string>
 #include <vector>
 #include <Windows.h>
@@ -66,12 +67,14 @@ bool IsInGridBoundary(Coordinates, Direction, Direction &, int = 1);
 bool IsValidShipPlacement(BattleshipGameCell(&)[GRIDROWS][GRIDCOLUMNS], Coordinates, Direction, int);
 void StepDirection(Coordinates &, Direction);
 void PlayGame();
+void DrawPlayerBoards(bool);
 AttackStatus LaunchAttack(BattleshipGameCell(&)[GRIDROWS][GRIDCOLUMNS], string);
 AttackStatus LaunchAttack(BattleshipGameCell(&)[GRIDROWS][GRIDCOLUMNS], string, Coordinates &);
 bool SetTarget(string, Coordinates &);
 bool CheckTarget(Player, Coordinates);
 bool WasShipSunk(BattleshipGameCell(&)[GRIDROWS][GRIDCOLUMNS], Name, int &);
 int& NumberOfShipsRemaining();
+void Logger(string);
 void Dispose();
 void Dispose(BattleshipGameCell(&)[GRIDROWS][GRIDCOLUMNS]);
 

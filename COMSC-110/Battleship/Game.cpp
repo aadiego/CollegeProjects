@@ -34,7 +34,7 @@ static BattleshipGameCell HumanPlayerBoard[GRIDROWS][GRIDCOLUMNS],		// Array for
 static int HumanPlayerShipsRemaining,									// Holds the number of ships remaining for the human player
 	  ComputerPlayerShipsRemaining;										// Holds the number of ships remaining for the computer player
 static Player CurrentPlayer = COMPUTER;									// Holds the current attacking player
-static vector<string> AttackLog;
+const int WAITBETWEENTURNS = 3000;										// Milliseconds between turns.
 
 // ------------------------------------------------------------------------------
 // Sets up the player boards and starts the game.
@@ -50,6 +50,7 @@ void SetupGame()
 
 	// Set the number of player ships to the NUMBEROFSHIPS constant.
 	HumanPlayerShipsRemaining = ComputerPlayerShipsRemaining = NUMBEROFSHIPS;
+	CurrentPlayer = COMPUTER;
 	PlayGame();
 }
 
@@ -71,33 +72,10 @@ void RandomizeShipLocations(BattleshipGameCell (&PlayerBoard)[GRIDROWS][GRIDCOLU
 			IsInGridBoundary(coords, static_cast<Direction>(rand() % 4), generatingDirection, shipLength - 1);
 		} while (IsValidShipPlacement(PlayerBoard, coords, generatingDirection, shipLength) == false);
 
-		Orientation shipOrientation = static_cast<Orientation>(generatingDirection % 2);
-
 		for (int shipSection = 0; shipSection < shipLength; shipSection++)
 		{
 			PlayerBoard[coords.row][coords.col].shipInfo = new Ship;
 			PlayerBoard[coords.row][coords.col].shipInfo->name = static_cast<Name>(shipNumber);
-			PlayerBoard[coords.row][coords.col].shipInfo->orientation = shipOrientation;
-			if (shipSection == 0 && (generatingDirection == DOWN || generatingDirection == RIGHT))
-			{
-				PlayerBoard[coords.row][coords.col].shipInfo->section = TOPLEFTCAP;
-			}
-			else if (shipSection == 0 && (generatingDirection == UP || generatingDirection == LEFT))
-			{
-				PlayerBoard[coords.row][coords.col].shipInfo->section = BOTTOMRIGHTCAP;
-			}
-			else if (shipSection == shipLength - 1 && (generatingDirection == DOWN || generatingDirection == RIGHT))
-			{
-				PlayerBoard[coords.row][coords.col].shipInfo->section = BOTTOMRIGHTCAP;
-			}
-			else if (shipSection == shipLength - 1 && (generatingDirection == UP || generatingDirection == LEFT))
-			{
-				PlayerBoard[coords.row][coords.col].shipInfo->section = TOPLEFTCAP;
-			}
-			else
-			{
-				PlayerBoard[coords.row][coords.col].shipInfo->section = MIDDLE;
-			}
 			StepDirection(coords, generatingDirection);
 		}
 	}
@@ -220,10 +198,12 @@ void StepDirection(Coordinates &coords, Direction direction)
 // ------------------------------------------------------------------------------
 void PlayGame()
 {
-	ClearScreen();
-	change_console_color(BACKGROUND_BLUE | FOREGROUND_INTENSITY);
 	do
 	{
+		ClearScreen();
+		PrintLogo();
+		DrawPlayerBoards(false);
+
 		CurrentPlayer = static_cast<Player>((CurrentPlayer + 1) % 2);
 		string attackLocation;
 		AttackStatus results;
@@ -237,9 +217,8 @@ void PlayGame()
 					results = LaunchAttack(ComputerPlayerBoard, attackLocation);
 					break;
 				case COMPUTER:
-					cout << "Computer is selecting a target location: ";
 					attackLocation = SimpleAI_SelectTarget();
-					cout << attackLocation << endl;
+					cout << "The computer targeted: " << attackLocation << endl;
 					Coordinates coords;
 					results = LaunchAttack(HumanPlayerBoard, attackLocation, coords);
 					ProcessAttackStatus(results, coords.row, coords.col);
@@ -247,8 +226,12 @@ void PlayGame()
 			}
 			cout << endl;
 		} while (results == UNKNOWN || results == ALREADYATTACKED);
+		Sleep(WAITBETWEENTURNS);
 	} while (HumanPlayerShipsRemaining > 0 && ComputerPlayerShipsRemaining > 0);
 
+	ClearScreen();
+	PrintLogo();
+	DrawPlayerBoards(true);
 	if (ComputerPlayerShipsRemaining == 0)
 	{
 		cout << "Congratulations! You defeated the computer!" << endl;
@@ -262,11 +245,48 @@ void PlayGame()
 
 	char userSelection;
 	cout << "Would you like to play again? (Y/N) ";
+	cin.ignore(INT_MAX, '\n');
 	cin.get(userSelection);
 	if (tolower(userSelection) == 'y')
 	{
 		SetupGame();
 	}
+}
+
+// ------------------------------------------------------------------------------
+// 
+// ------------------------------------------------------------------------------
+void DrawPlayerBoards(bool ShowOpponentShips)
+{
+	int LeftPosition = 20;
+	PrintAtScreenPosition("             My Ships            ", LeftPosition, 11, DEFAULT);
+	PrintAtScreenPosition("    A  B  C  D  E  F  G  H  I  J ", LeftPosition, 12, DEFAULT);
+	for (int row = 0; row < GRIDROWS; row++)
+	{
+		for (int col = 0; col < GRIDCOLUMNS; col++)
+		{
+			PrintAtScreenPosition(to_string(row + 1), LeftPosition, 13 + row, DEFAULT);
+			string value = HumanPlayerBoard[row][col].isHit ? " X " : "   ";
+			PrintAtScreenPosition(value, (LeftPosition + 3) + (col * 3), 13 + row, (HumanPlayerBoard[row][col].shipInfo != nullptr) ? HIT_SHOWSHIP : DEFAULT);
+		}
+	}
+
+	int RightPosition = -55;
+	PrintAtScreenPosition("            My Attacks           ", RightPosition, 11, DEFAULT);
+	PrintAtScreenPosition("    A  B  C  D  E  F  G  H  I  J ", RightPosition, 12, DEFAULT);
+	for (int row = 0; row < GRIDROWS; row++)
+	{
+		for (int col = 0; col < GRIDCOLUMNS; col++)
+		{
+			PrintAtScreenPosition(to_string(row + 1), RightPosition, 13 + row, DEFAULT);
+			string value = ComputerPlayerBoard[row][col].isHit ? " X " : "   ";
+			WORD font_color = ShowOpponentShips ? HIT_SHOWSHIP : HIT_HIDESHIP;
+			PrintAtScreenPosition(value, (RightPosition + 3) + (col * 3), 13 + row, (ComputerPlayerBoard[row][col].shipInfo != nullptr) ? font_color : DEFAULT);
+		}
+	}
+
+	change_font_color(DEFAULT);
+	cout << endl << endl;
 }
 
 // ------------------------------------------------------------------------------
@@ -389,6 +409,12 @@ bool SetTarget(string location, Coordinates &coords)
 		}
 	}
 
+	// If a second coordinate position is not specified, return false.
+	if (tempNumeric.empty())
+	{
+		return false;
+	}
+	
 	// Convert the temp string into an integer
 	int numeric = stoi(tempNumeric);
 

@@ -30,8 +30,20 @@
 
 #ifndef Screen_H
 #define Screen_H
+#include <iostream>
+#include <string>
+#include <vector>
+#include <Windows.h>
+using namespace std;
+
+#define DEFAULT (BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY)
+#define HIT_SHOWSHIP (BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_INTENSITY)
+#define HIT_HIDESHIP (BACKGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY)
 
 void ClearScreen();
+void PrintLogo();
+void PrintAtScreenPosition(string, int, int, WORD);
 void change_console_color(WORD);
+void change_font_color(WORD);
 
 #endif

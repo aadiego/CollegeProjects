@@ -34,7 +34,7 @@
 static Mode CurrentMode = IDLE;
 static Direction CurrentDirection;
 static Coordinates LastHitCoords;
-static bool CurrentAttackSequenceCheckedDirections[4];
+static bool CurrentAttackSequenceCheckedDirections[4] = { false,false,false,false };
 static int Iterations = 0;
 
 // ------------------------------------------------------------------------------
@@ -42,9 +42,10 @@ static int Iterations = 0;
 // ------------------------------------------------------------------------------
 string SimpleAI_SelectTarget()
 {
-	Coordinates coords = LastHitCoords;
+	Coordinates coords;
 	do
 	{
+		coords = LastHitCoords;
 		switch (CurrentMode)
 		{
 			case IDLE:
@@ -57,7 +58,7 @@ string SimpleAI_SelectTarget()
 				StepDirection(coords, CurrentDirection);
 				break;
 		}
-	} while (CheckTarget(HUMAN, coords) || IsInGridBoundary(coords, CurrentDirection, CurrentDirection) == false);
+	} while (CheckTarget(HUMAN, coords) || IsInGridBoundary(coords, CurrentDirection, CurrentDirection, 0) == false);
 
 	string rtn;
 	rtn += static_cast<char>(coords.col + 65);
@@ -73,10 +74,24 @@ void SelectDirection()
 	bool isValidDirection = false;
 	do
 	{
+		if (CurrentAttackSequenceCheckedDirections[UP] == true
+			&& CurrentAttackSequenceCheckedDirections[LEFT] == true
+			&& CurrentAttackSequenceCheckedDirections[DOWN] == true
+			&& CurrentAttackSequenceCheckedDirections[RIGHT] == true)
+		{
+			CurrentMode = IDLE;
+			CurrentAttackSequenceCheckedDirections[UP] = false;
+			CurrentAttackSequenceCheckedDirections[LEFT] = false;
+			CurrentAttackSequenceCheckedDirections[DOWN] = false;
+			CurrentAttackSequenceCheckedDirections[RIGHT] = false;
+			return;
+		}
+
+		Coordinates coords = LastHitCoords;
 		Direction randomDirection = static_cast<Direction>(rand() % 4);
 		if (CurrentAttackSequenceCheckedDirections[randomDirection] == false)
 		{
-			if (IsInGridBoundary(LastHitCoords, randomDirection) == false)
+			if (IsInGridBoundary(coords, randomDirection) == false)
 			{
 				CurrentAttackSequenceCheckedDirections[randomDirection] = true;
 			}
@@ -104,15 +119,19 @@ void ProcessAttackStatus(int attackStatus, int RowCoord, int ColCoord)
 				{
 					case UP:
 						CurrentDirection = DOWN;
+						CurrentAttackSequenceCheckedDirections[DOWN] = true;
 						break;
 					case RIGHT:
 						CurrentDirection = LEFT;
+						CurrentAttackSequenceCheckedDirections[LEFT] = true;
 						break;
 					case DOWN:
 						CurrentDirection = UP;
+						CurrentAttackSequenceCheckedDirections[UP] = true;
 						break;
 					case LEFT:
 						CurrentDirection = RIGHT;
+						CurrentAttackSequenceCheckedDirections[RIGHT] = true;
 						break;
 				}
 				Iterations += 1;
@@ -136,11 +155,12 @@ void ProcessAttackStatus(int attackStatus, int RowCoord, int ColCoord)
 			LastHitCoords.col = ColCoord;
 			break;
 		case SUNK:
+			Iterations = 0;
 			CurrentMode = IDLE;
-			for (int x = 0; x < 4; x++)
-			{
-				CurrentAttackSequenceCheckedDirections[x] = false;
-			}
+			CurrentAttackSequenceCheckedDirections[UP] = false;
+			CurrentAttackSequenceCheckedDirections[LEFT] = false;
+			CurrentAttackSequenceCheckedDirections[DOWN] = false;
+			CurrentAttackSequenceCheckedDirections[RIGHT] = false;
 			break;
 	}
 }
