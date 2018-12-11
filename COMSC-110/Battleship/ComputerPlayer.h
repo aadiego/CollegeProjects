@@ -41,11 +41,11 @@ using namespace std;
 // ATTACKING (2)   The previous attacks have successfully hit a player's ship.
 //                 The next attack location will be in the same direction until
 //                 a) the ship is reported as sunk, or b) there is a reported
-//                 miss which will start from the other end of the first
+//                 miss which will start from the other end of the last
 //                 successful attack coordinate.
 // ------------------------------------------------------------------------------
 enum Mode { IDLE, HUNTING, ATTACKING };
-enum Direction { UP, LEFT, DOWN, RIGHT };
+enum Direction { UP, LEFT, DOWN, RIGHT };			// Enum of the cardinal directions
 
 string SimpleAI_SelectTarget();
 void SelectDirection();

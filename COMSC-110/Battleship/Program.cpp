@@ -31,6 +31,9 @@
 #include "Game.h"
 using namespace std;
 
+// ------------------------------------------------------------------------------
+// The entry point of the program.
+// ------------------------------------------------------------------------------
 int main()
 {
 	// Set the Command Prompt Title Bar, clear screen of any previous text, change background color to blue, and font color to white.

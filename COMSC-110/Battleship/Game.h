@@ -47,7 +47,7 @@ const int GRIDROWS = 10,											// Number of ROWS in the BattleshipGameGrid a
 		  CARRIERSIZE = 5,											// Size of the CARRIER game piece
 		  BATTLESHIPSIZE = 4,										// Size of the BATTLESHIP game piece
 		  CRUISERSIZE = 3,											// Size of the CRUISER game piece
-		  SUBMARINESIZE = 2,										// Size of the SUBMARINE game piece
+		  SUBMARINESIZE = 3,										// Size of the SUBMARINE game piece
 		  DESTROYERSIZE = 2;										// Size of the DESTROYER game piece
 
 enum AttackStatus { UNKNOWN, ALREADYATTACKED, MISS, HIT, SUNK };	// Enum for reporting the status of the attack				

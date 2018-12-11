@@ -30,7 +30,9 @@
 
 #include "BattleshipGameCell.h"
 
+// ------------------------------------------------------------------------------
 // Converts the Name enumerator to string for reporting to the game UI.
+// ------------------------------------------------------------------------------
 string ShipNameEnumToString(Name value)
 {
 	switch (value)
@@ -45,7 +47,7 @@ string ShipNameEnumToString(Name value)
 			return "Submarine";
 		case DESTROYER:
 			return "Destroyer";
-		default:
+		default: // This should NEVER happen, but just in case.
 			return "Unknown";
 	}
 }

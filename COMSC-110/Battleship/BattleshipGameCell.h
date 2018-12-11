@@ -46,6 +46,6 @@ struct BattleshipGameCell
 	Ship *shipInfo;													// Store information about the ship
 };
 
-string ShipNameEnumToString(Name);									// Converts the Name enumerator to string for reporting to the game UI.
+string ShipNameEnumToString(Name);
 
 #endif
