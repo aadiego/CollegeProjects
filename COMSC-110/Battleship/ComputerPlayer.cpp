@@ -43,11 +43,9 @@ static int Iterations = 0;																	// Static variable for edge case infi
 string SimpleAI_SelectTarget()
 {
 	// Coordinates variable used to hold a copy of the static LastHitCoords for further processing.
-	Coordinates coords;
+	Coordinates coords = LastHitCoords;
 	do
 	{
-		// Store a copy of the LastHitCoords in the variable.
-		coords = LastHitCoords;
 		switch (CurrentMode)
 		{
 			case IDLE:
@@ -56,6 +54,8 @@ string SimpleAI_SelectTarget()
 				coords.col = rand() % GRIDCOLUMNS;
 				break;
 			case HUNTING:
+				// Reset the coords to the LastHitCoords (in case this isn't it's first pass through).
+				coords = LastHitCoords;
 				// Randomly selection a cardinal attack direction and fall through to ATTACKING.
 				SelectDirection(); // Do NOT put a break; after this line as it should fall through the ATTACKING steps.
 			case ATTACKING:
