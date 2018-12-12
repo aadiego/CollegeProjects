@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Program.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{CD6E0492-52B6-44EF-9AEF-34843D212AC8}</ProjectGuid>
