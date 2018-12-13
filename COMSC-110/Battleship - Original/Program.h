@@ -28,26 +28,38 @@
    SOFTWARE.
 */
 
-#include "BattleshipGameCell.h"
+#ifndef Program_H
+#define Program_H
+#include <iostream>
+#include <ctime>
+#include <conio.h>
+using namespace std;
 
-// ------------------------------------------------------------------------------
-// Converts the Name enumerator to string for reporting to the game UI.
-// ------------------------------------------------------------------------------
-string ShipNameEnumToString(Name value)
+enum AttackStatus { UNKNOWN, ALREADYATTACKED, MISS, HIT, SUNK };	// Enum for reporting the status of the attack				
+enum Player { HUMAN, COMPUTER };									// Enum for the player type
+
+struct BattleshipGameCell
 {
-	switch (value)
-	{
-		case CARRIER:
-			return "Carrier";
-		case BATTLESHIP:
-			return "Battleship";
-		case CRUISER:
-			return "Cruiser";
-		case SUBMARINE:
-			return "Submarine";
-		case DESTROYER:
-			return "Destroyer";
-		default: // This should NEVER happen, but just in case.
-			return "Unknown";
-	}
-}
+	bool isHit;														// Was the space hit by the opponent?
+	bool containsShip;												// Does the space contain a player's ship?
+};
+
+struct Coordinates													// Stores the X,Y position of the attack (zero start)
+{
+	int row;														// Stores the X (horizontal) coordinate value
+	int col;														// Stores the Y (vertical) coordinate value
+};
+
+const int rows = 10;
+const int cols = 10;
+const int maxships = 10;						// Maximum number of ships on the board.
+
+void ClearBoard();
+int NumberOfShips(BattleshipGameCell[rows][cols]);
+void RandShips(BattleshipGameCell[rows][cols]);
+void ShowValue();
+AttackStatus LaunchAttack(Coordinates, BattleshipGameCell[rows][cols]);
+bool CheckTarget(Player, Coordinates);
+Coordinates SimpleAI_SelectTarget();
+
+#endif

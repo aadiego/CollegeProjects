@@ -28,26 +28,27 @@
    SOFTWARE.
 */
 
-#include "BattleshipGameCell.h"
+#ifndef ComputerPlayer_H
+#define ComputerPlayer_H
+#include <string>
+using namespace std;
 
 // ------------------------------------------------------------------------------
-// Converts the Name enumerator to string for reporting to the game UI.
+// enum Mode
+// IDLE (0)        Next attack location will be randomly selected.
+// HUNTING (1)     A previous attack successfully hit a player's ship. Next
+//                 attack location will be on one of the cardinal directions.
+// ATTACKING (2)   The previous attacks have successfully hit a player's ship.
+//                 The next attack location will be in the same direction until
+//                 a) the ship is reported as sunk, or b) there is a reported
+//                 miss which will start from the other end of the last
+//                 successful attack coordinate.
 // ------------------------------------------------------------------------------
-string ShipNameEnumToString(Name value)
-{
-	switch (value)
-	{
-		case CARRIER:
-			return "Carrier";
-		case BATTLESHIP:
-			return "Battleship";
-		case CRUISER:
-			return "Cruiser";
-		case SUBMARINE:
-			return "Submarine";
-		case DESTROYER:
-			return "Destroyer";
-		default: // This should NEVER happen, but just in case.
-			return "Unknown";
-	}
-}
+enum Mode { IDLE, HUNTING, ATTACKING };
+enum Direction { UP, LEFT, DOWN, RIGHT };			// Enum of the cardinal directions
+
+string SimpleAI_SelectTarget();
+void SelectDirection();
+void ProcessAttackStatus(int, int, int);
+
+#endif
