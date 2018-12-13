@@ -28,26 +28,22 @@
    SOFTWARE.
 */
 
-#include "BattleshipGameCell.h"
+#ifndef Screen_H
+#define Screen_H
+#include <iostream>
+#include <string>
+#include <vector>
+#include <Windows.h>
+using namespace std;
 
-// ------------------------------------------------------------------------------
-// Converts the Name enumerator to string for reporting to the game UI.
-// ------------------------------------------------------------------------------
-string ShipNameEnumToString(Name value)
-{
-	switch (value)
-	{
-		case CARRIER:
-			return "Carrier";
-		case BATTLESHIP:
-			return "Battleship";
-		case CRUISER:
-			return "Cruiser";
-		case SUBMARINE:
-			return "Submarine";
-		case DESTROYER:
-			return "Destroyer";
-		default: // This should NEVER happen, but just in case.
-			return "Unknown";
-	}
-}
+#define DEFAULT (BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY)
+#define HIT_SHOWSHIP (BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_INTENSITY)
+#define HIT_HIDESHIP (BACKGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY)
+
+void ClearScreen();
+void PrintLogo();
+void PrintAtScreenPosition(string, int, int, WORD);
+void change_console_color(WORD);
+void change_font_color(WORD);
+
+#endif

@@ -34,14 +34,10 @@
 using namespace std;
 
 enum Name { CARRIER, BATTLESHIP, CRUISER, SUBMARINE, DESTROYER };	// Enum of the names of the ships
-enum Orientation { VERTICAL, HORIZONTAL };							// Enum of the orientation of the ship on the game board
-enum Section { TOPLEFTCAP, MIDDLE, BOTTOMRIGHTCAP };				// Enum of the section of the ship for UI drawing
 
 struct Ship															// Store information about the ship
 {
 	Name name;														// Stores the name of the ship
-	Orientation orientation;										// Stores the ship orientation on the game board
-	Section section;												// Stores the section of the ship for UI drawing
 };
 
 struct BattleshipGameCell
@@ -50,6 +46,6 @@ struct BattleshipGameCell
 	Ship *shipInfo;													// Store information about the ship
 };
 
-string ShipNameEnumToString(Name);									// Converts the Name enumerator to string for reporting to the game UI.
+string ShipNameEnumToString(Name);
 
 #endif
