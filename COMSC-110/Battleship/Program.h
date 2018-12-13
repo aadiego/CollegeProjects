@@ -35,25 +35,13 @@
 #include <conio.h>
 using namespace std;
 
-// ------------------------------------------------------------------------------
-// enum Mode
-// IDLE (0)        Next attack location will be randomly selected.
-// HUNTING (1)     A previous attack successfully hit a player's ship. Next
-//                 attack location will be on one of the cardinal directions.
-// ATTACKING (2)   The previous attacks have successfully hit a player's ship.
-//                 The next attack location will be in the same direction until
-//                 a) the ship is reported as sunk, or b) there is a reported
-//                 miss which will start from the other end of the last
-//                 successful attack coordinate.
-// ------------------------------------------------------------------------------
-enum Mode { IDLE, HUNTING, ATTACKING };
-enum Direction { UP, LEFT, DOWN, RIGHT };			// Enum of the cardinal directions
 enum AttackStatus { UNKNOWN, ALREADYATTACKED, MISS, HIT, SUNK };	// Enum for reporting the status of the attack				
 enum Player { HUMAN, COMPUTER };									// Enum for the player type
 
 struct BattleshipGameCell
 {
-	int isHit;														// Was the space hit by the opponent?
+	bool isHit;														// Was the space hit by the opponent?
+	bool containsShip;												// Does the space contain a player's ship?
 };
 
 struct Coordinates													// Stores the X,Y position of the attack (zero start)
@@ -72,10 +60,6 @@ void RandShips(BattleshipGameCell[rows][cols]);
 void ShowValue();
 AttackStatus LaunchAttack(Coordinates, BattleshipGameCell[rows][cols]);
 bool CheckTarget(Player, Coordinates);
-bool IsInGridBoundary(Coordinates, Direction, Direction&, int);
 Coordinates SimpleAI_SelectTarget();
-void SelectDirection();
-void ProcessAttackStatus(int, int, int);
-
 
 #endif
