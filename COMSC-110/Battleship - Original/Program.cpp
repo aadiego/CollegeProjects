@@ -64,7 +64,7 @@
 					cout << "\n2-A hit indicates that a ship has been sunk,\nwhile a miss indicates that the shot missed and there is no ship \nat that coordinate.\n";
 					cout << "\n3-Input another coordinate and try to find and sink all the ships!\n";
 					cout << "\nHAPPY HUNTING!!\n";
-					cout << "Press enter to return to main menu...\n\n";
+					cout << "Please press any key to return to the main menu.\n\n";
 					_getch();
 					break;
 			}
