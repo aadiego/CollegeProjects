@@ -87,7 +87,7 @@ int main()
 
 					cout << "Game Objective: Find and sink all " << NUMBEROFSHIPS << " ships hidden on the board.\n\n";
 					cout << "Rules:\n #1 - Fire shots at the board by calling out grid coordinates location. Ex: A1 \n";
-					cout << " #2 - A hit indicates that a ship has been sunk, while a miss indicates that the shot missed and there is no ship at that coordinate.\n";
+					cout << " #2 - A hit indicates that a ship has been hit and the game will display the ship's remaining hits. Hit all of the ship spaces to sink it. A miss indicates that the shot missed and there is no ship at that coordinate.\n";
 					cout << " #3 - Input another coordinate and try to find and sink all the ships!\n";
 					cout << "\nHAPPY HUNTING!!\n\n";
 					cout << "Please press any key to return to the main menu.";
