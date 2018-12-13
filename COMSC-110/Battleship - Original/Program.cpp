@@ -191,7 +191,7 @@
 			coords.row = rand() % rows;
 			coords.col = rand() % cols;
 			break;
-		} while (CheckTarget(HUMAN, coords)); // Check to see if the space has already been hit.
+		} while (CheckTarget(COMPUTER, coords)); // Check to see if the space has already been hit.
 
 		return coords;
 	}
