@@ -117,6 +117,17 @@
   <ItemGroup>
     <Text Include="readme.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="City.cpp" />
+    <ClCompile Include="Disease.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Program.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="City.h" />
+    <ClInclude Include="Disease.h" />
+    <ClInclude Include="Game.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
