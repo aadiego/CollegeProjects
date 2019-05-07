@@ -4,11 +4,13 @@
 
 #include <iostream>
 #include <string>
+#include <locale>
 #include <ctime>
 #include <sstream>
 #include <Windows.h>
 #include "City.h"
 #include "Disease.h"
+#include "Card.h"
 using namespace std;
 
 #define BLUE_DISEASE (BACKGROUND_BLUE | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY)
@@ -32,5 +34,6 @@ bool SetupGame(unsigned int);
 int IncrementOutbreaks();
 int IncrementInfectionRate();
 int GetInfectionRate();
+City* DrawBottomInfectionCard();
 
 #endif

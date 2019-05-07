@@ -38,7 +38,9 @@ class City
 
 		// Accessors (Getters)
 		Infection* getInfection(Disease*) const;
+		string getName() const;
 		vector<City*> getNeighbors() const;
+		Infection* getPrimaryInfection() const;
 		void print() const;
 
 		// Mutators (Setters)

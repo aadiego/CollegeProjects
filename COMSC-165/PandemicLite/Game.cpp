@@ -3,6 +3,8 @@
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
 CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
 
+City* CityLinkedList = nullptr;
+
 bool SetupGame(unsigned int seed = 0)
 {
 	// Initialize random with the provided seed value or from the system time.
@@ -70,6 +72,7 @@ bool SetupGame(unsigned int seed = 0)
 	City HoChiMinhCity = City("Ho Chi Minh City", RED_TEXT, &Red, &Jakarta);
 	City Manila = City("Manila", RED_TEXT, &Red, &HoChiMinhCity);
 	City Sydney = City("Sydney", RED_TEXT, &Red, &Manila);
+	CityLinkedList = &SanFrancisco;
 
 	// Set Neighbors
 	SanFrancisco.setNeighbors({ &Chicago, &LosAngeles, &Manila, &Tokyo });
@@ -124,19 +127,30 @@ bool SetupGame(unsigned int seed = 0)
 	Manila.setNeighbors({ &Sydney, &HoChiMinhCity, &HongKong, &Taipei, &SanFrancisco });
 	Sydney.setNeighbors({ &Jakarta, &Manila, &LosAngeles });
 
+	
+
+	//PlayerCard EpidemicNo1 = PlayerCard(nullptr, true);
+	//EpidemicNo1.DrawAction();
+	//EpidemicNo1.DrawAction();
+	//EpidemicNo1.DrawAction();
+	//EpidemicNo1.DrawAction();
+	//EpidemicNo1.DrawAction();
 
 
+	InfectionCard City1 = InfectionCard(&SanFrancisco);
+	City1.DrawAction();
+	City1.DrawAction(3);
 
-	Blue.infect(&Chicago, 3);
-	Blue.infect(&SanFrancisco, 3);
-	Blue.infect(&SanFrancisco);
-	Blue.disinfect(&SanFrancisco);
-	Blue.infect(&Chicago);
-	Blue.infect(&Chicago);
-	Blue.infect(&Chicago);
-	Blue.infect(&Chicago);
+	//Blue.infect(&Chicago, 3);
+	//Blue.infect(&SanFrancisco, 3);
+	//Blue.infect(&SanFrancisco);
+	//Blue.disinfect(&SanFrancisco);
+	//Blue.infect(&Chicago);
+	//Blue.infect(&Chicago);
+	//Blue.infect(&Chicago);
+	//Blue.infect(&Chicago);
 
-	Red.infect(&SanFrancisco);
+	//Red.infect(&SanFrancisco);
 
 	return true;
 }
@@ -158,4 +172,9 @@ int IncrementInfectionRate()
 int GetInfectionRate()
 {
 	return INFECTIONRATE[infectionRateIndex];
+}
+
+City* DrawBottomInfectionCard()
+{
+	return CityLinkedList;
 }

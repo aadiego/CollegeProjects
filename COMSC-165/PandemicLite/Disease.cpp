@@ -86,6 +86,9 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 					// TODO: Call losing end game
 				}
 
+				// Output message saying that the city has had an outbreak and has infected neighboring cities.
+				cout << city->getName() + " has had an outbreak and has infected its neighbors." << endl;
+
 				// Add the city to the prior outbreaks vector and call the outbreak private helper function to infect neighboring cities.
 				(*priorOutbreaks).push_back(city);
 				ret = outbreak(city, priorOutbreaks);
@@ -93,6 +96,12 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 				// Since the city has already caused an outbreak and cannot outbreak again this round, break out of the for loop to prevent any
 				// further infection markers from getting placed this turn.
 				break;
+			}
+
+			// Output message saying that the city has been infected with a number of infection marker(s). Only on the first iteration.
+			if (iteration == 0)
+			{
+				cout << city->getName() + " has been infected with " + to_string(count) + " infection marker" + (count > 1 ? "s" : "") + " of the " + name + " disease." << endl;
 			}
 
 			// Increment the infection marker count for this disease and decrement the remaining infection count on the disease.
@@ -108,6 +117,10 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 			// Set the return value to true.
 			ret = true;
 		}
+	}
+	else
+	{
+		cout << "The " + name + " disease has been eradicated. No new infection will occur in " + city->getName() + "." << endl;
 	}
 	return ret;
 }
@@ -178,6 +191,9 @@ bool Disease::outbreak(City* city, vector<City*>* priorOutbreaks)
 		// Check if the neighboring city has already had an outbreak this turn. If not, infect the neighboring city.
 		if (!hasOutbroken(neighbor, priorOutbreaks))
 		{
+			// Output prefix message so the player can distinguish between chained outbreaks
+			cout << "FROM OUTBREAK IN " + city->getName() + ": ";
+
 			// Infect the neighboring city with one infection marker matching this disease. Also pass along the prior outbreaks vector to prevent
 			// potential other outbreaks from causing a feedback loop.
 			ret = infect(neighbor, 1, priorOutbreaks);
