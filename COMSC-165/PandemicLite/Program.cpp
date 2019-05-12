@@ -4,19 +4,10 @@ using namespace std;
 // Function Prototypes
 //void parseCmdLineArgs(int, char*[]);
 
-//struct GameOptions
-//{
-//	unsigned int seed = 0;
-//	string BlueDiseaseName = "Blue";
-//	string YellowDiseaseName = "Yellow";
-//	string PurpleDiseaseName = "Purple";
-//	string RedDiseaseName = "Red";
-//};
-
-unsigned int seed = 123456789;
+GameOptions options = { 1234567890, "GAIDS", "Glitter", "CodA", "Applause", 4 };
 
 int main(int argc, char *argv[])
 {
-	SetupGame(seed);
-	return 0;
+	int exitCode = SetupGame(options);
+	return exitCode;
 }

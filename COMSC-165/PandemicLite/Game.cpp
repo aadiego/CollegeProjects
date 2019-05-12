@@ -4,21 +4,26 @@ HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
 CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
 
 City* CityLinkedList = nullptr;
+Deck<PlayerCard>* PlayerCardDeck;
+Deck<InfectionCard>* InfectionCardDeck;
 
-bool SetupGame(unsigned int seed = 0)
+void SetupGame(GameOptions options)
 {
+	// Store the options parameter to a global variable.
+	globalGameOptions = options;
+
 	// Initialize random with the provided seed value or from the system time.
-	srand(seed == 0 ? time(nullptr) : seed);
+	srand(options.seed == 0 ? time(nullptr) : options.seed);
 
 	// Set the game variables
 	infectionRateIndex = 0;
 	totalOutbreaks = 0;
 
 	// Create the Disease objects
-	Disease Blue = Disease("Blue", BLUE_DISEASE);
-	Disease Yellow = Disease("Yellow", YELLOW_DISEASE);
-	Disease Purple = Disease("Purple", PURPLE_DISEASE);
-	Disease Red = Disease("Red", RED_DISEASE);
+	Disease Blue = Disease(options.BlueDiseaseName, BLUE_DISEASE);
+	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_DISEASE);
+	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_DISEASE);
+	Disease Red = Disease(options.RedDiseaseName, RED_DISEASE);
 
 	// Create the City objects
 	City SanFrancisco = City("San Francisco", BLUE_TEXT, &Blue, nullptr);
@@ -127,32 +132,34 @@ bool SetupGame(unsigned int seed = 0)
 	Manila.setNeighbors({ &Sydney, &HoChiMinhCity, &HongKong, &Taipei, &SanFrancisco });
 	Sydney.setNeighbors({ &Jakarta, &Manila, &LosAngeles });
 
+	InfectionCardDeck = new Deck<InfectionCard>(CityLinkedList, GetInfectionRate());
+	for(int initialInfection = 0; initialInfection < 9; ++initialInfection)
+	{
+		int infectionRate = 1;
+		if (initialInfection < 3)
+		{
+			infectionRate = 3;
+		}
+		else if (initialInfection < 6)
+		{
+			infectionRate = 2;
+		}
+
+		InfectionCard Card = InfectionCardDeck->draw(true);
+		Card.DrawAction(infectionRate);
+		InfectionCardDeck->discard(Card);
+	}
+
+	PlayerCardDeck = new Deck<PlayerCard>(CityLinkedList, 2);
+	// TODO: Draw cards into player hand
+	PlayerCard::PreparePlayerDeck(PlayerCardDeck);
+
+	PlayGame();
+}
+
+void PlayGame()
+{
 	
-
-	//PlayerCard EpidemicNo1 = PlayerCard(nullptr, true);
-	//EpidemicNo1.DrawAction();
-	//EpidemicNo1.DrawAction();
-	//EpidemicNo1.DrawAction();
-	//EpidemicNo1.DrawAction();
-	//EpidemicNo1.DrawAction();
-
-
-	InfectionCard City1 = InfectionCard(&SanFrancisco);
-	City1.DrawAction();
-	City1.DrawAction(3);
-
-	//Blue.infect(&Chicago, 3);
-	//Blue.infect(&SanFrancisco, 3);
-	//Blue.infect(&SanFrancisco);
-	//Blue.disinfect(&SanFrancisco);
-	//Blue.infect(&Chicago);
-	//Blue.infect(&Chicago);
-	//Blue.infect(&Chicago);
-	//Blue.infect(&Chicago);
-
-	//Red.infect(&SanFrancisco);
-
-	return true;
 }
 
 int IncrementOutbreaks()
@@ -176,5 +183,25 @@ int GetInfectionRate()
 
 City* DrawBottomInfectionCard()
 {
-	return CityLinkedList;
+	City* ret;
+	InfectionCard Card = InfectionCardDeck->drawBottom(true);
+	Card.DrawAction(3);
+	ret = Card.getCity();
+	InfectionCardDeck->discard(Card);
+	return ret;
+}
+
+bool IntensifyInfectionDeck()
+{
+	bool ret = false;
+
+	InfectionCardDeck->shuffle(Deck<InfectionCard>::Discard);
+
+	while(!InfectionCardDeck->isEmpty(Deck<InfectionCard>::Discard))
+	{
+		InfectionCard card = InfectionCardDeck->draw(true, Deck<InfectionCard>::Discard);
+		InfectionCardDeck->discard(card, Deck<InfectionCard>::Draw);
+	}
+
+	return ret;
 }
