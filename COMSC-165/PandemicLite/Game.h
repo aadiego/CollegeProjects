@@ -2,15 +2,21 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
-#include <string>
-#include <locale>
 #include <ctime>
+#include <iostream>
+#include <locale>
+#include <random>
+#include <regex>
 #include <sstream>
+#include <stack>
+#include <string>
+#include <vector>
 #include <Windows.h>
+#include "Stack.h"
 #include "City.h"
 #include "Disease.h"
 #include "Card.h"
+#include "Deck.h"
 using namespace std;
 
 #define BLUE_DISEASE (BACKGROUND_BLUE | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY)
@@ -24,16 +30,45 @@ using namespace std;
 #define PURPLE_TEXT (FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY)
 #define RED_TEXT (FOREGROUND_RED | FOREGROUND_INTENSITY)
 
+struct GameOptions
+{
+	unsigned int seed = 0;
+	string BlueDiseaseName = "Blue";
+	string YellowDiseaseName = "Yellow";
+	string PurpleDiseaseName = "Purple";
+	string RedDiseaseName = "Red";
+	unsigned int NumberOfEpidemics = 4;
+};
+
 const int INFECTIONRATESIZE = 7;
 const int INFECTIONRATE[INFECTIONRATESIZE] = { 2,2,2,3,3,4,4 };
 const int MAXOUTBREAKS = 8;
 static int infectionRateIndex = 0;
-static int totalOutbreaks = 0;
+static int totalOutbreaks = 0;                                          
+static GameOptions globalGameOptions;
 
-bool SetupGame(unsigned int);
+int SetupGame(GameOptions);
+int PlayGame();
 int IncrementOutbreaks();
 int IncrementInfectionRate();
 int GetInfectionRate();
 City* DrawBottomInfectionCard();
+bool IntensifyInfectionDeck();
+
+class NotImplementedException : public exception
+{
+	private:
+		string message;
+	public:
+		NotImplementedException(const string & message = "") : exception(message.c_str())
+		{
+			this->message = message;
+		}
+		friend ostream& operator<<(ostream & stream, NotImplementedException& object)
+		{
+			stream << "Not Implemented Exception: " + object.message;
+			return stream;
+		}
+};
 
 #endif

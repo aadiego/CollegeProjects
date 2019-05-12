@@ -3,12 +3,9 @@
 #define CARD_H
 
 // #12: Card Base Class and Derived Classes (PlayerCard & InfectionCard) (https://github.com/aadiego/CollegeProjects/issues/12)
-#include <string>
-#include <regex>
-#include <vector>
 #include "Game.h"
-#include "City.h"
-using namespace std;
+
+template <class T> class Deck;
 
 class Card
 {
@@ -46,6 +43,7 @@ class Card
 		// Accessors (Getters)
 		virtual string getName() const;
 		virtual string getDescription() const;
+		City* getCity() const;
 
 		// Public Functions
 		virtual bool DrawAction();
@@ -62,7 +60,8 @@ class PlayerCard : public Card
 
 	public:
 		// Constructor
-		PlayerCard(City* = nullptr, bool = false);
+		PlayerCard();
+		PlayerCard(City*, bool = false);
 
 		// Accessors (Getters)
 		string getName() const override;
@@ -70,6 +69,7 @@ class PlayerCard : public Card
 
 		// Public Functions
 		bool DrawAction() override;
+		static void PreparePlayerDeck(Deck<PlayerCard>*);
 };
 
 class InfectionCard : public Card
@@ -80,7 +80,8 @@ class InfectionCard : public Card
 
 	public:
 		// Constructor
-		InfectionCard(City* = nullptr);
+		InfectionCard();
+		InfectionCard(City*);
 
 		// Accessors (Getters)
 		string getName() const override;
