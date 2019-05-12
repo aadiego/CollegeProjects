@@ -118,15 +118,22 @@
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="City.cpp" />
+    <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Disease.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="makefile" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Card.h" />
     <ClInclude Include="City.h" />
+    <ClInclude Include="Deck.h" />
     <ClInclude Include="Disease.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

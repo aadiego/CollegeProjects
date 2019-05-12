@@ -3,11 +3,7 @@
 #define DISEASE_H
 
 // #10: Disease Class (https://github.com/aadiego/CollegeProjects/issues/10)
-#include <string>
-#include <vector>
-#include <Windows.h>
-#include "City.h"
-using namespace std;
+#include "Game.h"
 
 class Disease
 {

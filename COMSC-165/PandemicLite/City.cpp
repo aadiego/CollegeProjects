@@ -94,6 +94,28 @@ City::Infection* City::getInfection(Disease* disease) const
 }
 
 // *******************************************************************************************
+// **     Function: getPrimaryInfection														**
+// **   Parameters: N/A																		**
+// **       Return: Infection*																**
+// **  Description: Returns the first Infection node in the Infection linked list.			**
+// *******************************************************************************************
+City::Infection* City::getPrimaryInfection() const
+{
+	return infections;
+}
+
+// *******************************************************************************************
+// **     Function: getName																	**
+// **   Parameters: N/A																		**
+// **       Return: Infection*																**
+// **  Description: Returns the 'name' private variable value.								**
+// *******************************************************************************************
+string City::getName() const
+{
+	return name;
+}
+
+// *******************************************************************************************
 // **     Function: getNeighbors															**
 // **   Parameters: N/A																		**
 // **       Return: vector<City*>															**
