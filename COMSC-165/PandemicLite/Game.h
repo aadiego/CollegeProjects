@@ -55,6 +55,22 @@ int GetInfectionRate();
 City* DrawBottomInfectionCard();
 bool IntensifyInfectionDeck();
 
+class InvalidArgumentException : public exception
+{
+	private:
+		string message;
+	public:
+		InvalidArgumentException(const string& message = "") : exception(message.c_str())
+		{
+			this->message = message;
+		}
+		friend ostream& operator<<(ostream& stream, InvalidArgumentException& object)
+		{
+			stream << "Invalid Argument Exception: " + object.message + " Please execute the game again with a corrected argument value.";
+			return stream;
+		}
+};
+
 class NotImplementedException : public exception
 {
 	private:

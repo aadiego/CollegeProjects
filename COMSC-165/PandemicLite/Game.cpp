@@ -7,7 +7,7 @@ City* CityLinkedList = nullptr;
 Deck<PlayerCard>* PlayerCardDeck;
 Deck<InfectionCard>* InfectionCardDeck;
 
-void SetupGame(GameOptions options)
+int SetupGame(GameOptions options)
 {
 	// Store the options parameter to a global variable.
 	globalGameOptions = options;
@@ -154,12 +154,12 @@ void SetupGame(GameOptions options)
 	// TODO: Draw cards into player hand
 	PlayerCard::PreparePlayerDeck(PlayerCardDeck);
 
-	PlayGame();
+	return PlayGame();
 }
 
-void PlayGame()
+int PlayGame()
 {
-	
+	return EXIT_SUCCESS;
 }
 
 int IncrementOutbreaks()
