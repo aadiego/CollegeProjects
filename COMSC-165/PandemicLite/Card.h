@@ -3,7 +3,9 @@
 #define CARD_H
 
 // #12: Card Base Class and Derived Classes (PlayerCard & InfectionCard) (https://github.com/aadiego/CollegeProjects/issues/12)
-#include "Game.h"
+#include <string>
+#include "City.h"
+using namespace std;
 
 template <class T> class Deck;
 
@@ -70,6 +72,9 @@ class PlayerCard : public Card
 		// Public Functions
 		bool DrawAction() override;
 		static void PreparePlayerDeck(Deck<PlayerCard>*);
+
+		// Operator Overrides
+		bool operator==(PlayerCard*) const;
 };
 
 class InfectionCard : public Card
@@ -89,6 +94,9 @@ class InfectionCard : public Card
 
 		// Public Functions
 		bool DrawAction(int = 1) const;
+
+		// Operator Overrides
+		bool operator==(InfectionCard*) const;
 };
 
 #endif

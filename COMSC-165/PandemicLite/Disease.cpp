@@ -1,4 +1,5 @@
 #include "Disease.h"
+#include "Game.h"
 
 // *******************************************************************************************
 // **     Function: Disease (constructor)													**
@@ -234,7 +235,7 @@ bool Disease::hasOutbroken(City* searchCity, vector<City*>* priorOutbreaks)
 // *******************************************************************************************
 bool Disease::operator==(Disease* rhs) const
 {
-	// Return true if the name, color, remainingInfectionCount, isCured, and isEradicated variables are match.
+	// Return true if the name, color, remainingInfectionCount, isCured, and isEradicated variables match.
 	return name == rhs->name
 		&& color == rhs->color
 		&& remainingInfectionCount == rhs->remainingInfectionCount

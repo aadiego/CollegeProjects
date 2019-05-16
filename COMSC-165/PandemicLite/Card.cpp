@@ -1,4 +1,9 @@
+#include <random>
+#include <regex>
 #include "Card.h"
+#include "Deck.h"
+#include "Disease.h"
+#include "Game.h"
 
 // *******************************************************************************************
 // **     Function: Card (constructor)														**
@@ -58,6 +63,20 @@ City* Card::getCity() const
 bool Card::DrawAction()
 {
 	throw NotImplementedException("The DrawAction base member function is not defined. If this exception is getting called check the stack trace to see why.");
+}
+
+// *******************************************************************************************
+// **     Function: == (operator)															**
+// **   Parameters: Card* rhs																**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are equal.		**
+// *******************************************************************************************
+bool Card::operator==(Card* rhs) const
+{
+	// Return true if the name, description, and city variables match.
+	return name == rhs->name
+		&& description == rhs->description
+		&& city == rhs->city;
 }
 
 // *******************************************************************************************
@@ -214,6 +233,21 @@ string PlayerCard::getDescription() const
 }
 
 // *******************************************************************************************
+// **     Function: == (operator)															**
+// **   Parameters: PlayerCard* rhs															**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are equal.		**
+// *******************************************************************************************
+bool PlayerCard::operator==(PlayerCard* rhs) const
+{
+	// Return true if the name, description, city, and isEpidemic variables match.
+	return name == rhs->name
+		&& description == rhs->description
+		&& city == rhs->city
+		&& isEpidemic == rhs->isEpidemic;
+}
+
+// *******************************************************************************************
 // **     Function: InfectionCard (default constructor)										**
 // **   Parameters: N/A																		**
 // **       Return: N/A																		**
@@ -281,4 +315,19 @@ string InfectionCard::getName() const
 string InfectionCard::getDescription() const
 {
 	return description;
+}
+
+// *******************************************************************************************
+// **     Function: == (operator)															**
+// **   Parameters: InfectionCard* rhs														**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are equal.		**
+// *******************************************************************************************
+bool InfectionCard::operator==(InfectionCard* rhs) const
+{
+	// Return true if the name, description, city, and disease variables match.
+	return name == rhs->name
+		&& description == rhs->description
+		&& city == rhs->city
+		&& disease == rhs->disease;
 }

@@ -56,6 +56,19 @@ City::~City()
 }
 
 // *******************************************************************************************
+// **     Function: hasResearchStation														**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns true if the city has a research station or false if it does		**
+// **				not.																	**
+// *******************************************************************************************
+bool City::hasResearchStation() const
+{
+	return containsResearchStation;
+}
+
+
+// *******************************************************************************************
 // **     Function: getInfection															**
 // **   Parameters: Disease* disease														**
 // **       Return: Infection*																**

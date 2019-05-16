@@ -37,6 +37,7 @@ class City
 		~City();
 
 		// Accessors (Getters)
+		bool hasResearchStation() const;
 		Infection* getInfection(Disease*) const;
 		string getName() const;
 		vector<City*> getNeighbors() const;
@@ -52,4 +53,5 @@ class City
 		// Operator Overrides
 		bool operator==(City*) const;
 };
+
 #endif

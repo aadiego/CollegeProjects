@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 			SetupGame(options);
 		}
 	}
-	catch (exception ex)
+	catch (exception &ex)
 	{
 		cout << ex.what();
 		ret = EXIT_FAILURE;

@@ -1,4 +1,7 @@
+#include <random>
 #include "Deck.h"
+#include "City.h"
+#include "Card.h"
 
 // *******************************************************************************************
 // **     Function: Deck (default constructor)												**

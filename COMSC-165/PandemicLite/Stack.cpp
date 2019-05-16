@@ -1,4 +1,5 @@
 #include "Stack.h"
+#include "Card.h"
 
 // *******************************************************************************************
 // **     Function: Stack (constructor)														**
@@ -167,6 +168,46 @@ template <class T>
 T Stack<T>::bottom()
 {
 	return bottomNode->data;
+}
+
+// *******************************************************************************************
+// **     Function: contains																**
+// **   Parameters:	T search																**
+// **       Return:	bool																	**
+// **  Description: Returns true if the stack contains an object matching the search		**
+// **				parameter.																**
+// *******************************************************************************************
+template <class T>
+bool Stack<T>::contains(T search)
+{
+	// Node traversal pointer
+	LinkedListNode* nodePtr;
+
+	// Set the node traversal pointer to the head node of the stack
+	nodePtr = stack;
+
+	// Loop through the stack checking if the current node matches the search parameter value
+	while (nodePtr != nullptr)
+	{
+		if (search.operator==(&nodePtr->data)) // figure out how to use c++ templates and the data type's == operator
+		{
+			return true;
+		}
+		nodePtr = nodePtr->nextNode;
+	}
+	return false;
+}
+
+// *******************************************************************************************
+// **     Function: stack_nodes																**
+// **   Parameters:	N/A																		**
+// **       Return:	LinkedListNode															**
+// **  Description: Returns the underlying linked list for the stack.						**
+// *******************************************************************************************
+template <class T>
+typename Stack<T>::LinkedListNode* Stack<T>::stack_nodes() const
+{
+	return stack;
 }
 
 // *******************************************************************************************

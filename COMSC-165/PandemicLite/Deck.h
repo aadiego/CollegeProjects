@@ -3,9 +3,10 @@
 #define DECK_H
 
 // #13: Deck Class (https://github.com/aadiego/CollegeProjects/issues/13)
-#include "Game.h"
-
-template <class T> class Stack;										// Empty Stack template class declaration required for some Deck member functions to work. This fully gets defined in Stack.h
+#include <iostream>
+#include "Stack.h"
+#include "City.h"
+using namespace std;
 
 template <class T>
 class Deck
