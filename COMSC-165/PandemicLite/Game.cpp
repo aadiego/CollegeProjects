@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "Game.h"
-#include "Stack.h"
+//#include "Stack.h"
 #include "City.h"
 #include "Disease.h"
 #include "Card.h"
@@ -11,10 +11,13 @@
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
 CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
 
+Disease* DiseaseLinkedList = nullptr;
 City* CityLinkedList = nullptr;
 Deck<PlayerCard>* PlayerCardDeck;
 Deck<InfectionCard>* InfectionCardDeck;
 BasePlayer* Player;
+bool GameOver = false;
+GameOverReason Reason = NA;
 
 int SetupGame(GameOptions options)
 {
@@ -27,12 +30,15 @@ int SetupGame(GameOptions options)
 	// Set the game variables
 	infectionRateIndex = 0;
 	totalOutbreaks = 0;
+	GameOver = false;
+	Reason = NA;
 
 	// Create the Disease objects
-	Disease Blue = Disease(options.BlueDiseaseName, BLUE_DISEASE);
-	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_DISEASE);
-	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_DISEASE);
-	Disease Red = Disease(options.RedDiseaseName, RED_DISEASE);
+	Disease Blue = Disease(options.BlueDiseaseName, BLUE_DISEASE, nullptr);
+	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_DISEASE, &Blue);
+	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_DISEASE, &Yellow);
+	Disease Red = Disease(options.RedDiseaseName, RED_DISEASE, &Purple);
+	DiseaseLinkedList = &Blue;
 
 	// Create the City objects
 	City SanFrancisco = City("San Francisco", BLUE_TEXT, &Blue, nullptr);
@@ -174,7 +180,7 @@ int PlayGame()
 {
 	do
 	{
-		for (int ActionNumber = 0; ActionNumber < Player->getMaxActions(); ++ActionNumber)
+		for (int ActionNumber = 0; ActionNumber < Player->getMaxActions() && !GameOver; ++ActionNumber)
 		{
 			bool ret = false;
 			do
@@ -194,23 +200,47 @@ int PlayGame()
 					break;
 				}
 				ret = DoPlayerAction(Player, AvailableActions[userSelection]);
-			} while (!ret);
+
+				int iteration = 0;
+				bool allDiseasesCured[4] = { false, false, false, false };
+				Disease* disease = DiseaseLinkedList;
+				while(disease != nullptr)
+				{
+					allDiseasesCured[iteration] = disease->getIsCured();
+					disease = disease->nextNode;
+					++iteration;
+				}
+
+				if (allDiseasesCured[0] && allDiseasesCured[1] && allDiseasesCured[2] && allDiseasesCured[3])
+				{
+					EndGame(GameOverReason::WIN);
+				}
+			} while (!GameOver && !ret);
 		}
 
-		for(int PlayerDeckDraw = 0; PlayerDeckDraw < PlayerCardDeck->getDrawCount(); ++PlayerDeckDraw)
+		for (int PlayerDeckDraw = 0; PlayerDeckDraw < PlayerCardDeck->getDrawCount() && !GameOver; ++PlayerDeckDraw)
 		{
-			PlayerCard card = PlayerCardDeck->draw();
-			if (!card.getIsEpidemic())
+			if (!PlayerCardDeck->isEmpty())
 			{
-				Player->AddPlayerCardToHand(card);
+				PlayerCard card = PlayerCardDeck->draw();
+				if (!card.getIsEpidemic())
+				{
+					Player->AddPlayerCardToHand(card);
+				}
+			}
+			else
+			{
+				EndGame(GameOverReason::LOSS_PLAYERDECKEMPTY);
 			}
 		}
 
-		for(int InfectionDeckDraw = 0; InfectionDeckDraw < GetInfectionRate(); ++InfectionDeckDraw)
+		for (int InfectionDeckDraw = 0; InfectionDeckDraw < GetInfectionRate() && !GameOver; ++InfectionDeckDraw)
 		{
 			InfectionCard card = InfectionCardDeck->draw();
 		}
-	} while (true);
+	} while (!GameOver);
+
+	globalGameOptions.seed = 0;
 
 	return EXIT_SUCCESS;
 }
@@ -416,3 +446,10 @@ string ToLower(string input)
 	transform(input.begin(), input.end(), ret.begin(), ::tolower);
 	return ret;
 }
+
+void EndGame(GameOverReason reason)
+{
+	GameOver = true;
+	Reason = reason;
+}
+
