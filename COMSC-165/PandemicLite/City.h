@@ -37,6 +37,7 @@ class City
 		~City();
 
 		// Accessors (Getters)
+		bool hasResearchStation() const;
 		Infection* getInfection(Disease*) const;
 		string getName() const;
 		vector<City*> getNeighbors() const;
@@ -45,11 +46,16 @@ class City
 
 		// Mutators (Setters)
 		void setNeighbors(vector<City*>);
+
+		// Public functions
+		void buildResearchStation();
 	
 		// Variables
 		City* nextNode = nullptr;							// Holds the next city in the linked list for calling a world print.
 
 		// Operator Overrides
 		bool operator==(City*) const;
+		bool operator!=(City*) const;
 };
+
 #endif

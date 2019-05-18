@@ -1,4 +1,5 @@
 #include "Disease.h"
+#include "Game.h"
 
 // *******************************************************************************************
 // **     Function: Disease (constructor)													**
@@ -22,6 +23,28 @@ Disease::Disease(string name, WORD color)
 string Disease::getName() const
 {
 	return name;
+}
+
+// *******************************************************************************************
+// **     Function: getIsCured																**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns the 'isCured' private variable value.							**
+// *******************************************************************************************
+bool Disease::getIsCured() const
+{
+	return isCured;
+}
+
+// *******************************************************************************************
+// **     Function: getIsEradicated															**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns the 'isEradicated' private variable value.						**
+// *******************************************************************************************
+bool Disease::getIsEradicated() const
+{
+	return isEradicated;
 }
 
 // *******************************************************************************************
@@ -171,6 +194,17 @@ bool Disease::disinfect(City* city, int count)
 }
 
 // *******************************************************************************************
+// **     Function: discoverCure															**
+// **   Parameters: N/A																		**
+// **       Return: void																	**
+// **  Description: Sets the 'isCured' private variable value to true.						**
+// *******************************************************************************************
+void Disease::discoverCure()
+{
+	isCured = true;
+}
+
+// *******************************************************************************************
 // **     Function: outbreak																**
 // **   Parameters: City* city																**
 // **				vector<City*> priorOutbreaks (optional)									**
@@ -234,7 +268,7 @@ bool Disease::hasOutbroken(City* searchCity, vector<City*>* priorOutbreaks)
 // *******************************************************************************************
 bool Disease::operator==(Disease* rhs) const
 {
-	// Return true if the name, color, remainingInfectionCount, isCured, and isEradicated variables are match.
+	// Return true if the name, color, remainingInfectionCount, isCured, and isEradicated variables match.
 	return name == rhs->name
 		&& color == rhs->color
 		&& remainingInfectionCount == rhs->remainingInfectionCount

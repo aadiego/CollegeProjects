@@ -1,7 +1,8 @@
 #pragma once
 #ifndef STACK_H
 #define STACK_H
-#include "Game.h"
+
+
 
 template<class T>
 class Stack
@@ -30,9 +31,13 @@ class Stack
 		// Stack public functions
 		void push(T);
 		void pop();
+		void pop_Nth(int);
 		void pop_back();
 		T top();
+		T nth(int);
 		T bottom();
+		bool contains(T);
+		LinkedListNode* stack_nodes() const;
 		int size();
 		bool isEmpty() const;
 };

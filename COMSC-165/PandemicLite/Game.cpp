@@ -1,4 +1,12 @@
+#include <algorithm>
 #include "Game.h"
+#include "Stack.h"
+#include "City.h"
+#include "Disease.h"
+#include "Card.h"
+#include "Deck.h"
+#include "BasePlayer.h"
+#include "MedicRole.h"
 
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
 CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
@@ -6,6 +14,7 @@ CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer infor
 City* CityLinkedList = nullptr;
 Deck<PlayerCard>* PlayerCardDeck;
 Deck<InfectionCard>* InfectionCardDeck;
+MedicRole* Player;
 
 int SetupGame(GameOptions options)
 {
@@ -14,7 +23,7 @@ int SetupGame(GameOptions options)
 
 	// Initialize random with the provided seed value or from the system time.
 	srand(options.seed == 0 ? time(nullptr) : options.seed);
-
+	
 	// Set the game variables
 	infectionRateIndex = 0;
 	totalOutbreaks = 0;
@@ -150,8 +159,12 @@ int SetupGame(GameOptions options)
 		InfectionCardDeck->discard(Card);
 	}
 
+	Player = new MedicRole("Medic", &Atlanta);
 	PlayerCardDeck = new Deck<PlayerCard>(CityLinkedList, 2);
-	// TODO: Draw cards into player hand
+	for (int initialHand = 0; initialHand < 5; ++initialHand)
+	{
+		Player->AddPlayerCardToHand(PlayerCardDeck->draw(true));
+	}
 	PlayerCard::PreparePlayerDeck(PlayerCardDeck);
 
 	return PlayGame();
@@ -181,6 +194,21 @@ int GetInfectionRate()
 	return INFECTIONRATE[infectionRateIndex];
 }
 
+int GetResearchStationCount()
+{
+	int ret = 0;
+	City* nodePtr = CityLinkedList;
+	while(nodePtr != nullptr)
+	{
+		if(nodePtr->hasResearchStation())
+		{
+			++ret;
+		}
+		nodePtr = nodePtr->nextNode;
+	}
+	return ret;
+}
+
 City* DrawBottomInfectionCard()
 {
 	City* ret;
@@ -203,5 +231,114 @@ bool IntensifyInfectionDeck()
 		InfectionCardDeck->discard(card, Deck<InfectionCard>::Draw);
 	}
 
+	return ret;
+}
+
+PlayerCard DrawPlayerCard()
+{
+	return PlayerCardDeck->draw();
+}
+
+bool DiscardPlayerCard(PlayerCard card)
+{
+	return PlayerCardDeck->discard(card);
+}
+
+
+City* getCityLinkedList()
+{
+	return CityLinkedList;
+}
+
+string GetStringInput(string prompt)
+{
+	string userInput;
+	cout << prompt << ": ";
+	getline(cin, userInput);
+	return userInput;
+}
+
+bool GetDestinationFromInputString(City* &destination, string &userInput)
+{
+	bool ret = false;
+	userInput = GetStringInput("Please enter a destination");
+
+	if (ToLower(userInput) != "back")
+	{
+		do
+		{
+			City* currentNode = CityLinkedList;
+			while (currentNode != nullptr)
+			{
+				if (ToLower(currentNode->getName()) == ToLower(userInput))
+				{
+					destination = currentNode;
+					ret = true;
+					break;
+				}
+				currentNode = currentNode->nextNode;
+			}
+
+			if(ret == false)
+			{
+				userInput = GetStringInput("Please enter a destination");
+			}
+		} while (ret == false);
+	}
+	return ret;
+}
+
+vector<City*> GetCitiesContainingResearchStations(City* excludeCurrentCity)
+{
+	vector<City*> ret;
+	City* currentCity = CityLinkedList;
+	while (currentCity != nullptr)
+	{
+		if (currentCity->hasResearchStation() && currentCity != excludeCurrentCity)
+		{
+			ret.push_back(currentCity);
+		}
+		currentCity = currentCity->nextNode;
+	}
+	return ret;
+}
+
+
+int GetNumericInput(int minValue, int maxValue, bool NonNegative, bool ReturnZeroBased)
+{
+	int ret = 0;
+	string userInput;
+	do
+	{
+		cout << "Please enter a value" << (minValue == INT_MIN && maxValue == INT_MAX ? (NonNegative ? " [non-negative]: " : ": ") : " [" + to_string(minValue) + "-" + to_string(maxValue) + "]: ");
+		getline(cin, userInput);
+	} while (!(IsNumeric(userInput, ret, NonNegative) && (minValue == INT_MIN || ret >= minValue) && (maxValue == INT_MAX || ret <= maxValue)));
+	return ReturnZeroBased ? ret - 1 : ret;
+}
+
+bool IsNumeric(string &input, int &output, bool NonNegative)
+{
+	bool ret = true;
+	for(char character : input)
+	{
+		if(!isdigit(character) && (NonNegative || character != '-'))
+		{
+			ret = false;
+		}
+	}
+
+	output = INT_MIN;
+	if(ret)
+	{
+		output = stoi(input);
+	}
+
+	return ret;
+}
+
+string ToLower(string input)
+{
+	string ret = input;
+	transform(input.begin(), input.end(), ret.begin(), ::tolower);
 	return ret;
 }

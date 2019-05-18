@@ -56,6 +56,19 @@ City::~City()
 }
 
 // *******************************************************************************************
+// **     Function: hasResearchStation														**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns true if the city has a research station or false if it does		**
+// **				not.																	**
+// *******************************************************************************************
+bool City::hasResearchStation() const
+{
+	return containsResearchStation;
+}
+
+
+// *******************************************************************************************
 // **     Function: getInfection															**
 // **   Parameters: Disease* disease														**
 // **       Return: Infection*																**
@@ -154,6 +167,18 @@ void City::setNeighbors(vector<City*> neighbors)
 }
 
 // *******************************************************************************************
+// **     Function: buildResearchStation													**
+// **   Parameters: N/A																		**
+// **       Return: void																	**
+// **  Description: Sets the 'containsResearchStation' private variable to true.			**
+// *******************************************************************************************
+void City::buildResearchStation()
+{
+	this->containsResearchStation = true;
+}
+
+
+// *******************************************************************************************
 // **     Function: == (operator)															**
 // **   Parameters: City* rhs																**
 // **       Return: bool																	**
@@ -166,4 +191,16 @@ bool City::operator==(City* rhs) const
 		&& containsResearchStation == rhs->containsResearchStation
 		&& neighbors == rhs->neighbors
 		&& infections == rhs->infections;
+}
+
+// *******************************************************************************************
+// **     Function: != (operator)															**
+// **   Parameters: City* rhs																**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are not equal.	**
+// *******************************************************************************************
+bool City::operator!=(City* rhs) const
+{
+	// Call the equality operator and use ! to inverse the returned value.
+	return !(this->operator==(rhs));
 }

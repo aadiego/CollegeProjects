@@ -3,7 +3,10 @@
 #define DISEASE_H
 
 // #10: Disease Class (https://github.com/aadiego/CollegeProjects/issues/10)
-#include "Game.h"
+#include <string>
+#include <vector>
+#include <Windows.h>
+#include "City.h"
 
 class Disease
 {
@@ -31,11 +34,14 @@ class Disease
 		
 		// Accessors (Getters)
 		string getName() const;
+		bool getIsCured() const;
+		bool getIsEradicated() const;
 		int getRemainingInfectionCount() const;
 		
 		// Public Functions
 		bool infect(City*, int = 1);
 		bool disinfect(City*, int = 1);
+		void discoverCure();
 		
 		// Operator Overrides
 		bool operator==(Disease*) const;

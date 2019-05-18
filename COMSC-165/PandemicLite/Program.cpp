@@ -4,7 +4,6 @@ using namespace std;
 // Function Prototypes
 int parseCmdLineArgs(int, char*[]);
 void displayHelpMessage(string);
-string ToLower(string);
 
 GameOptions options;
 
@@ -18,7 +17,7 @@ int main(int argc, char *argv[])
 			SetupGame(options);
 		}
 	}
-	catch (exception ex)
+	catch (exception &ex)
 	{
 		cout << ex.what();
 		ret = EXIT_FAILURE;
@@ -129,11 +128,4 @@ void displayHelpMessage(string ExecutableName)
 	cout << "-purplediseasename" << "\t" << "Sets the name for the Purple disease. (optional)" << endl;
 	cout << "-reddiseasename" << "\t\t" << "Sets the name for the Red disease. (optional)" << endl;
 	cout << "-numberofepidemics" << "\t" << "Sets the number of epidemics in the Player deck. [4 =  Introductory (default) | 5 = Standard | 6 = Heroic] (optional)" << endl;
-}
-
-string ToLower(string input)
-{
-	string ret = input;
-	transform(input.begin(), input.end(), ret.begin(), ::tolower);
-	return ret;
 }

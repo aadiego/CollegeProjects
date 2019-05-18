@@ -1,4 +1,9 @@
+#include <random>
+#include <regex>
 #include "Card.h"
+#include "Deck.h"
+#include "Disease.h"
+#include "Game.h"
 
 // *******************************************************************************************
 // **     Function: Card (constructor)														**
@@ -61,6 +66,20 @@ bool Card::DrawAction()
 }
 
 // *******************************************************************************************
+// **     Function: == (operator)															**
+// **   Parameters: Card* rhs																**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are equal.		**
+// *******************************************************************************************
+bool Card::operator==(Card* rhs) const
+{
+	// Return true if the name, description, and city variables match.
+	return name == rhs->name
+		&& description == rhs->description
+		&& city == rhs->city;
+}
+
+// *******************************************************************************************
 // **     Function: PlayerCard (default constructor)										**
 // **   Parameters: N/A																		**
 // **       Return: N/A																		**
@@ -86,7 +105,7 @@ PlayerCard::PlayerCard(City* city, bool isEpidemic) : Card("Player Card")
 	// Set the private variable values based off of input parameter values.
 	this->name = city != nullptr ? city->getName() : "Epidemic";
 	this->city = city;
-	this->description = !isEpidemic ? "Use this card as a Direct Flight to " + city->getName() + ", a Shuttle Flight from " + city->getName() + " to any city on the board, or to Discover a Cure for the " + city->getPrimaryInfection()->disease->getName() + " disease (requires discarding 5 city cards of the same disease from your hand)." : "Infection rate has increased to {Rate}, {City} has become infected with the {Disease} disease, and existing infections continue to intensify.";
+	this->description = !isEpidemic ? "Use this card as a Direct Flight to " + city->getName() + ", a Shuttle Flight from " + city->getName() + " to any city on the board, build a Research Station in " + city->getName() + " (if the player is in the city), or to Discover a Cure for the " + city->getPrimaryInfection()->disease->getName() + " disease (requires discarding 5 city cards of the same disease from your hand)." : "Infection rate has increased to {Rate}, {City} has become infected with the {Disease} disease, and existing infections continue to intensify.";
 	this->isEpidemic = isEpidemic;
 };
 
@@ -214,6 +233,21 @@ string PlayerCard::getDescription() const
 }
 
 // *******************************************************************************************
+// **     Function: == (operator)															**
+// **   Parameters: PlayerCard* rhs															**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are equal.		**
+// *******************************************************************************************
+bool PlayerCard::operator==(PlayerCard* rhs) const
+{
+	// Return true if the name, description, city, and isEpidemic variables match.
+	return name == rhs->name
+		&& description == rhs->description
+		&& city == rhs->city
+		&& isEpidemic == rhs->isEpidemic;
+}
+
+// *******************************************************************************************
 // **     Function: InfectionCard (default constructor)										**
 // **   Parameters: N/A																		**
 // **       Return: N/A																		**
@@ -281,4 +315,19 @@ string InfectionCard::getName() const
 string InfectionCard::getDescription() const
 {
 	return description;
+}
+
+// *******************************************************************************************
+// **     Function: == (operator)															**
+// **   Parameters: InfectionCard* rhs														**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are equal.		**
+// *******************************************************************************************
+bool InfectionCard::operator==(InfectionCard* rhs) const
+{
+	// Return true if the name, description, city, and disease variables match.
+	return name == rhs->name
+		&& description == rhs->description
+		&& city == rhs->city
+		&& disease == rhs->disease;
 }

@@ -4,19 +4,9 @@
 
 #include <ctime>
 #include <iostream>
-#include <locale>
-#include <random>
-#include <regex>
-#include <sstream>
-#include <stack>
 #include <string>
-#include <vector>
 #include <Windows.h>
-#include "Stack.h"
-#include "City.h"
-#include "Disease.h"
 #include "Card.h"
-#include "Deck.h"
 using namespace std;
 
 #define BLUE_DISEASE (BACKGROUND_BLUE | BACKGROUND_INTENSITY | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY)
@@ -47,13 +37,25 @@ static int infectionRateIndex = 0;
 static int totalOutbreaks = 0;                                          
 static GameOptions globalGameOptions;
 
+class City;
+
 int SetupGame(GameOptions);
 int PlayGame();
 int IncrementOutbreaks();
 int IncrementInfectionRate();
 int GetInfectionRate();
+int GetResearchStationCount();
 City* DrawBottomInfectionCard();
 bool IntensifyInfectionDeck();
+PlayerCard DrawPlayerCard();
+bool DiscardPlayerCard(PlayerCard);
+City* getCityLinkedList();
+string GetStringInput(string);
+bool GetDestinationFromInputString(City*&, string&);
+vector<City*> GetCitiesContainingResearchStations(City*);
+int GetNumericInput(int = INT_MIN, int = INT_MAX, bool = true, bool = false);
+bool IsNumeric(string&, int&, bool = true);
+string ToLower(string);
 
 class InvalidArgumentException : public exception
 {
