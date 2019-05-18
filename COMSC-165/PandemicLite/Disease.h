@@ -28,7 +28,7 @@ class Disease
 
 	public:
 		// Constructor
-		Disease(string, WORD, WORD);
+		Disease(string, WORD, WORD, Disease*);
 		
 		// Destructor
 		~Disease() = default;
@@ -44,6 +44,9 @@ class Disease
 		bool disinfect(City*, int = 1);
 		void discoverCure();
 		void print(bool = true, int = 1, bool = false) const;
+
+		// Variables
+		Disease* nextNode = nullptr;							// Holds the next disease in the linked list.
 		
 		// Operator Overrides
 		bool operator==(Disease*) const;

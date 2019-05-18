@@ -6,14 +6,21 @@
 // **   Parameters: string name																**
 // **				WORD color																**
 // **				WORD infectioncolor														**
+// **				Disease* previousNode													**
 // **       Return: N/A																		**
 // **  Description: Initializes a Disease instance with the input parameter values.			**
 // *******************************************************************************************
-Disease::Disease(string name, WORD color, WORD infectioncolor)
+Disease::Disease(string name, WORD color, WORD infectionColor, Disease* previousNode)
 {
 	this->name = name;
 	this->color = color;
 	this->infectioncolor = infectioncolor;
+	
+	// Check if the previousNode has a value. If so, set the previous node of the disease linked list nextNode to this node
+	if (previousNode)
+	{
+		previousNode->nextNode = this;
+	}
 }
 
 // *******************************************************************************************
@@ -107,7 +114,8 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 				// Increment the total outbreaks counter and check if we have hit the maximum outbreaks. If so, call the losing end game condition.
 				if(IncrementOutbreaks() == MAXOUTBREAKS)
 				{
-					// TODO: Call losing end game
+					EndGame(GameOverReason::LOSS_OUTBREAKS);
+					return ret;
 				}
 
 				// Output message saying that the city has had an outbreak and has infected neighboring cities.
@@ -137,7 +145,8 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 			// Check if the number of remaining disease count is zero (0). If so, call the losing end game condition.
 			if (remainingInfectionCount == 0)
 			{
-				// TODO: Call losing end game
+				EndGame(GameOverReason::LOSS_INFECTIONMARKERS);
+				return ret;
 			}
 
 			// Set the return value to true.
