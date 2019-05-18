@@ -167,8 +167,6 @@ int SetupGame(GameOptions options)
 	}
 	PlayerCard::PreparePlayerDeck(PlayerCardDeck);
 
-
-
 	return PlayGame();
 }
 

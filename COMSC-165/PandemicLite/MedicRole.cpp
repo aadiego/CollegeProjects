@@ -14,10 +14,5 @@ string MedicRole::getDescription()
 
 bool MedicRole::TreatDisease()
 {
-
-
-
-
-	return BasePlayer::TreatDisease();
-
+	return BasePlayer::TreatDisease(true);
 }

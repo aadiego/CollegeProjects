@@ -35,6 +35,7 @@ class Disease
 		// Accessors (Getters)
 		string getName() const;
 		bool getIsCured() const;
+		bool getIsEradicated() const;
 		int getRemainingInfectionCount() const;
 		
 		// Public Functions

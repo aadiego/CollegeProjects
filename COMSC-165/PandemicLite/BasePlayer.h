@@ -38,7 +38,7 @@ class BasePlayer
 		bool CharterFlight();
 		bool ShuttleFlight();
 		bool BuildResearchStation();
-		bool TreatDisease();
+		bool TreatDisease(bool = false);
 		bool DiscoverCure();
 };
 

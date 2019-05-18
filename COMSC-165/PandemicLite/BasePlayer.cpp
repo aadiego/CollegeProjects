@@ -220,7 +220,7 @@ bool BasePlayer::BuildResearchStation()
 	return ret;
 }
 
-bool BasePlayer::TreatDisease()
+bool BasePlayer::TreatDisease(bool IsMedic)
 {
 	bool ret = false;
 
@@ -256,8 +256,17 @@ bool BasePlayer::TreatDisease()
 		}
 	}
 
-	currentDiseases[userSelection]->disinfect(playerLocation);
-	ret = true;
+	if(IsMedic)
+	{
+		currentDiseases[userSelection]->disinfect(playerLocation, 3);
+		ret = !currentDiseases[userSelection]->getIsEradicated();
+	}
+	else
+	{
+		int removeInfectionMarkerCount = !currentDiseases[userSelection]->getIsCured() ? 1 : 3;
+		currentDiseases[userSelection]->disinfect(playerLocation, removeInfectionMarkerCount);
+		ret = true;
+	}
 
 	return ret;
 }
@@ -295,8 +304,6 @@ bool BasePlayer::DiscoverCure()
 
 		for (int iteration = 0; iteration < discoverCureNumber; ++iteration)
 		{
-			cout << "[ " << iteration + 1 << " of " << discoverCureNumber << "] ";
-
 			int selectionIndex = -1;
 			for (PlayerCard card : availableCures[userCureSelection])
 			{
@@ -305,6 +312,7 @@ bool BasePlayer::DiscoverCure()
 			}
 			++selectionIndex;
 			cout << (selectionIndex + 1) << ": Back to Action selection menu" << endl;
+			cout << "[" << iteration + 1 << " of " << discoverCureNumber << "] " << endl;
 
 			int userCardSelection = GetNumericInput(1, selectionIndex + 1, true, true);
 			if (userCardSelection == selectionIndex)

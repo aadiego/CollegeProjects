@@ -36,6 +36,16 @@ bool Disease::getIsCured() const
 	return isCured;
 }
 
+// *******************************************************************************************
+// **     Function: getIsEradicated															**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns the 'isEradicated' private variable value.						**
+// *******************************************************************************************
+bool Disease::getIsEradicated() const
+{
+	return isEradicated;
+}
 
 // *******************************************************************************************
 // **     Function: getRemainingInfectionCount												**
