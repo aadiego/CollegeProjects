@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 	{
 		if (!parseCmdLineArgs(argc, argv))
 		{
+			SetupConsole();
 			SetupGame(options);
 		}
 	}

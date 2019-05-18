@@ -42,7 +42,7 @@ class City
 		string getName() const;
 		vector<City*> getNeighbors() const;
 		Infection* getPrimaryInfection() const;
-		void print() const;
+		void print(bool = false) const;
 
 		// Mutators (Setters)
 		void setNeighbors(vector<City*>);
@@ -56,6 +56,7 @@ class City
 		// Operator Overrides
 		bool operator==(City*) const;
 		bool operator!=(City*) const;
+		friend ostream& operator<<(ostream&, City&);
 };
 
 #endif

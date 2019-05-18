@@ -1,4 +1,6 @@
-#include "City.h"
+// #include "City.h"			// !!!!!! DO NOT INCLUDE CITY.H AS IT IS INCLUDED IN THE DISEASE.H FILE !!!!!!
+#include "Disease.h"
+#include "Game.h"
 
 // *******************************************************************************************
 // **     Function: City (constructor)														**
@@ -141,18 +143,27 @@ vector<City*> City::getNeighbors() const
 
 // *******************************************************************************************
 // **     Function: print																	**
-// **   Parameters: N/A																		**
+// **   Parameters: bool ShowInfectionMarkers												**
 // **       Return: void																	**
-// **  Description: Prints out the City name and it's infection markers 					**
+// **  Description: Prints out the City name and it's infection markers, if					**
+// **				'ShowInfectionMarkers' argument is true.								**
 // *******************************************************************************************
-void City::print() const
+void City::print(bool ShowInfectionMarkers) const
 {
-	// TODO: Rewrite this.
-	cout << name << ": ";
-	for(City* city : neighbors)
+	change_font_color(color);
+	cout << name;
+
+	if (ShowInfectionMarkers)
 	{
-		cout << city->name << ", ";
+		cout << "  ";
+		Infection* infection = infections;
+		while (infection != nullptr)
+		{
+			infection->disease->print(false, infection->count);
+			infection = infection->nextNode;
+		}
 	}
+	change_font_color(DEFAULT);
 }
 
 // *******************************************************************************************
@@ -203,4 +214,19 @@ bool City::operator!=(City* rhs) const
 {
 	// Call the equality operator and use ! to inverse the returned value.
 	return !(this->operator==(rhs));
+}
+
+// *******************************************************************************************
+// **     Function: << (operator)															**
+// **   Parameters: ostream& stream															**
+// **				City& object															**
+// **       Return: ostream&																**
+// **  Description: Prints out the class instance values to the output stream.				**
+// *******************************************************************************************
+ostream& operator<<(ostream& stream, City& object)
+{
+	change_font_color(object.color);
+	stream << object.name;
+	change_font_color(DEFAULT);
+	return stream;
 }

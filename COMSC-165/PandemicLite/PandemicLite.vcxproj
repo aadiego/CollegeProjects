@@ -122,6 +122,7 @@
     <ClCompile Include="BasePlayer.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="City.cpp" />
+    <ClCompile Include="ConsoleStyling.cpp" />
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Disease.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="BasePlayer.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="City.h" />
+    <ClInclude Include="ConsoleStyling.h" />
     <ClInclude Include="Deck.h" />
     <ClInclude Include="Disease.h" />
     <ClInclude Include="Game.h" />

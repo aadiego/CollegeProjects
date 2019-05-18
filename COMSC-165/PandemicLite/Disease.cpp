@@ -5,13 +5,15 @@
 // **     Function: Disease (constructor)													**
 // **   Parameters: string name																**
 // **				WORD color																**
+// **				WORD infectioncolor														**
 // **       Return: N/A																		**
 // **  Description: Initializes a Disease instance with the input parameter values.			**
 // *******************************************************************************************
-Disease::Disease(string name, WORD color)
+Disease::Disease(string name, WORD color, WORD infectioncolor)
 {
 	this->name = name;
 	this->color = color;
+	this->infectioncolor = infectioncolor;
 }
 
 // *******************************************************************************************
@@ -109,7 +111,8 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 				}
 
 				// Output message saying that the city has had an outbreak and has infected neighboring cities.
-				cout << city->getName() + " has had an outbreak and has infected its neighbors." << endl;
+				city->print();
+				cout << " has had an outbreak and has infected its neighbors." << endl;
 
 				// Add the city to the prior outbreaks vector and call the outbreak private helper function to infect neighboring cities.
 				(*priorOutbreaks).push_back(city);
@@ -123,7 +126,8 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 			// Output message saying that the city has been infected with a number of infection marker(s). Only on the first iteration.
 			if (iteration == 0)
 			{
-				cout << city->getName() + " has been infected with " + to_string(count) + " infection marker" + (count > 1 ? "s" : "") + " of the " + name + " disease." << endl;
+				//city->print();
+				cout << *city << " has been infected with " + to_string(count) + " infection marker" + (count > 1 ? "s" : "") + " of the " << *this << " disease." << endl;
 			}
 
 			// Increment the infection marker count for this disease and decrement the remaining infection count on the disease.
@@ -203,6 +207,35 @@ void Disease::discoverCure()
 {
 	isCured = true;
 }
+
+void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowRemainingCount) const
+{
+	if (ShowDiseaseName)
+	{
+		change_font_color(color);
+		cout << name;
+	}
+
+	for (int iteration = 0; iteration < NumberOfMarkers; ++iteration)
+	{
+		if (ShowDiseaseName && iteration ==0)
+		{
+			cout << "  ";
+		}
+
+		change_font_color(infectioncolor);
+		cout << "  ";
+		change_font_color(DEFAULT);
+		cout << " ";
+	}
+
+	if (ShowRemainingCount)
+	{
+		cout << remainingInfectionCount;
+	}
+	change_font_color(DEFAULT);
+}
+
 
 // *******************************************************************************************
 // **     Function: outbreak																**
@@ -297,6 +330,8 @@ bool Disease::operator!=(Disease* rhs) const
 // *******************************************************************************************
 ostream& operator<<(ostream& stream, Disease& object)
 {
-	// TODO: Finish this function
+	change_font_color(object.color);
+	stream << object.name;
+	change_font_color(DEFAULT);
 	return stream;
 }

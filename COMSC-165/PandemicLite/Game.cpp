@@ -8,9 +8,6 @@
 #include "BasePlayer.h"
 #include "MedicRole.h"
 
-HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
-CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
-
 City* CityLinkedList = nullptr;
 Deck<PlayerCard>* PlayerCardDeck;
 Deck<InfectionCard>* InfectionCardDeck;
@@ -29,10 +26,10 @@ int SetupGame(GameOptions options)
 	totalOutbreaks = 0;
 
 	// Create the Disease objects
-	Disease Blue = Disease(options.BlueDiseaseName, BLUE_DISEASE);
-	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_DISEASE);
-	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_DISEASE);
-	Disease Red = Disease(options.RedDiseaseName, RED_DISEASE);
+	Disease Blue = Disease(options.BlueDiseaseName, BLUE_TEXT, BLUE_DISEASE);
+	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_TEXT, YELLOW_DISEASE);
+	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_TEXT, PURPLE_DISEASE);
+	Disease Red = Disease(options.RedDiseaseName, RED_TEXT, RED_DISEASE);
 
 	// Create the City objects
 	City SanFrancisco = City("San Francisco", BLUE_TEXT, &Blue, nullptr);
