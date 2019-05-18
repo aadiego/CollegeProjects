@@ -14,7 +14,7 @@ CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer infor
 City* CityLinkedList = nullptr;
 Deck<PlayerCard>* PlayerCardDeck;
 Deck<InfectionCard>* InfectionCardDeck;
-MedicRole* Player;
+BasePlayer* Player;
 
 int SetupGame(GameOptions options)
 {
@@ -172,7 +172,81 @@ int SetupGame(GameOptions options)
 
 int PlayGame()
 {
+	do
+	{
+		for (int ActionNumber = 0; ActionNumber < Player->getMaxActions(); ++ActionNumber)
+		{
+			bool ret = false;
+			do
+			{
+				vector<string> AvailableActions = Player->getAvailableActions();
+				int selectionIndex = -1;
+				for (string Action : AvailableActions)
+				{
+					++selectionIndex;
+					cout << (selectionIndex + 1) << ": " << Action << endl;
+				}
+
+				int userSelection = GetNumericInput(1, selectionIndex + 1, true, true);
+				if (userSelection == selectionIndex)
+				{
+					ActionNumber = Player->getMaxActions();
+					break;
+				}
+				ret = DoPlayerAction(Player, AvailableActions[userSelection]);
+			} while (!ret);
+		}
+
+		for(int PlayerDeckDraw = 0; PlayerDeckDraw < PlayerCardDeck->getDrawCount(); ++PlayerDeckDraw)
+		{
+			PlayerCard card = PlayerCardDeck->draw();
+			if (!card.getIsEpidemic())
+			{
+				Player->AddPlayerCardToHand(card);
+			}
+		}
+
+		for(int InfectionDeckDraw = 0; InfectionDeckDraw < GetInfectionRate(); ++InfectionDeckDraw)
+		{
+			InfectionCard card = InfectionCardDeck->draw();
+		}
+	} while (true);
+
 	return EXIT_SUCCESS;
+}
+
+bool DoPlayerAction(BasePlayer* player, string action)
+{
+	bool ret = false;
+	if (action == "Drive/Ferry")
+	{
+		ret = player->DriveFerry();
+	}
+	else if (action == "Direct Flight")
+	{
+		ret = player->DirectFlight();
+	}
+	else if (action == "Charter Flight")
+	{
+		ret = player->CharterFlight();
+	}
+	else if (action == "Shuttle Flight")
+	{
+		ret = player->ShuttleFlight();
+	}
+	else if (action == "Build a Research Station")
+	{
+		ret = player->BuildResearchStation();
+	}
+	else if (action == "Treat Disease")
+	{
+		ret = player->TreatDisease();
+	}
+	else if (action == "Discover a Cure")
+	{
+		ret = player->DiscoverCure();
+	}
+	return ret;
 }
 
 int IncrementOutbreaks()

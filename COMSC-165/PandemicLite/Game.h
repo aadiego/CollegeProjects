@@ -38,9 +38,11 @@ static int totalOutbreaks = 0;
 static GameOptions globalGameOptions;
 
 class City;
+class BasePlayer;
 
 int SetupGame(GameOptions);
 int PlayGame();
+bool DoPlayerAction(BasePlayer*, string);
 int IncrementOutbreaks();
 int IncrementInfectionRate();
 int GetInfectionRate();

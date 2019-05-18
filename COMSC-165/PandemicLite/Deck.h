@@ -49,6 +49,7 @@ class Deck
 		enum Pile { Draw, Discard, Both };
 
 		// Accessors (Getters)
+		int getDrawCount();
 		int getDeckSize(Pile = Both);
 
 		// Mutators (Setters)

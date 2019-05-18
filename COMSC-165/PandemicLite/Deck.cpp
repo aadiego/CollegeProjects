@@ -42,6 +42,18 @@ Deck<T>::Deck(City* cityLinkedList, unsigned int drawCount)
 }
 
 // *******************************************************************************************
+// **     Function: getDrawCount															**
+// **   Parameters: N/A																		**
+// **       Return: int																		**
+// **  Description: Returns the card draw count.											**
+// *******************************************************************************************
+template <class T>
+int Deck<T>::getDrawCount()
+{
+	return drawCount;
+}
+
+// *******************************************************************************************
 // **     Function: getDeckSize																**
 // **   Parameters: Pile pile (default = Both)												**
 // **       Return: int																		**

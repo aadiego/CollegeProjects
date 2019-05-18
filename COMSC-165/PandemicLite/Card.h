@@ -68,6 +68,7 @@ class PlayerCard : public Card
 		// Accessors (Getters)
 		string getName() const override;
 		string getDescription() const override;
+		bool getIsEpidemic() const;
 
 		// Public Functions
 		bool DrawAction() override;
