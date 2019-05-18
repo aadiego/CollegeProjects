@@ -21,26 +21,25 @@ class BasePlayer
 		unsigned int maxCardsInHand = 9;
 		City* playerLocation = nullptr;
 		unsigned int discoverCureNumber = 5;
+		vector<vector<PlayerCard>> calcDiscoverCureCards() const;
 
 	public:
-		BasePlayer(string name, City* startingLocation, unsigned int maxActions = 4, unsigned int discoverCureNumber = 5);
+		BasePlayer(string, City*, unsigned int = 4, unsigned int = 5, unsigned int = 9);
 		~BasePlayer() = default;
 
 		string getName() const;
-		string getDescription() const;
 		unsigned int getMaxActions() const;
 
 		void AddPlayerCardToHand(PlayerCard);
 		vector<string> getAvailableActions();
 
 		bool DriveFerry();
-		//bool CharterFlight(Card);
-		//bool ShuttleFlight(Card);
-		//bool BuildResearchStation(Card);
-		//bool TreatDisease();
-		//bool DiscoverCure(Disease*, vector<Card>);
-		//bool Pass();
-
+		bool DirectFlight();
+		bool CharterFlight();
+		bool ShuttleFlight();
+		bool BuildResearchStation();
+		bool TreatDisease();
+		bool DiscoverCure();
 };
 
 #endif

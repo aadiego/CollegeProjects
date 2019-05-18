@@ -105,7 +105,7 @@ PlayerCard::PlayerCard(City* city, bool isEpidemic) : Card("Player Card")
 	// Set the private variable values based off of input parameter values.
 	this->name = city != nullptr ? city->getName() : "Epidemic";
 	this->city = city;
-	this->description = !isEpidemic ? "Use this card as a Direct Flight to " + city->getName() + ", a Shuttle Flight from " + city->getName() + " to any city on the board, or to Discover a Cure for the " + city->getPrimaryInfection()->disease->getName() + " disease (requires discarding 5 city cards of the same disease from your hand)." : "Infection rate has increased to {Rate}, {City} has become infected with the {Disease} disease, and existing infections continue to intensify.";
+	this->description = !isEpidemic ? "Use this card as a Direct Flight to " + city->getName() + ", a Shuttle Flight from " + city->getName() + " to any city on the board, build a Research Station in " + city->getName() + " (if the player is in the city), or to Discover a Cure for the " + city->getPrimaryInfection()->disease->getName() + " disease (requires discarding 5 city cards of the same disease from your hand)." : "Infection rate has increased to {Rate}, {City} has become infected with the {Disease} disease, and existing infections continue to intensify.";
 	this->isEpidemic = isEpidemic;
 };
 

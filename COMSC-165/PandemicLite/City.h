@@ -46,12 +46,16 @@ class City
 
 		// Mutators (Setters)
 		void setNeighbors(vector<City*>);
+
+		// Public functions
+		void buildResearchStation();
 	
 		// Variables
 		City* nextNode = nullptr;							// Holds the next city in the linked list for calling a world print.
 
 		// Operator Overrides
 		bool operator==(City*) const;
+		bool operator!=(City*) const;
 };
 
 #endif

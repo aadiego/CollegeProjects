@@ -1,5 +1,6 @@
 #include "Stack.h"
 #include "Card.h"
+#include "Game.h"
 
 // *******************************************************************************************
 // **     Function: Stack (constructor)														**
@@ -125,6 +126,53 @@ void Stack<T>::pop()
 }
 
 // *******************************************************************************************
+// **     Function: pop_Nth																	**
+// **   Parameters:	int index																**
+// **       Return:	void																	**
+// **  Description: Deletes the Nth node of the stack (zero based index).					**
+// *******************************************************************************************
+template <class T>
+void Stack<T>::pop_Nth(int index)
+{
+	// Check if the provided index is 0 (the first node in the stack). If so, call the pop function.
+	if (index == 0)
+	{
+		pop();
+	}
+	// Check if the provided index is the last node in the stack (size - 1). If so, call the pop_back function.
+	else if (index == stackSize - 1)
+	{
+		pop_back();
+	}
+	// Check to make sure that the index is within the range of the stack (0 through size - 1).
+	else if (index < 0 && index > stackSize - 1)
+	{
+		throw InvalidArgumentException("The provided argument value " + to_string(index) + " is " + (index < 0 ? "below" : "above") + " the acceptable values of 0 through " + to_string(stackSize - 1));
+	}
+	// If all other checks fail, then the index lies somewhere in the stack. Let's find the node to delete it from the stack linked list.
+	else
+	{
+		// Node traversal pointer
+		LinkedListNode* currentNode = stack;
+
+		// Loop through the stack linked list until we get to the index and store the node in the currentNode pointer.
+		for(int position = 0; position < index ; ++position)
+		{
+			currentNode = currentNode->nextNode;
+		}
+
+		// Update the previous node to point to the next node, the next node to point to the previous node, and delete the node from the linked list.
+		currentNode->previousNode->nextNode = currentNode->nextNode;
+		currentNode->nextNode->previousNode = currentNode->previousNode;
+		delete currentNode;
+
+		// Decrement the stack size.
+		--stackSize;
+	}
+}
+
+
+// *******************************************************************************************
 // **     Function: pop_back																**
 // **   Parameters:	N/A																		**
 // **       Return:	void																	**
@@ -157,6 +205,47 @@ T Stack<T>::top()
 {
 	return stack->data;
 }
+
+// *******************************************************************************************
+// **     Function: nth																		**
+// **   Parameters:	int index																**
+// **       Return:	T																		**
+// **  Description: Returns the data from the nth node of the stack (zero based index).		**
+// *******************************************************************************************
+template <class T>
+T Stack<T>::nth(int index)
+{
+	// Check if the provided index is 0 (the first node in the stack). If so, call the top function.
+	if (index == 0)
+	{
+		return top();
+	}
+	// Check if the provided index is the last node in the stack (size - 1). If so, call the bottom function.
+	else if (index == stackSize - 1)
+	{
+		return bottom();
+	}
+	// Check to make sure that the index is within the range of the stack (0 through size - 1).
+	else if (index < 0 && index > stackSize - 1)
+	{
+		throw InvalidArgumentException("The provided argument value " + to_string(index) + " is " + (index < 0 ? "below" : "above") + " the acceptable values of 0 through " + to_string(stackSize - 1));
+	}
+	// If all other checks fail, then the index lies somewhere in the stack. Let's find the node to return the data from the stack linked list node.
+	else
+	{
+		// Node traversal pointer
+		LinkedListNode* currentNode = stack;
+
+		// Loop through the stack linked list until we get to the index and store the node in the currentNode pointer.
+		for (int position = 0; position < index; ++position)
+		{
+			currentNode = currentNode->nextNode;
+		}
+
+		return currentNode->data;
+	}
+}
+
 
 // *******************************************************************************************
 // **     Function: bottom																	**

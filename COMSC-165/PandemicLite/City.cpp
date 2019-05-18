@@ -167,6 +167,18 @@ void City::setNeighbors(vector<City*> neighbors)
 }
 
 // *******************************************************************************************
+// **     Function: buildResearchStation													**
+// **   Parameters: N/A																		**
+// **       Return: void																	**
+// **  Description: Sets the 'containsResearchStation' private variable to true.			**
+// *******************************************************************************************
+void City::buildResearchStation()
+{
+	this->containsResearchStation = true;
+}
+
+
+// *******************************************************************************************
 // **     Function: == (operator)															**
 // **   Parameters: City* rhs																**
 // **       Return: bool																	**
@@ -179,4 +191,16 @@ bool City::operator==(City* rhs) const
 		&& containsResearchStation == rhs->containsResearchStation
 		&& neighbors == rhs->neighbors
 		&& infections == rhs->infections;
+}
+
+// *******************************************************************************************
+// **     Function: != (operator)															**
+// **   Parameters: City* rhs																**
+// **       Return: bool																	**
+// **  Description: Compares two class instances and returns true if they are not equal.	**
+// *******************************************************************************************
+bool City::operator!=(City* rhs) const
+{
+	// Call the equality operator and use ! to inverse the returned value.
+	return !(this->operator==(rhs));
 }

@@ -26,6 +26,18 @@ string Disease::getName() const
 }
 
 // *******************************************************************************************
+// **     Function: getIsCured																**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns the 'isCured' private variable value.							**
+// *******************************************************************************************
+bool Disease::getIsCured() const
+{
+	return isCured;
+}
+
+
+// *******************************************************************************************
 // **     Function: getRemainingInfectionCount												**
 // **   Parameters: N/A																		**
 // **       Return: int																		**
@@ -169,6 +181,17 @@ bool Disease::disinfect(City* city, int count)
 		}
 	}
 	return ret;
+}
+
+// *******************************************************************************************
+// **     Function: discoverCure															**
+// **   Parameters: N/A																		**
+// **       Return: void																	**
+// **  Description: Sets the 'isCured' private variable value to true.						**
+// *******************************************************************************************
+void Disease::discoverCure()
+{
+	isCured = true;
 }
 
 // *******************************************************************************************

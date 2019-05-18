@@ -34,11 +34,13 @@ class Disease
 		
 		// Accessors (Getters)
 		string getName() const;
+		bool getIsCured() const;
 		int getRemainingInfectionCount() const;
 		
 		// Public Functions
 		bool infect(City*, int = 1);
 		bool disinfect(City*, int = 1);
+		void discoverCure();
 		
 		// Operator Overrides
 		bool operator==(Disease*) const;

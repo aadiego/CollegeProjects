@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Game.h"
 #include "Stack.h"
 #include "City.h"
@@ -166,7 +167,7 @@ int SetupGame(GameOptions options)
 	}
 	PlayerCard::PreparePlayerDeck(PlayerCardDeck);
 
-	Player->DriveFerry();
+
 
 	return PlayGame();
 }
@@ -210,7 +211,6 @@ int GetResearchStationCount()
 	return ret;
 }
 
-
 City* DrawBottomInfectionCard()
 {
 	City* ret;
@@ -235,6 +235,76 @@ bool IntensifyInfectionDeck()
 
 	return ret;
 }
+
+PlayerCard DrawPlayerCard()
+{
+	return PlayerCardDeck->draw();
+}
+
+bool DiscardPlayerCard(PlayerCard card)
+{
+	return PlayerCardDeck->discard(card);
+}
+
+
+City* getCityLinkedList()
+{
+	return CityLinkedList;
+}
+
+string GetStringInput(string prompt)
+{
+	string userInput;
+	cout << prompt << ": ";
+	getline(cin, userInput);
+	return userInput;
+}
+
+bool GetDestinationFromInputString(City* &destination, string &userInput)
+{
+	bool ret = false;
+	userInput = GetStringInput("Please enter a destination");
+
+	if (ToLower(userInput) != "back")
+	{
+		do
+		{
+			City* currentNode = CityLinkedList;
+			while (currentNode != nullptr)
+			{
+				if (ToLower(currentNode->getName()) == ToLower(userInput))
+				{
+					destination = currentNode;
+					ret = true;
+					break;
+				}
+				currentNode = currentNode->nextNode;
+			}
+
+			if(ret == false)
+			{
+				userInput = GetStringInput("Please enter a destination");
+			}
+		} while (ret == false);
+	}
+	return ret;
+}
+
+vector<City*> GetCitiesContainingResearchStations(City* excludeCurrentCity)
+{
+	vector<City*> ret;
+	City* currentCity = CityLinkedList;
+	while (currentCity != nullptr)
+	{
+		if (currentCity->hasResearchStation() && currentCity != excludeCurrentCity)
+		{
+			ret.push_back(currentCity);
+		}
+		currentCity = currentCity->nextNode;
+	}
+	return ret;
+}
+
 
 int GetNumericInput(int minValue, int maxValue, bool NonNegative, bool ReturnZeroBased)
 {
@@ -265,5 +335,12 @@ bool IsNumeric(string &input, int &output, bool NonNegative)
 		output = stoi(input);
 	}
 
+	return ret;
+}
+
+string ToLower(string input)
+{
+	string ret = input;
+	transform(input.begin(), input.end(), ret.begin(), ::tolower);
 	return ret;
 }
