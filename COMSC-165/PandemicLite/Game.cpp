@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "Game.h"
-#include "Stack.h"
+//#include "Stack.h"
 #include "City.h"
 #include "Disease.h"
 #include "Card.h"
@@ -11,10 +11,13 @@
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
 CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
 
+Disease* DiseaseLinkedList = nullptr;
 City* CityLinkedList = nullptr;
 Deck<PlayerCard>* PlayerCardDeck;
 Deck<InfectionCard>* InfectionCardDeck;
-MedicRole* Player;
+BasePlayer* Player;
+bool GameOver = false;
+GameOverReason Reason = NA;
 
 int SetupGame(GameOptions options)
 {
@@ -27,12 +30,15 @@ int SetupGame(GameOptions options)
 	// Set the game variables
 	infectionRateIndex = 0;
 	totalOutbreaks = 0;
+	GameOver = false;
+	Reason = NA;
 
 	// Create the Disease objects
-	Disease Blue = Disease(options.BlueDiseaseName, BLUE_DISEASE);
-	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_DISEASE);
-	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_DISEASE);
-	Disease Red = Disease(options.RedDiseaseName, RED_DISEASE);
+	Disease Blue = Disease(options.BlueDiseaseName, BLUE_DISEASE, nullptr);
+	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_DISEASE, &Blue);
+	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_DISEASE, &Yellow);
+	Disease Red = Disease(options.RedDiseaseName, RED_DISEASE, &Purple);
+	DiseaseLinkedList = &Blue;
 
 	// Create the City objects
 	City SanFrancisco = City("San Francisco", BLUE_TEXT, &Blue, nullptr);
@@ -172,7 +178,105 @@ int SetupGame(GameOptions options)
 
 int PlayGame()
 {
+	do
+	{
+		for (int ActionNumber = 0; ActionNumber < Player->getMaxActions() && !GameOver; ++ActionNumber)
+		{
+			bool ret = false;
+			do
+			{
+				vector<string> AvailableActions = Player->getAvailableActions();
+				int selectionIndex = -1;
+				for (string Action : AvailableActions)
+				{
+					++selectionIndex;
+					cout << (selectionIndex + 1) << ": " << Action << endl;
+				}
+
+				int userSelection = GetNumericInput(1, selectionIndex + 1, true, true);
+				if (userSelection == selectionIndex)
+				{
+					ActionNumber = Player->getMaxActions();
+					break;
+				}
+				ret = DoPlayerAction(Player, AvailableActions[userSelection]);
+
+				int iteration = 0;
+				bool allDiseasesCured[4] = { false, false, false, false };
+				Disease* disease = DiseaseLinkedList;
+				while(disease != nullptr)
+				{
+					allDiseasesCured[iteration] = disease->getIsCured();
+					disease = disease->nextNode;
+					++iteration;
+				}
+
+				if (allDiseasesCured[0] && allDiseasesCured[1] && allDiseasesCured[2] && allDiseasesCured[3])
+				{
+					EndGame(GameOverReason::WIN);
+				}
+			} while (!GameOver && !ret);
+		}
+
+		for (int PlayerDeckDraw = 0; PlayerDeckDraw < PlayerCardDeck->getDrawCount() && !GameOver; ++PlayerDeckDraw)
+		{
+			if (!PlayerCardDeck->isEmpty())
+			{
+				PlayerCard card = PlayerCardDeck->draw();
+				if (!card.getIsEpidemic())
+				{
+					Player->AddPlayerCardToHand(card);
+				}
+			}
+			else
+			{
+				EndGame(GameOverReason::LOSS_PLAYERDECKEMPTY);
+			}
+		}
+
+		for (int InfectionDeckDraw = 0; InfectionDeckDraw < GetInfectionRate() && !GameOver; ++InfectionDeckDraw)
+		{
+			InfectionCard card = InfectionCardDeck->draw();
+		}
+	} while (!GameOver);
+
+	globalGameOptions.seed = 0;
+
 	return EXIT_SUCCESS;
+}
+
+bool DoPlayerAction(BasePlayer* player, string action)
+{
+	bool ret = false;
+	if (action == "Drive/Ferry")
+	{
+		ret = player->DriveFerry();
+	}
+	else if (action == "Direct Flight")
+	{
+		ret = player->DirectFlight();
+	}
+	else if (action == "Charter Flight")
+	{
+		ret = player->CharterFlight();
+	}
+	else if (action == "Shuttle Flight")
+	{
+		ret = player->ShuttleFlight();
+	}
+	else if (action == "Build a Research Station")
+	{
+		ret = player->BuildResearchStation();
+	}
+	else if (action == "Treat Disease")
+	{
+		ret = player->TreatDisease();
+	}
+	else if (action == "Discover a Cure")
+	{
+		ret = player->DiscoverCure();
+	}
+	return ret;
 }
 
 int IncrementOutbreaks()
@@ -342,3 +446,10 @@ string ToLower(string input)
 	transform(input.begin(), input.end(), ret.begin(), ::tolower);
 	return ret;
 }
+
+void EndGame(GameOverReason reason)
+{
+	GameOver = true;
+	Reason = reason;
+}
+

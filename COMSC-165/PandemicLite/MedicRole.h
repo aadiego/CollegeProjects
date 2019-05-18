@@ -18,7 +18,7 @@ class MedicRole : public BasePlayer
 		string getRoleName();
 		string getDescription();
 
-		bool TreatDisease();
+		bool TreatDisease(bool = false);
 };
 
 #endif

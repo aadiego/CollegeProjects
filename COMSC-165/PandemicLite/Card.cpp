@@ -233,6 +233,17 @@ string PlayerCard::getDescription() const
 }
 
 // *******************************************************************************************
+// **     Function: getIsEpidemic															**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns the 'isEpidemic' private variable value.						**
+// *******************************************************************************************
+bool PlayerCard::getIsEpidemic() const
+{
+	return isEpidemic;
+}
+
+// *******************************************************************************************
 // **     Function: == (operator)															**
 // **   Parameters: PlayerCard* rhs															**
 // **       Return: bool																	**

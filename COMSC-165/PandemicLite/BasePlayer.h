@@ -33,13 +33,13 @@ class BasePlayer
 		void AddPlayerCardToHand(PlayerCard);
 		vector<string> getAvailableActions();
 
-		bool DriveFerry();
-		bool DirectFlight();
-		bool CharterFlight();
-		bool ShuttleFlight();
-		bool BuildResearchStation();
-		bool TreatDisease(bool = false);
-		bool DiscoverCure();
+		virtual bool DriveFerry();
+		virtual bool DirectFlight();
+		virtual bool CharterFlight();
+		virtual bool ShuttleFlight();
+		virtual bool BuildResearchStation();
+		virtual bool TreatDisease(bool = false);
+		virtual bool DiscoverCure();
 };
 
 #endif

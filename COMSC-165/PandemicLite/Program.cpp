@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	{
 		if (!parseCmdLineArgs(argc, argv))
 		{
-			SetupGame(options);
+			ret = SetupGame(options);
 		}
 	}
 	catch (exception &ex)
