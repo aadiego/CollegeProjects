@@ -150,7 +150,7 @@ vector<City*> City::getNeighbors() const
 // *******************************************************************************************
 void City::print(bool ShowInfectionMarkers) const
 {
-	change_font_color(color);
+	ChangFontColor(color);
 	cout << name;
 
 	if (ShowInfectionMarkers)
@@ -163,7 +163,7 @@ void City::print(bool ShowInfectionMarkers) const
 			infection = infection->nextNode;
 		}
 	}
-	change_font_color(DEFAULT);
+	ChangFontColor(DEFAULT);
 }
 
 // *******************************************************************************************
@@ -225,8 +225,8 @@ bool City::operator!=(City* rhs) const
 // *******************************************************************************************
 ostream& operator<<(ostream& stream, City& object)
 {
-	change_font_color(object.color);
+	ChangFontColor(object.color);
 	stream << object.name;
-	change_font_color(DEFAULT);
+	ChangFontColor(DEFAULT);
 	return stream;
 }

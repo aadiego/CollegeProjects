@@ -221,7 +221,7 @@ void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowRemainin
 {
 	if (ShowDiseaseName)
 	{
-		change_font_color(color);
+		ChangFontColor(color);
 		cout << name;
 	}
 
@@ -232,9 +232,9 @@ void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowRemainin
 			cout << "  ";
 		}
 
-		change_font_color(infectioncolor);
+		ChangFontColor(infectioncolor);
 		cout << "  ";
-		change_font_color(DEFAULT);
+		ChangFontColor(DEFAULT);
 		cout << " ";
 	}
 
@@ -242,7 +242,7 @@ void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowRemainin
 	{
 		cout << remainingInfectionCount;
 	}
-	change_font_color(DEFAULT);
+	ChangFontColor(DEFAULT);
 }
 
 
@@ -339,8 +339,8 @@ bool Disease::operator!=(Disease* rhs) const
 // *******************************************************************************************
 ostream& operator<<(ostream& stream, Disease& object)
 {
-	change_font_color(object.color);
+	ChangFontColor(object.color);
 	stream << object.name;
-	change_font_color(DEFAULT);
+	ChangFontColor(DEFAULT);
 	return stream;
 }

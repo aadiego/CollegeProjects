@@ -30,8 +30,8 @@ enum GameOverReason { NA, WIN, LOSS_OUTBREAKS, LOSS_INFECTIONMARKERS, LOSS_PLAYE
 class City;
 class BasePlayer;
 
-int SetupGame(GameOptions);
-int PlayGame();
+bool SetupGame(GameOptions);
+bool PlayGame();
 bool DoPlayerAction(BasePlayer*, string);
 int IncrementOutbreaks();
 int IncrementInfectionRate();
