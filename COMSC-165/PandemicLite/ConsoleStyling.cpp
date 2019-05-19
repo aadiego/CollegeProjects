@@ -7,17 +7,52 @@ CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer infor
 void SetupConsole()
 {
 	SetConsoleTitle("Pandemic (Lite)");
+	ClearScreen();
 
 	RECT dimensions;
 	GetWindowRect(console, &dimensions);
 	MoveWindow(console, dimensions.left, dimensions.top, 1024, 768, true);
 
-	change_font_color(DEFAULT);
+	DWORD style = GetWindowLong(console, GWL_STYLE);
+	style &= ~WS_MAXIMIZEBOX;
+	SetWindowLong(console, GWL_STYLE, style);
+	SetWindowPos(console, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
+
+	ChangFontColor(DEFAULT);
 }
 
 void ClearScreen()
 {
 	system("cls");
+}
+
+void PrintLogo(bool IncludeSubText)
+{
+	// Get current console screen buffer information (used to center the logo)
+	GetConsoleScreenBufferInfo(hStdOut, &csbi);
+
+	// Constant variables holding the characters per row and string with a char array of the logo.
+	const int charsPerRow = 63;
+	string PandemicTitle = { (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , '\n' ,
+		(char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , '\n' ,
+		(char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , '\n' ,
+		(char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , '\n' ,
+		(char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)32 , (char)219 , (char)219 , (char)32 , (char)219 , (char)219 , (char)32 , (char)32 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 , (char)219 };
+
+	// Check if the subtext should be included. If so, append it to the title.
+	if (IncludeSubText)
+	{
+		PandemicTitle += "\n\n     A lite version of the cooperative board game designed\n           Matt Leacock and published by Z-Man Games";
+	}
+
+	// Calculates the middle of the screen based on the console size and the characters per row.
+	int x = (csbi.dwSize.X - charsPerRow) / 2;
+
+	// Call the PrintAtScreenPosition() function to print the logo at the specified position and color.
+	PrintAtScreenPosition(PandemicTitle, x, 3, DEFAULT);
+
+	// Print two extra lines for padding between title and game text.
+	cout << endl << endl;
 }
 
 void PrintAtScreenPosition(string input, int x, int y, WORD attributes)
@@ -44,7 +79,7 @@ void PrintAtScreenPosition(string input, int x, int y, WORD attributes)
 			continue;
 		}
 		// Set the output font style
-		change_font_color(attributes);
+		ChangFontColor(attributes);
 
 		// Print the character to the screen.
 		cout << input[x];
@@ -54,7 +89,16 @@ void PrintAtScreenPosition(string input, int x, int y, WORD attributes)
 	cout << endl;
 }
 
-void change_console_color(WORD attributes)
+void PrintCenterScreenAtPosition(string input, int y, int charsPerRow, WORD attributes)
+{
+	// Calculates the middle of the screen based on the console size and the characters per row.
+	int x = (csbi.dwSize.X - charsPerRow) / 2;
+
+	PrintAtScreenPosition(input, x, y, attributes);
+}
+
+
+void ChangeConsoleColor(WORD attributes)
 {
 	CONSOLE_SCREEN_BUFFER_INFOEX cbi;
 	cbi.cbSize = sizeof(CONSOLE_SCREEN_BUFFER_INFOEX);
@@ -63,7 +107,7 @@ void change_console_color(WORD attributes)
 	SetConsoleScreenBufferInfoEx(hStdOut, &cbi);
 }
 
-void change_font_color(WORD attributes)
+void ChangFontColor(WORD attributes)
 {
 	SetConsoleTextAttribute(hStdOut, attributes);
 }

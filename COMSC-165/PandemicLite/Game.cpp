@@ -16,7 +16,7 @@ BasePlayer* Player;
 bool GameOver = false;
 GameOverReason Reason = NA;
 
-int SetupGame(GameOptions options)
+bool SetupGame(GameOptions options)
 {
 	// Store the options parameter to a global variable.
 	globalGameOptions = options;
@@ -173,7 +173,7 @@ int SetupGame(GameOptions options)
 	return PlayGame();
 }
 
-int PlayGame()
+bool PlayGame()
 {
 	do
 	{
@@ -239,7 +239,7 @@ int PlayGame()
 
 	globalGameOptions.seed = 0;
 
-	return EXIT_SUCCESS;
+	return false;
 }
 
 bool DoPlayerAction(BasePlayer* player, string action)
