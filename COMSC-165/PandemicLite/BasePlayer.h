@@ -29,9 +29,13 @@ class BasePlayer
 
 		string getName() const;
 		unsigned int getMaxActions() const;
-
+		unsigned int getMaxCardsInHand() const;
+		vector<PlayerCard*> getPlayerHandCards();
+		
 		void AddPlayerCardToHand(PlayerCard);
+		void DiscardCardFromHand(PlayerCard*);
 		vector<string> getAvailableActions();
+		bool isPlayerHandAtMax();
 
 		virtual bool DriveFerry();
 		virtual bool DirectFlight();

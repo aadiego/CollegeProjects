@@ -18,16 +18,48 @@ string BasePlayer::getName() const
 	return name;
 }
 
-unsigned BasePlayer::getMaxActions() const
+unsigned int BasePlayer::getMaxActions() const
 {
 	return maxActions;
 }
+
+unsigned int BasePlayer::getMaxCardsInHand() const
+{
+	return maxCardsInHand;
+}
+
+vector<PlayerCard*> BasePlayer::getPlayerHandCards()
+{
+	vector<PlayerCard*> ret;
+	Stack<PlayerCard>::LinkedListNode* currentCard = playerHand.stack_nodes();
+	while (currentCard != nullptr)
+	{
+		ret.push_back(&currentCard->data);
+		currentCard = currentCard->nextNode;
+	}
+	return ret;
+}
+
 
 void BasePlayer::AddPlayerCardToHand(PlayerCard card)
 {
 	playerHand.push(card);
 }
 
+void BasePlayer::DiscardCardFromHand(PlayerCard* card)
+{
+	int index = 0;
+	Stack<PlayerCard>::LinkedListNode* currentCard = playerHand.stack_nodes();
+	while(currentCard != nullptr)
+	{
+		if (currentCard->data == card)
+		{
+			playerHand.pop_Nth(index);
+			break;
+		}
+		++index;
+	}
+}
 
 vector<string> BasePlayer::getAvailableActions()
 {
@@ -74,6 +106,12 @@ vector<string> BasePlayer::getAvailableActions()
 	ret.push_back("Pass");
 	return ret;
 }
+
+bool BasePlayer::isPlayerHandAtMax()
+{
+	return playerHand.size() >= maxCardsInHand;
+}
+
 
 bool BasePlayer::DriveFerry()
 {
