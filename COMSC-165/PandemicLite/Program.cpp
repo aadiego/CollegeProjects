@@ -255,161 +255,143 @@ void displayHelpMessage(string ExecutableName)
 // *******************************************************************************************
 void displayHowToPlayMessage()
 {
-	// Clear the screen and reprint the logo (without the subtext)
-	ClearScreen();
-	PrintLogo(false);
-
-	// Page 1 of 3 text
-	cout << "Do you have what it takes to save humanity? As a skilled member of a disease-fighting team, you must keep four deadly" << endl
-		<< "diseases at bay while discovering their cures." << endl
-		<< endl
-		<< "You will travel across the globe, treating infections while finding resources for cures. The clock is ticking as" << endl
-		<< "outbreaks and epidemics fuel the spreading plagues." << endl
-		<< endl
-		<< "Can you find all four cures in time? The fate of humanity is in your hands!" << endl
-		<< endl
-		<< endl
-		<< "Overview" << endl
-		<< "-------------" << endl
-		<< "In this lite version of Pandemic, you are the solo member of a disease control team. You must work to develop cures and" << endl
-		<< "prevent disease outbreaks, before 4 deadly diseases (Blue, Yellow, Black, and Red) contaminate humanity." << endl
-		<< endl
-		<< "The goal is to discover cures for all 4 diseases. You lose if:" << endl
-		<< " " << (char)175 << " 8 outbreaks occur (a worldwide panic happens)," << endl
-		<< " " << (char)175 << " not enough disease cubes are left when needed (a disease spreads too much), or," << endl
-		<< " " << (char)175 << " not enough player cards are left when needed (your team runs out of time)." << endl
-		<< endl
-		<< endl
-		<< "Player Turn" << endl
-		<< "----------------" << endl
-		<< "You may do up to 4 actions each turn; however, some of these actions may not be available at your specific location." << endl
-		<< endl
-		<< "Select any combination of the actions listed below. You may do the same action several times, each time counting as 1" << endl
-		<< "action. Your role’s special abilities may change how an action is done." << endl
-		<< endl
-		<< "Movement Actions" << endl
-		<< " " << (char)175 << " Drive/Ferry: Move from your current location to a neighboring city." << endl
-		<< " " << (char)175 << " Direct Flight: Discard a City card to move to the city named on the card." << endl
-		<< " " << (char)175 << " Charter Flight: Discard the City card that matches the city you are in to move to any city." << endl
-		<< " " << (char)175 << " Shuttle Flight: Move from a city with a research station to any other city that has a research station." << endl
-		<< endl
-		<< "Page 1 of 3" << endl
-		<< "Press ENTER to continue or ESCAPE to return to the main menu...";
-
-	// Do...while loop that waits for the correct keypress before continuing
-	bool nextPage = false;
+	int pageNumber = 0;
 	do
 	{
-		switch (_getch())
+		// Clear the screen and reprint the logo (without the subtext)
+		ClearScreen();
+		PrintLogo(false);
+
+		switch(pageNumber)
 		{
-			case KEY_ENTER:
-				nextPage = true;
+			case 0:
+				// Page 1 of 3 text
+				cout << "Do you have what it takes to save humanity? As a skilled member of a disease-fighting team, you must keep four deadly" << endl
+					<< "diseases at bay while discovering their cures." << endl
+					<< endl
+					<< "You will travel across the globe, treating infections while finding resources for cures. The clock is ticking as" << endl
+					<< "outbreaks and epidemics fuel the spreading plagues." << endl
+					<< endl
+					<< "Can you find all four cures in time? The fate of humanity is in your hands!" << endl
+					<< endl
+					<< endl
+					<< "Overview" << endl
+					<< "-------------" << endl
+					<< "In this lite version of Pandemic, you are the solo member of a disease control team. You must work to develop cures and" << endl
+					<< "prevent disease outbreaks, before 4 deadly diseases (Blue, Yellow, Black, and Red) contaminate humanity." << endl
+					<< endl
+					<< "The goal is to discover cures for all 4 diseases. You lose if:" << endl
+					<< " " << (char)175 << " 8 outbreaks occur (a worldwide panic happens)," << endl
+					<< " " << (char)175 << " not enough disease cubes are left when needed (a disease spreads too much), or," << endl
+					<< " " << (char)175 << " not enough player cards are left when needed (your team runs out of time)." << endl
+					<< endl
+					<< endl
+					<< "Player Turn" << endl
+					<< "----------------" << endl
+					<< "You may do up to 4 actions each turn; however, some of these actions may not be available at your specific location." << endl
+					<< endl
+					<< "Select any combination of the actions listed below. You may do the same action several times, each time counting as 1" << endl
+					<< "action. Your role’s special abilities may change how an action is done." << endl
+					<< endl
+					<< "Movement Actions" << endl
+					<< " " << (char)175 << " Drive/Ferry: Move from your current location to a neighboring city." << endl
+					<< " " << (char)175 << " Direct Flight: Discard a City card to move to the city named on the card." << endl
+					<< " " << (char)175 << " Charter Flight: Discard the City card that matches the city you are in to move to any city." << endl
+					<< " " << (char)175 << " Shuttle Flight: Move from a city with a research station to any other city that has a research station." << endl
+					<< endl
+					<< "Page 1 of 3" << endl
+					<< "Press ENTER to continue or ESCAPE to return to the main menu...";
 				break;
-			case KEY_ESCAPE:
-				return;
+			case 1:
+				// Page 2 of 3 text
+				cout << "Player Turn (continued)" << endl
+					<< "----------------------------" << endl
+					<< "Other Actions" << endl
+					<< " " << (char)175 << " Build a Research Station: Discard the City card that matches the city you are in to place a research station there." << endl
+					<< " " << (char)175 << " Treat Disease: Remove 1 infection marker from the city you are in. Returning it back to the disease supply." << endl
+					<< " " << (char)175 << " Discover a Cure: At any research station, discard 5 City cards of the same disease from your hand to cure the disease." << endl
+					<< endl
+					<< "After doing 4 actions, the game will automatically draw the top 2 cards from the Player Deck." << endl
+					<< endl
+					<< endl
+					<< "Epidemic Cards" << endl
+					<< "-------------------" << endl
+					<< "If your draws include any Epidemic cards, the following will immediately happen:" << endl
+					<< " " << (char)175 << " Increase: The Infection Rate will increase 1 space on the infection track." << endl
+					<< " " << (char)175 << " Infect: The bottom card from the Infection Deck will be drawn and infected with 3 infection markers of it's disease." << endl
+					<< " " << (char)175 << " Intensify: The Infection Deck discard pile is shuffled and placed back on top of the Infection Deck draw pile." << endl
+					<< endl
+					<< endl
+					<< "Hand Limit" << endl
+					<< "---------------" << endl
+					<< "If you ever have more than 9 cards in hand (after first resolving any Epidemic cards you may have drawn), discard cards" << endl
+					<< "until you have 9 cards in hand." << endl
+					<< endl
+					<< endl
+					<< "Infections" << endl
+					<< "---------------" << endl
+					<< "The game will draw as many Infection cards from the top of the Infection Deck as the current infection rate infecting" << endl
+					<< "the city named on each card with 1 infection marker of the city's disease." << endl
+					<< endl
+					<< "If the city already has 3 infection markers of the disease, a 4th infection marker will not be added. Instead, an outbreak" << endl
+					<< "of this disease occurs in the city (see Outbreaks on the next page)." << endl
+					<< endl
+					<< endl
+					<< "Page 2 of 3" << endl
+					<< "Press ENTER to continue or ESCAPE to return to the main menu...";
+				break;
+			case 2:
+				// Page 3 of 3 text
+				cout << "Outbreaks" << endl
+					<< "--------------" << endl
+					<< "When a disease outbreak occurs, the outbreaks marker forward 1 space on the Outbreaks Track. Then, 1 infection marker of" << endl
+					<< "the disease will be place neighboring cities. If any of them already has 3 infection markers of the disease, a chain" << endl
+					<< "reaction outbreak occurs." << endl
+					<< endl
+					<< "When a chain reaction outbreak occurs, the outbreaks marker forward 1 space on the Outbreaks Track per outbreak. Cities" << endl
+					<< "that have already had an outbreak this round will not outbreak again." << endl
+					<< endl
+					<< "As a result of outbreaks, a city may have disease cubes of multiple colors on it; up to 3 cubes of each color." << endl
+					<< endl
+					<< endl
+					<< "Turn End" << endl
+					<< "-------------" << endl
+					<< "After infecting cities, the round is over and you will perform 4 player actions again." << endl
+					<< endl
+					<< endl
+					<< "Game End" << endl
+					<< "-------------" << endl
+					<< "The players win as soon as cures to all 4 diseases are discovered." << endl
+					<< endl
+					<< "There are 3 ways for the game to end and the player to lose:" << endl
+					<< " " << (char)175 << " if the outbreaks marker reaches the last space of the Outbreaks Track," << endl
+					<< " " << (char)175 << " if the game is unable to place the number of infection markers actually needed on the board, or " << endl
+					<< " " << (char)175 << " if a player cannot draw 2 Player cards after doing his/her actions." << endl
+					<< endl
+					<< endl
+					<< endl
+					<< endl
+					<< endl
+					<< endl
+					<< endl
+					<< endl
+					<< "Page 3 of 3" << endl
+					<< "Press ENTER or ESCAPE to return to the main menu...";
+				break;
 		}
-	} while (!nextPage);
 
-	// Clear the screen and reprint the logo (without the subtext)
-	ClearScreen();
-	PrintLogo(false);
-
-	// Page 2 of 3 text
-	cout << "Player Turn (continued)" << endl
-		<< "----------------------------" << endl
-		<< "Other Actions" << endl
-		<< " " << (char)175 << " Build a Research Station: Discard the City card that matches the city you are in to place a research station there." << endl
-		<< " " << (char)175 << " Treat Disease: Remove 1 infection marker from the city you are in. Returning it back to the disease supply." << endl
-		<< " " << (char)175 << " Discover a Cure: At any research station, discard 5 City cards of the same disease from your hand to cure the disease." << endl
-		<< endl
-		<< "After doing 4 actions, the game will automatically draw the top 2 cards from the Player Deck." << endl
-		<< endl
-		<< endl
-		<< "Epidemic Cards" << endl
-		<< "-------------------" << endl
-		<< "If your draws include any Epidemic cards, the following will immediately happen:" << endl
-		<< " " << (char)175 << " Increase: The Infection Rate will increase 1 space on the infection track." << endl
-		<< " " << (char)175 << " Infect: The bottom card from the Infection Deck will be drawn and infected with 3 infection markers of it's disease." << endl
-		<< " " << (char)175 << " Intensify: The Infection Deck discard pile is shuffled and placed back on top of the Infection Deck draw pile." << endl
-		<< endl
-		<< endl
-		<< "Hand Limit" << endl
-		<< "---------------" << endl
-		<< "If you ever have more than 9 cards in hand (after first resolving any Epidemic cards you may have drawn), discard cards" << endl
-		<< "until you have 9 cards in hand." << endl
-		<< endl
-		<< endl
-		<< "Infections" << endl
-		<< "---------------" << endl
-		<< "The game will draw as many Infection cards from the top of the Infection Deck as the current infection rate infecting" << endl
-		<< "the city named on each card with 1 infection marker of the city's disease." << endl
-		<< endl
-		<< "If the city already has 3 infection markers of the disease, a 4th infection marker will not be added. Instead, an outbreak" << endl
-		<< "of this disease occurs in the city (see Outbreaks on the next page)." << endl
-		<< endl
-		<< endl
-		<< "Page 2 of 3" << endl
-		<< "Press ENTER to continue or ESCAPE to return to the main menu...";
-
-	// Do...while loop that waits for the correct keypress before continuing
-	nextPage = false;
-	do
-	{
-		switch (_getch())
+		// Do...while loop that waits for the correct keypress before continuing
+		int currentPage = pageNumber;
+		do
 		{
-		case KEY_ENTER:
-			nextPage = true;
-			break;
-		case KEY_ESCAPE:
-			return;
-		}
-	} while (!nextPage);
-
-	// Clear the screen and reprint the logo (without the subtext)
-	ClearScreen();
-	PrintLogo(false);
-
-	// Page 3 of 3 text
-	cout << "Outbreaks" << endl
-		<< "--------------" << endl
-		<< "When a disease outbreak occurs, the outbreaks marker forward 1 space on the Outbreaks Track. Then, 1 infection marker of" << endl
-		<< "the disease will be place neighboring cities. If any of them already has 3 infection markers of the disease, a chain" << endl
-		<< "reaction outbreak occurs." << endl
-		<< endl
-		<< "When a chain reaction outbreak occurs, the outbreaks marker forward 1 space on the Outbreaks Track per outbreak. Cities" << endl
-		<< "that have already had an outbreak this round will not outbreak again." << endl
-		<< endl
-		<< "As a result of outbreaks, a city may have disease cubes of multiple colors on it; up to 3 cubes of each color." << endl
-		<< endl
-		<< endl
-		<< "Turn End" << endl
-		<< "-------------" << endl
-		<< "After infecting cities, the round is over and you will perform 4 player actions again." << endl
-		<< endl
-		<< endl
-		<< "Game End" << endl
-		<< "-------------" << endl
-		<< "The players win as soon as cures to all 4 diseases are discovered." << endl
-		<< endl
-		<< "There are 3 ways for the game to end and the player to lose:" << endl
-		<< " " << (char)175 << " if the outbreaks marker reaches the last space of the Outbreaks Track," << endl
-		<< " " << (char)175 << " if the game is unable to place the number of infection markers actually needed on the board, or " << endl
-		<< " " << (char)175 << " if a player cannot draw 2 Player cards after doing his/her actions." << endl
-		<< endl
-		<< endl
-		<< endl
-		<< endl
-		<< endl
-		<< endl
-		<< endl
-		<< endl
-		<< "Page 3 of 3" << endl
-		<< "Press any key to return to the main menu...";
-
-	// Switch statement that waits until a key is pressed before returning out of the function.
-	switch (_getch())
-	{
-		default:
-			return;
-	}
+			switch (_getch())
+			{
+				case KEY_ENTER:
+					++pageNumber;
+					break;
+				case KEY_ESCAPE:
+					return;
+			}
+		} while (currentPage == pageNumber);
+	} while (pageNumber < 3);
 }
