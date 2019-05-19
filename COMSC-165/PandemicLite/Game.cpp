@@ -224,6 +224,22 @@ bool PlayGame()
 				{
 					Player->AddPlayerCardToHand(card);
 				}
+
+				while (Player->isPlayerHandAtMax())
+				{
+					cout << "You have too many cards in your player hand (maximum " + to_string(Player->getMaxCardsInHand()) + "). Please select the card below that you would like to discard:" << endl;
+
+					int selectionIndex = -1;
+					vector<PlayerCard*> cards = Player->getPlayerHandCards();
+					for(PlayerCard* card : cards)
+					{
+						++selectionIndex;
+						cout << (selectionIndex + 1) << ": " << card->getName() << endl;
+					}
+
+					int userSelection = GetNumericInput(1, selectionIndex + 1, true, true);
+					Player->DiscardCardFromHand(cards[userSelection]);
+				}
 			}
 			else
 			{
@@ -236,8 +252,6 @@ bool PlayGame()
 			InfectionCard card = InfectionCardDeck->draw();
 		}
 	} while (!GameOver);
-
-	globalGameOptions.seed = 0;
 
 	return false;
 }
