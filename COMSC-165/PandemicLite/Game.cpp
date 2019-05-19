@@ -8,9 +8,6 @@
 #include "BasePlayer.h"
 #include "MedicRole.h"
 
-HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
-CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
-
 Disease* DiseaseLinkedList = nullptr;
 City* CityLinkedList = nullptr;
 Deck<PlayerCard>* PlayerCardDeck;
@@ -19,7 +16,7 @@ BasePlayer* Player;
 bool GameOver = false;
 GameOverReason Reason = NA;
 
-int SetupGame(GameOptions options)
+bool SetupGame(GameOptions options)
 {
 	// Store the options parameter to a global variable.
 	globalGameOptions = options;
@@ -34,10 +31,10 @@ int SetupGame(GameOptions options)
 	Reason = NA;
 
 	// Create the Disease objects
-	Disease Blue = Disease(options.BlueDiseaseName, BLUE_DISEASE, nullptr);
-	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_DISEASE, &Blue);
-	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_DISEASE, &Yellow);
-	Disease Red = Disease(options.RedDiseaseName, RED_DISEASE, &Purple);
+	Disease Blue = Disease(options.BlueDiseaseName, BLUE_TEXT, BLUE_DISEASE, nullptr);
+	Disease Yellow = Disease(options.YellowDiseaseName, YELLOW_TEXT, YELLOW_DISEASE, &Blue);
+	Disease Purple = Disease(options.PurpleDiseaseName, PURPLE_TEXT, PURPLE_DISEASE, &Yellow);
+	Disease Red = Disease(options.RedDiseaseName, RED_TEXT, RED_DISEASE, &Purple);
 	DiseaseLinkedList = &Blue;
 
 	// Create the City objects
@@ -176,7 +173,7 @@ int SetupGame(GameOptions options)
 	return PlayGame();
 }
 
-int PlayGame()
+bool PlayGame()
 {
 	do
 	{
@@ -242,7 +239,7 @@ int PlayGame()
 
 	globalGameOptions.seed = 0;
 
-	return EXIT_SUCCESS;
+	return false;
 }
 
 bool DoPlayerAction(BasePlayer* player, string action)

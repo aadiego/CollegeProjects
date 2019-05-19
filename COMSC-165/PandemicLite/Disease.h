@@ -15,7 +15,8 @@ class Disease
 		const int MAXINFECTIONS = 24;							// Holds the maximum infections possible per instance of disease class
 		const unsigned int MAXPERCITY = 3;						// Holds the maximum infections possible per city instance
 		string name;											// Holds the name of the disease
-		WORD color;												// Holds the output formatting color of the disease
+		WORD color;												// Holds the output formatting color of the disease name
+		WORD infectioncolor;									// Holds the output formatting color of the infection markers
 		bool isCured = false;									// Holds if the disease has been cured
 		bool isEradicated = false;								// Holds if the disease has been eradicated (cured and cleared from the board)
 		int remainingInfectionCount = MAXINFECTIONS;			// Holds the remaining infection count (defaults to MAXINFECTIONS when instanced)
@@ -27,7 +28,7 @@ class Disease
 
 	public:
 		// Constructor
-		Disease(string, WORD, Disease*);
+		Disease(string, WORD, WORD, Disease*);
 		
 		// Destructor
 		~Disease() = default;
@@ -42,6 +43,7 @@ class Disease
 		bool infect(City*, int = 1);
 		bool disinfect(City*, int = 1);
 		void discoverCure();
+		void print(bool = true, int = 1, bool = false) const;
 
 		// Variables
 		Disease* nextNode = nullptr;							// Holds the next disease in the linked list.
