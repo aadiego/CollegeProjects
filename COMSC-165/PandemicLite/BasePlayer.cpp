@@ -77,7 +77,7 @@ vector<string> BasePlayer::getAvailableActions()
 		}
 	}
 
-	if(playerLocation->hasResearchStation() && GetResearchStationCount() < 1)
+	if(playerLocation->hasResearchStation() && GetResearchStationCount() > 1)
 	{
 		ret.push_back("Shuttle Flight");
 	}
