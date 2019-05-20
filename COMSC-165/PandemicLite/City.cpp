@@ -148,10 +148,26 @@ vector<City*> City::getNeighbors() const
 // **  Description: Prints out the City name and it's infection markers, if					**
 // **				'ShowInfectionMarkers' argument is true.								**
 // *******************************************************************************************
-void City::print(bool ShowInfectionMarkers) const
+void City::print(bool Selected, bool PlayerIsHere, bool ShowResearchStation, bool ShowInfectionMarkers) const
 {
-	ChangFontColor(color);
+	if (PlayerIsHere)
+	{
+		ChangeFontColor(DEFAULT);
+		cout << (char)175 << " ";
+	}
+	else
+	{
+		cout << "  ";
+	}
+
+	ChangeFontColor(color);
 	cout << name;
+
+	if (ShowResearchStation && containsResearchStation)
+	{
+		ChangeFontColor(DEFAULT);
+		cout << " (+)";
+	}
 
 	if (ShowInfectionMarkers)
 	{
@@ -163,7 +179,7 @@ void City::print(bool ShowInfectionMarkers) const
 			infection = infection->nextNode;
 		}
 	}
-	ChangFontColor(DEFAULT);
+	ChangeFontColor(DEFAULT);
 }
 
 // *******************************************************************************************
@@ -225,8 +241,8 @@ bool City::operator!=(City* rhs) const
 // *******************************************************************************************
 ostream& operator<<(ostream& stream, City& object)
 {
-	ChangFontColor(object.color);
+	ChangeFontColor(object.color);
 	stream << object.name;
-	ChangFontColor(DEFAULT);
+	ChangeFontColor(DEFAULT);
 	return stream;
 }

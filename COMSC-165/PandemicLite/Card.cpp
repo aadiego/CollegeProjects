@@ -8,15 +8,13 @@
 // *******************************************************************************************
 // **     Function: Card (constructor)														**
 // **   Parameters: string name																**
-// **				string description														**
 // **				City* city																**
 // **       Return: N/A																		**
 // **  Description: Initializes a Card instance with the input parameter values.			**
 // *******************************************************************************************
-Card::Card(string name, string description, City* city)
+Card::Card(string name, City* city)
 {
 	this->name = name;
-	this->description = description;
 	this->city = city;
 }
 
@@ -29,17 +27,6 @@ Card::Card(string name, string description, City* city)
 string Card::getName() const
 {
 	return name;
-}
-
-// *******************************************************************************************
-// **     Function: getDescription															**
-// **   Parameters: N/A																		**
-// **       Return: string																	**
-// **  Description: Returns the 'description' private variable value.						**
-// *******************************************************************************************
-string Card::getDescription() const
-{
-	return description;
 }
 
 // *******************************************************************************************
@@ -73,9 +60,8 @@ bool Card::DrawAction()
 // *******************************************************************************************
 bool Card::operator==(Card* rhs) const
 {
-	// Return true if the name, description, and city variables match.
+	// Return true if the name, and city variables match.
 	return name == rhs->name
-		&& description == rhs->description
 		&& city == rhs->city;
 }
 
@@ -105,7 +91,6 @@ PlayerCard::PlayerCard(City* city, bool isEpidemic) : Card("Player Card")
 	// Set the private variable values based off of input parameter values.
 	this->name = city != nullptr ? city->getName() : "Epidemic";
 	this->city = city;
-	this->description = !isEpidemic ? "Use this card as a Direct Flight to " + city->getName() + ", a Shuttle Flight from " + city->getName() + " to any city on the board, build a Research Station in " + city->getName() + " (if the player is in the city), or to Discover a Cure for the " + city->getPrimaryInfection()->disease->getName() + " disease (requires discarding 5 city cards of the same disease from your hand)." : "Infection rate has increased to {Rate}, {City} has become infected with the {Disease} disease, and existing infections continue to intensify.";
 	this->isEpidemic = isEpidemic;
 };
 
@@ -132,13 +117,12 @@ bool PlayerCard::DrawAction()
 		// 2. Infect: Draw the bottom card from the Infection Deck. Unless its disease color has been eradicated, put 3 disease cubes of that color on the named city.
 		City* newlyInfectedCity = DrawBottomInfectionCard();
 
-		// Replace the temporary placeholders in the description string with the information pertaining to this epidemic.
-		string output = description;
-		output = regex_replace(output, regex("\\{Rate\\}"), to_string(GetInfectionRate()));
-		output = regex_replace(output, regex("\\{City\\}"), newlyInfectedCity->getName());
-		output = regex_replace(output, regex("\\{Disease\\}"), newlyInfectedCity->getPrimaryInfection()->disease->getName());
-
-		cout << "EPIDEMIC! " << output << endl;
+		// Output information pertaining to this epidemic.
+		cout << "EPIDEMIC! " << endl;
+		cout << " - Infection rate has increased to " << GetInfectionRate() << "," << endl;;
+		cout << " - " << *newlyInfectedCity << " has become infected with the " << *newlyInfectedCity->getPrimaryInfection()->disease << " disease," << endl;
+		cout << " - and existing infections continue to intensify.";
+		cout << endl;
 
 		// 3. Intensify: Reshuffle just the cards in the Infection Discard Pile and place them on top of the Infection Deck
 		IntensifyInfectionDeck();
@@ -149,7 +133,12 @@ bool PlayerCard::DrawAction()
 	else
 	{
 		// Output a message saying that a city card has been drawn.
-		cout << "You have drawn " + this->name << ". " << description << endl;
+		cout << "You have drawn " << *city << ". Use this card:" << endl;
+		cout << " - as a Direct Flight to " << *city << "," << endl;
+		cout << " - as a Charter Flight from " << *city << " to any city on the board," << endl;
+		cout << " - to build a Research Station in " << *city << " (if the player is in the city)," << endl;
+		cout << " - or to Discover a Cure for the " << *city->getPrimaryInfection()->disease << " disease (requires discarding 5 city cards of the same disease from your hand).";
+		cout << endl;
 
 		// Set the return boolean flag to true to signify that work has been completed.
 		ret = true;
@@ -222,17 +211,6 @@ string PlayerCard::getName() const
 }
 
 // *******************************************************************************************
-// **     Function: getDescription															**
-// **   Parameters: N/A																		**
-// **       Return: string																	**
-// **  Description: Returns the 'description' private variable value.						**
-// *******************************************************************************************
-string PlayerCard::getDescription() const
-{
-	return description;
-}
-
-// *******************************************************************************************
 // **     Function: getIsEpidemic															**
 // **   Parameters: N/A																		**
 // **       Return: bool																	**
@@ -251,9 +229,8 @@ bool PlayerCard::getIsEpidemic() const
 // *******************************************************************************************
 bool PlayerCard::operator==(PlayerCard* rhs) const
 {
-	// Return true if the name, description, city, and isEpidemic variables match.
+	// Return true if the name, city, and isEpidemic variables match.
 	return name == rhs->name
-		&& description == rhs->description
 		&& city == rhs->city
 		&& isEpidemic == rhs->isEpidemic;
 }
@@ -283,7 +260,6 @@ InfectionCard::InfectionCard(City* city) : Card("Infection Card")
 	// Set the private variable values based off of input parameter values.
 	this->name = city->getName();
 	this->city = city;
-	this->description = name;
 	this->disease = city->getPrimaryInfection()->disease;
 }
 
@@ -318,17 +294,6 @@ string InfectionCard::getName() const
 }
 
 // *******************************************************************************************
-// **     Function: getDescription															**
-// **   Parameters: N/A																		**
-// **       Return: string																	**
-// **  Description: Returns the 'description' private variable value.						**
-// *******************************************************************************************
-string InfectionCard::getDescription() const
-{
-	return description;
-}
-
-// *******************************************************************************************
 // **     Function: == (operator)															**
 // **   Parameters: InfectionCard* rhs														**
 // **       Return: bool																	**
@@ -336,9 +301,8 @@ string InfectionCard::getDescription() const
 // *******************************************************************************************
 bool InfectionCard::operator==(InfectionCard* rhs) const
 {
-	// Return true if the name, description, city, and disease variables match.
+	// Return true if the name, city, and disease variables match.
 	return name == rhs->name
-		&& description == rhs->description
 		&& city == rhs->city
 		&& disease == rhs->disease;
 }

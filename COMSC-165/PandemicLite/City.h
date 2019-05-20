@@ -42,7 +42,7 @@ class City
 		string getName() const;
 		vector<City*> getNeighbors() const;
 		Infection* getPrimaryInfection() const;
-		void print(bool = false) const;
+		void print(bool = false, bool = false, bool = false, bool = false) const;
 
 		// Mutators (Setters)
 		void setNeighbors(vector<City*>);

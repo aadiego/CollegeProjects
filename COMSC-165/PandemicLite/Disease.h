@@ -43,7 +43,7 @@ class Disease
 		bool infect(City*, int = 1);
 		bool disinfect(City*, int = 1);
 		void discoverCure();
-		void print(bool = true, int = 1, bool = false) const;
+		void print(bool = true, int = 1, bool = false, bool = false) const;
 
 		// Variables
 		Disease* nextNode = nullptr;							// Holds the next disease in the linked list.

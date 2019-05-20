@@ -40,6 +40,10 @@ vector<PlayerCard*> BasePlayer::getPlayerHandCards()
 	return ret;
 }
 
+City* BasePlayer::getPlayerLocation()
+{
+	return playerLocation;
+}
 
 void BasePlayer::AddPlayerCardToHand(PlayerCard card)
 {
@@ -58,10 +62,11 @@ void BasePlayer::DiscardCardFromHand(PlayerCard* card)
 			break;
 		}
 		++index;
+		currentCard = currentCard->nextNode;
 	}
 }
 
-vector<string> BasePlayer::getAvailableActions()
+vector<string> BasePlayer::getAvailableActions(bool IsMedic)
 {
 	vector<string> ret;
 
@@ -90,6 +95,12 @@ vector<string> BasePlayer::getAvailableActions()
 	City::Infection* infection = playerLocation->getPrimaryInfection();
 	while(infection != nullptr)
 	{
+		if(IsMedic && infection->disease->getIsCured() && infection->count > 0)
+		{
+			infection->disease->disinfect(playerLocation, 3);
+			DrawGameScreen();
+		}
+
 		if(infection->count > 0)
 		{
 			ret.push_back("Treat Disease");
@@ -109,7 +120,7 @@ vector<string> BasePlayer::getAvailableActions()
 
 bool BasePlayer::isPlayerHandAtMax()
 {
-	return playerHand.size() >= maxCardsInHand;
+	return playerHand.size() > maxCardsInHand;
 }
 
 
@@ -117,7 +128,7 @@ bool BasePlayer::DriveFerry()
 {
 	bool ret = false;
 
-	cout << "You are Driving/Ferrying from " << playerLocation->getName() << " to a neighboring city. Please select the city you would like to travel to from the list below." << endl;
+	cout << "You are Driving/Ferrying from " << *playerLocation << " to a neighboring city.\nPlease select the city you would like to travel to from the list below." << endl;
 
 	int selectionIndex = -1;
 	for(City* neighbor : playerLocation->getNeighbors())
@@ -144,7 +155,7 @@ bool BasePlayer::DirectFlight()
 {
 	bool ret = false;
 
-	cout << "You are taking a Direct Flight from " << playerLocation->getName() << ". Please select your destination from the list below. Note that this action will discard the city card from your hand." << endl;
+	cout << "You are taking a Direct Flight from " << *playerLocation << ".\nPlease select your destination from the list below. Note that this action will discard the city card from your hand." << endl;
 
 	int selectionIndex = -1;
 	Stack<PlayerCard>::LinkedListNode* destinationCity = playerHand.stack_nodes();
@@ -175,7 +186,7 @@ bool BasePlayer::CharterFlight()
 {
 	bool ret = false;
 
-	cout << "You are taking a Charter flight from " << playerLocation->getName() << " to any city on the board." << endl;
+	cout << "You are taking a Charter flight from " << *playerLocation << " to any city on the board." << endl;
 
 	string userInput;
 	City* destination = nullptr;
@@ -209,7 +220,7 @@ bool BasePlayer::ShuttleFlight()
 {
 	bool ret = false;
 
-	cout << "You are taking a Shuttle Flight from the Research Station in " << playerLocation->getName() << " to another city's Research Station. Please select the city you would like to travel to from the list below." << endl;
+	cout << "You are taking a Shuttle Flight from the Research Station in " << *playerLocation << " to another city's Research Station.\nPlease select the city you would like to travel to from the list below." << endl;
 
 	int selectionIndex = -1;
 	vector<City*> researchStationCities = GetCitiesContainingResearchStations(playerLocation);
@@ -276,7 +287,7 @@ bool BasePlayer::TreatDisease(bool IsMedic)
 	int userSelection = 0;
 	if(currentDiseases.size() > 1)
 	{
-		cout << "Which disease would you like to Treat? Please select the disease from the list below." << endl;
+		cout << "Which disease would you like to Treat?\nPlease select the disease from the list below." << endl;
 
 		int selectionIndex = -1;
 		for (Disease* disease : currentDiseases)
@@ -317,7 +328,7 @@ bool BasePlayer::DiscoverCure()
 	int userCureSelection = 0;
 	if (availableCures.size() > 1)
 	{
-		cout << "Which disease would you like to Cure? Please select the disease from the list below." << endl;
+		cout << "Which disease would you like to Cure?\nPlease select the disease from the list below." << endl;
 
 		int selectionIndex = -1;
 		for (vector<PlayerCard> cardStack : availableCures)
@@ -338,7 +349,7 @@ bool BasePlayer::DiscoverCure()
 	vector<PlayerCard> discardCards;
 	if (availableCures[userCureSelection].size() > discoverCureNumber)
 	{
-		cout << "Please select which cards you would like to discard to Discover a Cure for " << availableCures[userCureSelection][0].getCity()->getPrimaryInfection()->disease->getName() << "." << endl;
+		cout << "Please select which cards you would like to discard to Discover a Cure for " << availableCures[userCureSelection][0].getCity()->getPrimaryInfection()->disease << "." << endl;
 
 		for (int iteration = 0; iteration < discoverCureNumber; ++iteration)
 		{

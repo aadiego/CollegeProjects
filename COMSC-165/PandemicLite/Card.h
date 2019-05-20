@@ -14,13 +14,11 @@ class Card
 	protected:
 		// Variables and constants
 		string name;
-		string description;
 		City* city;
 
 	public:
 		// Constructors
-		Card(string name) : Card(name, "", nullptr) { };
-		Card(string name, string description, City* city = nullptr);
+		Card(string name, City* city = nullptr);
 
 		// Destructor
 		virtual ~Card() = default;
@@ -44,7 +42,6 @@ class Card
 
 		// Accessors (Getters)
 		virtual string getName() const;
-		virtual string getDescription() const;
 		City* getCity() const;
 
 		// Public Functions
@@ -67,7 +64,6 @@ class PlayerCard : public Card
 
 		// Accessors (Getters)
 		string getName() const override;
-		string getDescription() const override;
 		bool getIsEpidemic() const;
 
 		// Public Functions
@@ -91,7 +87,6 @@ class InfectionCard : public Card
 
 		// Accessors (Getters)
 		string getName() const override;
-		string getDescription() const override;
 
 		// Public Functions
 		bool DrawAction(int = 1) const;

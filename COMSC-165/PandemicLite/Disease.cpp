@@ -14,7 +14,7 @@ Disease::Disease(string name, WORD color, WORD infectionColor, Disease* previous
 {
 	this->name = name;
 	this->color = color;
-	this->infectioncolor = infectioncolor;
+	this->infectioncolor = infectionColor;
 	
 	// Check if the previousNode has a value. If so, set the previous node of the disease linked list nextNode to this node
 	if (previousNode)
@@ -119,8 +119,7 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 				}
 
 				// Output message saying that the city has had an outbreak and has infected neighboring cities.
-				city->print();
-				cout << " has had an outbreak and has infected its neighbors." << endl;
+				cout << *city << " has had an outbreak and has infected its neighbors." << endl;
 
 				// Add the city to the prior outbreaks vector and call the outbreak private helper function to infect neighboring cities.
 				(*priorOutbreaks).push_back(city);
@@ -155,7 +154,7 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 	}
 	else
 	{
-		cout << "The " + name + " disease has been eradicated. No new infection will occur in " + city->getName() + "." << endl;
+		cout << "The " << *this << " disease has been eradicated. No new infection will occur in " << *city << "." << endl;
 	}
 	return ret;
 }
@@ -217,11 +216,21 @@ void Disease::discoverCure()
 	isCured = true;
 }
 
-void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowRemainingCount) const
+void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowIsCured, bool ShowRemainingCount) const
 {
+	if(ShowIsCured && isCured)
+	{
+		ChangeFontColor(DEFAULT);
+		cout << "(X) ";
+	}
+	else
+	{
+		cout << "    ";
+	}
+
 	if (ShowDiseaseName)
 	{
-		ChangFontColor(color);
+		ChangeFontColor(color);
 		cout << name;
 	}
 
@@ -232,9 +241,9 @@ void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowRemainin
 			cout << "  ";
 		}
 
-		ChangFontColor(infectioncolor);
+		ChangeFontColor(infectioncolor);
 		cout << "  ";
-		ChangFontColor(DEFAULT);
+		ChangeFontColor(DEFAULT);
 		cout << " ";
 	}
 
@@ -242,7 +251,7 @@ void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowRemainin
 	{
 		cout << remainingInfectionCount;
 	}
-	ChangFontColor(DEFAULT);
+	ChangeFontColor(DEFAULT);
 }
 
 
@@ -339,8 +348,8 @@ bool Disease::operator!=(Disease* rhs) const
 // *******************************************************************************************
 ostream& operator<<(ostream& stream, Disease& object)
 {
-	ChangFontColor(object.color);
+	ChangeFontColor(object.color);
 	stream << object.name;
-	ChangFontColor(DEFAULT);
+	ChangeFontColor(DEFAULT);
 	return stream;
 }

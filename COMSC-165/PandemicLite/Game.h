@@ -36,6 +36,8 @@ bool DoPlayerAction(BasePlayer*, string);
 int IncrementOutbreaks();
 int IncrementInfectionRate();
 int GetInfectionRate();
+int GetInfectionRateIndex();
+int GetTotalOutbreaks();
 int GetResearchStationCount();
 City* DrawBottomInfectionCard();
 bool IntensifyInfectionDeck();
@@ -48,7 +50,10 @@ vector<City*> GetCitiesContainingResearchStations(City*);
 int GetNumericInput(int = INT_MIN, int = INT_MAX, bool = true, bool = false);
 bool IsNumeric(string&, int&, bool = true);
 string ToLower(string);
+string ToUpper(string);
 void EndGame(GameOverReason);
+void DrawGameScreen();
+void GamePauseUntilKeyPress(string, WORD);
 
 class InvalidArgumentException : public exception
 {

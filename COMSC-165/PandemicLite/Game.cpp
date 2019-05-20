@@ -144,6 +144,9 @@ bool SetupGame(GameOptions options)
 	Manila.setNeighbors({ &Sydney, &HoChiMinhCity, &HongKong, &Taipei, &SanFrancisco });
 	Sydney.setNeighbors({ &Jakarta, &Manila, &LosAngeles });
 
+	ClearScreen();
+	cout << "Initial infections:" << endl << endl;
+
 	InfectionCardDeck = new Deck<InfectionCard>(CityLinkedList, GetInfectionRate());
 	for(int initialInfection = 0; initialInfection < 9; ++initialInfection)
 	{
@@ -162,6 +165,8 @@ bool SetupGame(GameOptions options)
 		InfectionCardDeck->discard(Card);
 	}
 
+	GamePauseUntilKeyPress("Enter", KEY_ENTER);
+
 	Player = new MedicRole("Medic", &Atlanta);
 	PlayerCardDeck = new Deck<PlayerCard>(CityLinkedList, 2);
 	for (int initialHand = 0; initialHand < 5; ++initialHand)
@@ -170,6 +175,7 @@ bool SetupGame(GameOptions options)
 	}
 	PlayerCard::PreparePlayerDeck(PlayerCardDeck);
 
+	DrawGameScreen();
 	return PlayGame();
 }
 
@@ -183,6 +189,8 @@ bool PlayGame()
 			do
 			{
 				vector<string> AvailableActions = Player->getAvailableActions();
+				cout << "Action " << ActionNumber + 1 << " of " << Player->getMaxActions() << endl;
+				cout << "------------------" << endl;
 				int selectionIndex = -1;
 				for (string Action : AvailableActions)
 				{
@@ -194,8 +202,13 @@ bool PlayGame()
 				if (userSelection == selectionIndex)
 				{
 					ActionNumber = Player->getMaxActions();
+					DrawGameScreen();
 					break;
 				}
+
+				DrawGameScreen();
+				cout << "Action " << ActionNumber + 1 << " of " << Player->getMaxActions() << endl;
+				cout << "------------------" << endl;
 				ret = DoPlayerAction(Player, AvailableActions[userSelection]);
 
 				int iteration = 0;
@@ -212,11 +225,14 @@ bool PlayGame()
 				{
 					EndGame(GameOverReason::WIN);
 				}
+				DrawGameScreen();
 			} while (!GameOver && !ret);
 		}
 
 		for (int PlayerDeckDraw = 0; PlayerDeckDraw < PlayerCardDeck->getDrawCount() && !GameOver; ++PlayerDeckDraw)
 		{
+			cout << "Player Deck draw " << PlayerDeckDraw + 1 << " of " << PlayerCardDeck->getDrawCount() << endl;
+			cout << "----------------------------" << endl;
 			if (!PlayerCardDeck->isEmpty())
 			{
 				PlayerCard card = PlayerCardDeck->draw();
@@ -225,9 +241,12 @@ bool PlayGame()
 					Player->AddPlayerCardToHand(card);
 				}
 
+				GamePauseUntilKeyPress("Enter", KEY_ENTER);
+				DrawGameScreen();
 				while (Player->isPlayerHandAtMax())
 				{
-					cout << "You have too many cards in your player hand (maximum " + to_string(Player->getMaxCardsInHand()) + "). Please select the card below that you would like to discard:" << endl;
+					cout << "You have too many cards in your player hand (maximum " + to_string(Player->getMaxCardsInHand()) + ")." << endl;
+					cout << "Please select the card below that you would like to discard:" << endl;
 
 					int selectionIndex = -1;
 					vector<PlayerCard*> cards = Player->getPlayerHandCards();
@@ -239,6 +258,7 @@ bool PlayGame()
 
 					int userSelection = GetNumericInput(1, selectionIndex + 1, true, true);
 					Player->DiscardCardFromHand(cards[userSelection]);
+					DrawGameScreen();
 				}
 			}
 			else
@@ -249,7 +269,11 @@ bool PlayGame()
 
 		for (int InfectionDeckDraw = 0; InfectionDeckDraw < GetInfectionRate() && !GameOver; ++InfectionDeckDraw)
 		{
+			cout << "Infection Deck draw " << InfectionDeckDraw + 1 << " of " << GetInfectionRate() << endl;
+			cout << "-------------------------------" << endl;
 			InfectionCard card = InfectionCardDeck->draw();
+			GamePauseUntilKeyPress("Enter", KEY_ENTER);
+			DrawGameScreen();
 		}
 	} while (!GameOver);
 
@@ -307,6 +331,16 @@ int IncrementInfectionRate()
 int GetInfectionRate()
 {
 	return INFECTIONRATE[infectionRateIndex];
+}
+
+int GetInfectionRateIndex()
+{
+	return infectionRateIndex;
+}
+
+int GetTotalOutbreaks()
+{
+	return totalOutbreaks;
 }
 
 int GetResearchStationCount()
@@ -434,20 +468,22 @@ int GetNumericInput(int minValue, int maxValue, bool NonNegative, bool ReturnZer
 bool IsNumeric(string &input, int &output, bool NonNegative)
 {
 	bool ret = true;
-	for(char character : input)
+	if (input.size() != 0)
 	{
-		if(!isdigit(character) && (NonNegative || character != '-'))
+		for (char character : input)
 		{
-			ret = false;
+			if (!isdigit(character) && (NonNegative || character != '-'))
+			{
+				ret = false;
+			}
+		}
+
+		output = INT_MIN;
+		if (ret)
+		{
+			output = stoi(input);
 		}
 	}
-
-	output = INT_MIN;
-	if(ret)
-	{
-		output = stoi(input);
-	}
-
 	return ret;
 }
 
@@ -458,9 +494,76 @@ string ToLower(string input)
 	return ret;
 }
 
+string ToUpper(string input)
+{
+	string ret = input;
+	transform(input.begin(), input.end(), ret.begin(), ::toupper);
+	return ret;
+}
+
 void EndGame(GameOverReason reason)
 {
 	GameOver = true;
 	Reason = reason;
+}
+
+void DrawGameScreen()
+{
+	ClearScreen();
+
+	int y = 2;
+	City* cityNodePtr = CityLinkedList;
+	for(int city = 0; city < 48; ++city)
+	{
+		int x = city < 24 ? 12 : 50;
+		y = city == 24 ? 3 : ++y;
+
+		PrintAtScreenPosition("", x, y, DEFAULT, false);
+		cityNodePtr->print(false, cityNodePtr == Player->getPlayerLocation(), true, true);
+		cout << endl;
+
+		cityNodePtr = cityNodePtr->nextNode;
+	}
+
+	Disease* diseaseNodePtr = DiseaseLinkedList;
+	for(int disease = 0; disease < 4; ++disease)
+	{
+		int x = 84;
+		y = disease + 3;
+		PrintAtScreenPosition("", x, y, DEFAULT, false);
+		diseaseNodePtr->print(true, 1, true, true);
+		cout << endl;
+
+		diseaseNodePtr = diseaseNodePtr->nextNode;
+	}
+
+	PrintAtScreenPosition("Infection Tracker: 2 2 2 3 3 4 4", 88, 9, DEFAULT, false);
+	PrintAtScreenPosition(to_string(GetInfectionRate()), 107 + (2 * GetInfectionRateIndex()), 9, SELECTED_TEXT, false);
+
+	PrintAtScreenPosition("Outbreak Tracker: 0 1 2 3 4 5 6 7 8", 88, 10, DEFAULT, false);
+	PrintAtScreenPosition(to_string(GetTotalOutbreaks()), 106 + (2 * GetTotalOutbreaks()), 10, SELECTED_TEXT, false);
+
+	PrintAtScreenPosition("Cards In Hand (max " + to_string(Player->getMaxCardsInHand()) + ")", 88, 13, DEFAULT, false);
+	PrintAtScreenPosition("--------------------------", 88, 14, DEFAULT, false);
+	vector<PlayerCard*> playerCard = Player->getPlayerHandCards();
+	for(int card = 0; card < playerCard.size(); ++card)
+	{
+		int x = 86;
+		y = card + 15;
+		PrintAtScreenPosition("", x, y, DEFAULT, false);
+		playerCard[card]->getCity()->print();
+		cout << endl;
+	}
+
+	PrintAtScreenPosition("", 0, 30, DEFAULT, false);
+}
+
+void GamePauseUntilKeyPress(string keyname, WORD key)
+{
+	cout << endl << "Please press the " << ToUpper(keyname) << " to continue...";
+	while(_getch() != key)
+	{
+		
+	}
 }
 
