@@ -32,9 +32,9 @@ using namespace std;
 void SetupConsole();
 void ClearScreen();
 void PrintLogo(bool = true);
-void PrintAtScreenPosition(string, int, int, WORD);
-void PrintCenterScreenAtPosition(string, int, int, WORD);
+void PrintAtScreenPosition(string, int, int, WORD, bool = true);
+void PrintCenterScreenAtPosition(string, int, int, WORD, bool = true);
 void ChangeConsoleColor(WORD);
-void ChangFontColor(WORD);
+void ChangeFontColor(WORD);
 
 #endif

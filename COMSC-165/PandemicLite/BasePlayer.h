@@ -31,10 +31,11 @@ class BasePlayer
 		unsigned int getMaxActions() const;
 		unsigned int getMaxCardsInHand() const;
 		vector<PlayerCard*> getPlayerHandCards();
+		City* getPlayerLocation();
 		
 		void AddPlayerCardToHand(PlayerCard);
 		void DiscardCardFromHand(PlayerCard*);
-		vector<string> getAvailableActions();
+		virtual vector<string> getAvailableActions(bool = false);
 		bool isPlayerHandAtMax();
 
 		virtual bool DriveFerry();

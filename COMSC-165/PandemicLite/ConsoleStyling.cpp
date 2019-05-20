@@ -18,7 +18,7 @@ void SetupConsole()
 	SetWindowLong(console, GWL_STYLE, style);
 	SetWindowPos(console, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
 
-	ChangFontColor(DEFAULT);
+	ChangeFontColor(DEFAULT);
 }
 
 void ClearScreen()
@@ -55,7 +55,7 @@ void PrintLogo(bool IncludeSubText)
 	cout << endl << endl;
 }
 
-void PrintAtScreenPosition(string input, int x, int y, WORD attributes)
+void PrintAtScreenPosition(string input, int x, int y, WORD attributes, bool SkipEndingNewLine)
 {
 	// Get current console screen buffer information
 	GetConsoleScreenBufferInfo(hStdOut, &csbi);
@@ -79,22 +79,25 @@ void PrintAtScreenPosition(string input, int x, int y, WORD attributes)
 			continue;
 		}
 		// Set the output font style
-		ChangFontColor(attributes);
+		ChangeFontColor(attributes);
 
 		// Print the character to the screen.
 		cout << input[x];
 	}
 
-	// Print a new line character at the end of output to prevent the next output from continuing on where this ends.
-	cout << endl;
+	if (SkipEndingNewLine)
+	{
+		// Print a new line character at the end of output to prevent the next output from continuing on where this ends.
+		cout << endl;
+	}
 }
 
-void PrintCenterScreenAtPosition(string input, int y, int charsPerRow, WORD attributes)
+void PrintCenterScreenAtPosition(string input, int y, int charsPerRow, WORD attributes, bool SkipEndingNewLine)
 {
 	// Calculates the middle of the screen based on the console size and the characters per row.
 	int x = (csbi.dwSize.X - charsPerRow) / 2;
 
-	PrintAtScreenPosition(input, x, y, attributes);
+	PrintAtScreenPosition(input, x, y, attributes, SkipEndingNewLine);
 }
 
 
@@ -107,7 +110,7 @@ void ChangeConsoleColor(WORD attributes)
 	SetConsoleScreenBufferInfoEx(hStdOut, &cbi);
 }
 
-void ChangFontColor(WORD attributes)
+void ChangeFontColor(WORD attributes)
 {
 	SetConsoleTextAttribute(hStdOut, attributes);
 }

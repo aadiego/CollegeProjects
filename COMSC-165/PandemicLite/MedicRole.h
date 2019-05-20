@@ -18,6 +18,7 @@ class MedicRole : public BasePlayer
 		string getRoleName();
 		string getDescription();
 
+		vector<string> getAvailableActions(bool = false);
 		bool TreatDisease(bool = false);
 };
 
