@@ -78,5 +78,8 @@
     <ClInclude Include="ConsoleStyling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

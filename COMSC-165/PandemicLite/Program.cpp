@@ -1,13 +1,7 @@
-#include "Game.h"
-using namespace std;
+#include "Program.h"
 
-// Function Prototypes
-bool parseCmdLineArgs(int, char*[]);
-void displayHelpMessage(string);
-void displayHowToPlayMessage();
-
-// Variables and Constants
-GameOptions options;									// Holds the game options used by the SetupGame function to build the game objects.
+Game::Options options;								// Holds the game options used by the Game class constructor to build the game objects.
+Game* CurrentGame = nullptr;									// Holds a pointer to the current game
 
 // *******************************************************************************************
 // **     Function: main (Program entry point)												**
@@ -30,6 +24,7 @@ int main(int argc, char *argv[])
 		{
 			// Call the SetupConsole function to set the console defaults for the game.
 			SetupConsole();
+			Game newGame;
 
 			menu:
 				ClearScreen();
@@ -78,7 +73,8 @@ int main(int argc, char *argv[])
 				}
 
 			playgame:
-				if (SetupGame(options))
+				newGame.SetupGame(options);
+				if (newGame.Play())
 				{
 					options.seed = 0;
 					goto playgame;
@@ -235,7 +231,7 @@ bool parseCmdLineArgs(int argc, char* argv[])
 // **       Return: void																	**
 // **  Description: Displays the usage/help message in the command line.					**
 // *******************************************************************************************
-void displayHelpMessage(string ExecutableName)
+void displayHelpMessage(string &ExecutableName)
 {
 	cout << "Usage: " << ExecutableName << " [-help | -?] [-seed <unsigned_int>] [-bluediseasename <string>] [-yellowdiseasename <string>] [-purplediseasename <string>] [-reddiseasename <string>] [-numberofepidemics [4 | 5 | 6]]" << endl << endl;
 	cout << "-help | -?" << "\t\t" << "Displays this help message" << endl;
