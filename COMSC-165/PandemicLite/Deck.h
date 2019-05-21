@@ -13,9 +13,9 @@ class Deck
 {
 	private:
 		// Variables and constants
-		Stack<T> drawPile;
-		Stack<T> discardPile;
-		unsigned int drawCount = 1;
+		Stack<T> drawPile;										// Holds the stack of cards in the draw pile
+		Stack<T> discardPile;									// Holds the stack of cards in the discard pile
+		unsigned int drawCount = 1;								// Holds the number of cards to draw
 
 		// Private Functions
 		bool rand_shuffle(Stack<T>*);

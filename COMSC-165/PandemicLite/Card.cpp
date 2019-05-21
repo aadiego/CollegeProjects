@@ -92,7 +92,29 @@ PlayerCard::PlayerCard(City* city, bool isEpidemic) : Card("Player Card")
 	this->name = city != nullptr ? city->getName() : "Epidemic";
 	this->city = city;
 	this->isEpidemic = isEpidemic;
-};
+}
+
+// *******************************************************************************************
+// **     Function: getName																	**
+// **   Parameters: N/A																		**
+// **       Return: string																	**
+// **  Description: Returns the 'name' private variable value.								**
+// *******************************************************************************************
+string PlayerCard::getName() const
+{
+	return name;
+}
+
+// *******************************************************************************************
+// **     Function: getIsEpidemic															**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns the 'isEpidemic' private variable value.						**
+// *******************************************************************************************
+bool PlayerCard::getIsEpidemic() const
+{
+	return isEpidemic;
+}
 
 // *******************************************************************************************
 // **     Function: DrawAction																**
@@ -200,28 +222,6 @@ void PlayerCard::PreparePlayerDeck(Deck<PlayerCard>* deck)
 }
 
 // *******************************************************************************************
-// **     Function: getName																	**
-// **   Parameters: N/A																		**
-// **       Return: string																	**
-// **  Description: Returns the 'name' private variable value.								**
-// *******************************************************************************************
-string PlayerCard::getName() const
-{
-	return name;
-}
-
-// *******************************************************************************************
-// **     Function: getIsEpidemic															**
-// **   Parameters: N/A																		**
-// **       Return: bool																	**
-// **  Description: Returns the 'isEpidemic' private variable value.						**
-// *******************************************************************************************
-bool PlayerCard::getIsEpidemic() const
-{
-	return isEpidemic;
-}
-
-// *******************************************************************************************
 // **     Function: == (operator)															**
 // **   Parameters: PlayerCard* rhs															**
 // **       Return: bool																	**
@@ -264,6 +264,17 @@ InfectionCard::InfectionCard(City* city) : Card("Infection Card")
 }
 
 // *******************************************************************************************
+// **     Function: getName																	**
+// **   Parameters: N/A																		**
+// **       Return: string																	**
+// **  Description: Returns the 'name' private variable value.								**
+// *******************************************************************************************
+string InfectionCard::getName() const
+{
+	return name;
+}
+
+// *******************************************************************************************
 // **     Function: DrawAction																**
 // **   Parameters: int count																**
 // **       Return: bool																	**
@@ -280,17 +291,6 @@ bool InfectionCard::DrawAction(int count) const
 	ret = disease->infect(city, count);
 
 	return ret;
-}
-
-// *******************************************************************************************
-// **     Function: getName																	**
-// **   Parameters: N/A																		**
-// **       Return: string																	**
-// **  Description: Returns the 'name' private variable value.								**
-// *******************************************************************************************
-string InfectionCard::getName() const
-{
-	return name;
 }
 
 // *******************************************************************************************

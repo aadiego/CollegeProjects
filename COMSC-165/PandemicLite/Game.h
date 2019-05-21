@@ -22,8 +22,9 @@ struct GameOptions
 const int INFECTIONRATESIZE = 7;
 const int INFECTIONRATE[INFECTIONRATESIZE] = { 2,2,2,3,3,4,4 };
 const int MAXOUTBREAKS = 8;
+const int MAXRESEARCHSTATIONS = 6;
 static int infectionRateIndex = 0;
-static int totalOutbreaks = 0;                                          
+static int totalOutbreaks = 0;
 static GameOptions globalGameOptions;
 enum GameOverReason { NA, WIN, LOSS_OUTBREAKS, LOSS_INFECTIONMARKERS, LOSS_PLAYERDECKEMPTY };
 

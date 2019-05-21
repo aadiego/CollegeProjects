@@ -1,31 +1,55 @@
 #include "ConsoleStyling.h"
 
+// Global variables and constants
 HWND console = GetConsoleWindow();							// Stores the console
 HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);			// Stores the console handle
 CONSOLE_SCREEN_BUFFER_INFO csbi;							// Stores the console screen buffer information.
 
+// *******************************************************************************************
+// **     Function: SetupConsole															**
+// **   Parameters: N/A																		**
+// **       Return: void																	**
+// **  Description: Sets the Windows Command Line console's title, size, disables the		**
+// **				maximize button, and sets the default font color.						**
+// *******************************************************************************************
 void SetupConsole()
 {
+	// Set the console title and clear the screen output for initial draw.
 	SetConsoleTitle("Pandemic (Lite)");
 	ClearScreen();
 
+	// Get the current console dimensions and position then modify the dimensions to be the game size (1024x768)
 	RECT dimensions;
 	GetWindowRect(console, &dimensions);
 	MoveWindow(console, dimensions.left, dimensions.top, 1024, 768, true);
 
+	// Get the console window to disable the maximize option
 	DWORD style = GetWindowLong(console, GWL_STYLE);
 	style &= ~WS_MAXIMIZEBOX;
 	SetWindowLong(console, GWL_STYLE, style);
 	SetWindowPos(console, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_FRAMECHANGED);
 
+	// Set the default font color.
 	ChangeFontColor(DEFAULT);
 }
 
+// *******************************************************************************************
+// **     Function: ClearScreen																**
+// **   Parameters: N/A																		**
+// **       Return: void																	**
+// **  Description: Clears the console output.												**
+// *******************************************************************************************
 void ClearScreen()
 {
 	system("cls");
 }
 
+// *******************************************************************************************
+// **     Function: PrintLogo																**
+// **   Parameters: bool IncludeSubText	(optional) [Default = true]							**
+// **       Return: void																	**
+// **  Description: Prints the logo center on the screen.									**
+// *******************************************************************************************
 void PrintLogo(bool IncludeSubText)
 {
 	// Get current console screen buffer information (used to center the logo)
@@ -55,6 +79,17 @@ void PrintLogo(bool IncludeSubText)
 	cout << endl << endl;
 }
 
+// *******************************************************************************************
+// **     Function: PrintAtScreenPosition													**
+// **   Parameters: string input															**
+// **				int x																	**
+// **				int y																	**
+// **				WORD attributes															**
+// **				bool SkipEndingNewLine (optional) [Default = true]						**
+// **       Return: void																	**
+// **  Description: Prints the input string at the specific position on the screen with		**
+// **				the specific coloring attributes.										**
+// *******************************************************************************************
 void PrintAtScreenPosition(string input, int x, int y, WORD attributes, bool SkipEndingNewLine)
 {
 	// Get current console screen buffer information
@@ -92,6 +127,17 @@ void PrintAtScreenPosition(string input, int x, int y, WORD attributes, bool Ski
 	}
 }
 
+// *******************************************************************************************
+// **     Function: PrintCenterScreenAtPosition												**
+// **   Parameters: string input															**
+// **				int y																	**
+// **				int charsPerRow															**
+// **				WORD attributes															**
+// **				bool SkipEndingNewLine (optional) [Default = true]						**
+// **       Return: void																	**
+// **  Description: Prints the input string center on the screen at the specific y			**
+// **				coordinate and with the specific coloring attributes.					**
+// *******************************************************************************************
 void PrintCenterScreenAtPosition(string input, int y, int charsPerRow, WORD attributes, bool SkipEndingNewLine)
 {
 	// Calculates the middle of the screen based on the console size and the characters per row.
@@ -100,7 +146,12 @@ void PrintCenterScreenAtPosition(string input, int y, int charsPerRow, WORD attr
 	PrintAtScreenPosition(input, x, y, attributes, SkipEndingNewLine);
 }
 
-
+// *******************************************************************************************
+// **     Function: ChangeConsoleColor														**
+// **   Parameters: WORD attributes															**
+// **       Return: void																	**
+// **  Description: Changes the console's background color.									**
+// *******************************************************************************************
 void ChangeConsoleColor(WORD attributes)
 {
 	CONSOLE_SCREEN_BUFFER_INFOEX cbi;
@@ -110,6 +161,12 @@ void ChangeConsoleColor(WORD attributes)
 	SetConsoleScreenBufferInfoEx(hStdOut, &cbi);
 }
 
+// *******************************************************************************************
+// **     Function: ChangeFontColor															**
+// **   Parameters: WORD attributes															**
+// **       Return: void																	**
+// **  Description: Changes the console's font color.										**
+// *******************************************************************************************
 void ChangeFontColor(WORD attributes)
 {
 	SetConsoleTextAttribute(hStdOut, attributes);

@@ -272,6 +272,7 @@ bool PlayGame()
 			cout << "Infection Deck draw " << InfectionDeckDraw + 1 << " of " << GetInfectionRate() << endl;
 			cout << "-------------------------------" << endl;
 			InfectionCard card = InfectionCardDeck->draw();
+			InfectionCardDeck->discard(card);
 			GamePauseUntilKeyPress("Enter", KEY_ENTER);
 			DrawGameScreen();
 		}
@@ -410,7 +411,7 @@ string GetStringInput(string prompt)
 bool GetDestinationFromInputString(City* &destination, string &userInput)
 {
 	bool ret = false;
-	userInput = GetStringInput("Please enter a destination");
+	userInput = GetStringInput("Please enter a destination, or type 'back' to return to the Action menu");
 
 	if (ToLower(userInput) != "back")
 	{
@@ -515,7 +516,7 @@ void DrawGameScreen()
 	City* cityNodePtr = CityLinkedList;
 	for(int city = 0; city < 48; ++city)
 	{
-		int x = city < 24 ? 12 : 50;
+		int x = city < 24 ? 8 : 46;
 		y = city == 24 ? 3 : ++y;
 
 		PrintAtScreenPosition("", x, y, DEFAULT, false);
@@ -528,7 +529,7 @@ void DrawGameScreen()
 	Disease* diseaseNodePtr = DiseaseLinkedList;
 	for(int disease = 0; disease < 4; ++disease)
 	{
-		int x = 84;
+		int x = 80;
 		y = disease + 3;
 		PrintAtScreenPosition("", x, y, DEFAULT, false);
 		diseaseNodePtr->print(true, 1, true, true);
@@ -537,18 +538,18 @@ void DrawGameScreen()
 		diseaseNodePtr = diseaseNodePtr->nextNode;
 	}
 
-	PrintAtScreenPosition("Infection Tracker: 2 2 2 3 3 4 4", 88, 9, DEFAULT, false);
-	PrintAtScreenPosition(to_string(GetInfectionRate()), 107 + (2 * GetInfectionRateIndex()), 9, SELECTED_TEXT, false);
+	PrintAtScreenPosition("Infection Tracker: 2 2 2 3 3 4 4", 84, 9, DEFAULT, false);
+	PrintAtScreenPosition(to_string(GetInfectionRate()), 103 + (2 * GetInfectionRateIndex()), 9, SELECTED_TEXT, false);
 
-	PrintAtScreenPosition("Outbreak Tracker: 0 1 2 3 4 5 6 7 8", 88, 10, DEFAULT, false);
-	PrintAtScreenPosition(to_string(GetTotalOutbreaks()), 106 + (2 * GetTotalOutbreaks()), 10, SELECTED_TEXT, false);
+	PrintAtScreenPosition("Outbreak Tracker: 0 1 2 3 4 5 6 7 8", 84, 10, DEFAULT, false);
+	PrintAtScreenPosition(to_string(GetTotalOutbreaks()), 102 + (2 * GetTotalOutbreaks()), 10, SELECTED_TEXT, false);
 
-	PrintAtScreenPosition("Cards In Hand (max " + to_string(Player->getMaxCardsInHand()) + ")", 88, 13, DEFAULT, false);
-	PrintAtScreenPosition("--------------------------", 88, 14, DEFAULT, false);
+	PrintAtScreenPosition("Cards In Hand (max " + to_string(Player->getMaxCardsInHand()) + ")", 84, 13, DEFAULT, false);
+	PrintAtScreenPosition("--------------------------", 84, 14, DEFAULT, false);
 	vector<PlayerCard*> playerCard = Player->getPlayerHandCards();
 	for(int card = 0; card < playerCard.size(); ++card)
 	{
-		int x = 86;
+		int x = 82;
 		y = card + 15;
 		PrintAtScreenPosition("", x, y, DEFAULT, false);
 		playerCard[card]->getCity()->print();

@@ -9,35 +9,43 @@
 #include "City.h"
 using namespace std;
 
-//template <class T> class Stack;
-class PlayerCard;
+class PlayerCard;										// Empty PlayerCard class declaration required for some BasePlayer member functions to work. This fully gets defined in Card.h
 
 class BasePlayer
 {
 	protected:
-		string name;
-		unsigned int maxActions = 4;
-		Stack<PlayerCard> playerHand;
-		unsigned int maxCardsInHand = 9;
-		City* playerLocation = nullptr;
-		unsigned int discoverCureNumber = 5;
+		// Variables and constants
+		string name;									// Holds the name of the base player (currently the role name)
+		unsigned int maxActions = 4;					// Holds the maximum number of actions the player can take
+		Stack<PlayerCard> playerHand;					// Holds the cards in the player's hand
+		unsigned int maxCardsInHand = 9;				// Holds the maximum number of cards in the player hand
+		City* playerLocation = nullptr;					// Holds the player's current location
+		unsigned int discoverCureNumber = 5;			// Holds the minimum number of cards to discover a cure for a disease
+
+		// Private functions
 		vector<vector<PlayerCard>> calcDiscoverCureCards() const;
 
 	public:
+		// Constructor
 		BasePlayer(string, City*, unsigned int = 4, unsigned int = 5, unsigned int = 9);
+
+		// Destructor
 		~BasePlayer() = default;
 
+		// Accessors (Getters)
 		string getName() const;
 		unsigned int getMaxActions() const;
 		unsigned int getMaxCardsInHand() const;
 		vector<PlayerCard*> getPlayerHandCards();
 		City* getPlayerLocation();
-		
+
+		// Public functions
 		void AddPlayerCardToHand(PlayerCard);
 		void DiscardCardFromHand(PlayerCard*);
-		virtual vector<string> getAvailableActions(bool = false);
 		bool isPlayerHandAtMax();
+		vector<string> getAvailableActions();
 
+		// Public overridable Action function
 		virtual bool DriveFerry();
 		virtual bool DirectFlight();
 		virtual bool CharterFlight();

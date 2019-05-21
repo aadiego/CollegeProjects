@@ -58,17 +58,26 @@ City::~City()
 }
 
 // *******************************************************************************************
-// **     Function: hasResearchStation														**
+// **     Function: getName																	**
 // **   Parameters: N/A																		**
-// **       Return: bool																	**
-// **  Description: Returns true if the city has a research station or false if it does		**
-// **				not.																	**
+// **       Return: Infection*																**
+// **  Description: Returns the 'name' private variable value.								**
 // *******************************************************************************************
-bool City::hasResearchStation() const
+string City::getName() const
 {
-	return containsResearchStation;
+	return name;
 }
 
+// *******************************************************************************************
+// **     Function: getPrimaryInfection														**
+// **   Parameters: N/A																		**
+// **       Return: Infection*																**
+// **  Description: Returns the first Infection node in the Infection linked list.			**
+// *******************************************************************************************
+City::Infection* City::getPrimaryInfection() const
+{
+	return infections;
+}
 
 // *******************************************************************************************
 // **     Function: getInfection															**
@@ -109,28 +118,6 @@ City::Infection* City::getInfection(Disease* disease) const
 }
 
 // *******************************************************************************************
-// **     Function: getPrimaryInfection														**
-// **   Parameters: N/A																		**
-// **       Return: Infection*																**
-// **  Description: Returns the first Infection node in the Infection linked list.			**
-// *******************************************************************************************
-City::Infection* City::getPrimaryInfection() const
-{
-	return infections;
-}
-
-// *******************************************************************************************
-// **     Function: getName																	**
-// **   Parameters: N/A																		**
-// **       Return: Infection*																**
-// **  Description: Returns the 'name' private variable value.								**
-// *******************************************************************************************
-string City::getName() const
-{
-	return name;
-}
-
-// *******************************************************************************************
 // **     Function: getNeighbors															**
 // **   Parameters: N/A																		**
 // **       Return: vector<City*>															**
@@ -142,44 +129,15 @@ vector<City*> City::getNeighbors() const
 }
 
 // *******************************************************************************************
-// **     Function: print																	**
-// **   Parameters: bool ShowInfectionMarkers												**
-// **       Return: void																	**
-// **  Description: Prints out the City name and it's infection markers, if					**
-// **				'ShowInfectionMarkers' argument is true.								**
+// **     Function: hasResearchStation														**
+// **   Parameters: N/A																		**
+// **       Return: bool																	**
+// **  Description: Returns true if the city has a research station or false if it does		**
+// **				not.																	**
 // *******************************************************************************************
-void City::print(bool Selected, bool PlayerIsHere, bool ShowResearchStation, bool ShowInfectionMarkers) const
+bool City::hasResearchStation() const
 {
-	if (PlayerIsHere)
-	{
-		ChangeFontColor(DEFAULT);
-		cout << (char)175 << " ";
-	}
-	else
-	{
-		cout << "  ";
-	}
-
-	ChangeFontColor(color);
-	cout << name;
-
-	if (ShowResearchStation && containsResearchStation)
-	{
-		ChangeFontColor(DEFAULT);
-		cout << " (+)";
-	}
-
-	if (ShowInfectionMarkers)
-	{
-		cout << "  ";
-		Infection* infection = infections;
-		while (infection != nullptr)
-		{
-			infection->disease->print(false, infection->count);
-			infection = infection->nextNode;
-		}
-	}
-	ChangeFontColor(DEFAULT);
+	return containsResearchStation;
 }
 
 // *******************************************************************************************
@@ -204,6 +162,63 @@ void City::buildResearchStation()
 	this->containsResearchStation = true;
 }
 
+// *******************************************************************************************
+// **     Function: print																	**
+// **   Parameters: bool Selected (optional) [Default = false]								**
+// **				bool PlayerIsHere (optional) [Default = false]							**
+// **				bool ShowResearchStation (optional) [Default = false]					**
+// **				bool ShowInfectionMarkers (optional) [Default = false]					**
+// **       Return: void																	**
+// **  Description: Prints out the City name and it's infection markers, if					**
+// **				'ShowInfectionMarkers' argument is true.								**
+// *******************************************************************************************
+void City::print(bool Selected, bool PlayerIsHere, bool ShowResearchStation, bool ShowInfectionMarkers) const
+{
+	// Reset the font color to DEFAULT in case it wasn't already.
+	ChangeFontColor(DEFAULT);
+
+	// Check if the 'PlayerIsHere' flag is set. If so, print out the player symbol '»' or, if not, prefix whitespace equal to the length of the is player symbol.
+	if (PlayerIsHere)
+	{
+		cout << (char)175 << " ";
+	}
+	else
+	{
+		cout << "  ";
+	}
+
+	// Set the font color to the city color and output the city name.
+	ChangeFontColor(color);
+	cout << name;
+
+	// Check if the 'ShowResearchStation' flag is set and if the current city contains a research station. If both, then output the research station symbol '(+)'.
+	if (ShowResearchStation && containsResearchStation)
+	{
+		// Reset the font color to DEFAULT
+		ChangeFontColor(DEFAULT);
+		cout << " (+)";
+	}
+
+	// Check if the 'ShowInfectionMarkers' flag is set. If so, call the print function from each disease/infection to output the city's infection markers.
+	if (ShowInfectionMarkers)
+	{
+		// Output some padding
+		cout << "  ";
+
+		// Node traversal pointer
+		Infection* infection = infections;
+
+		// Loop through each infection node calling the disease print function.
+		while (infection != nullptr)
+		{
+			infection->disease->print(false, infection->count);
+			infection = infection->nextNode;
+		}
+	}
+
+	// Reset the font color to DEFAULT
+	ChangeFontColor(DEFAULT);
+}
 
 // *******************************************************************************************
 // **     Function: == (operator)															**
@@ -241,8 +256,11 @@ bool City::operator!=(City* rhs) const
 // *******************************************************************************************
 ostream& operator<<(ostream& stream, City& object)
 {
+	// Set the font color to the city color and output the city name.
 	ChangeFontColor(object.color);
 	stream << object.name;
+
+	// Reset the font color to DEFAULT before returning the stream
 	ChangeFontColor(DEFAULT);
 	return stream;
 }
