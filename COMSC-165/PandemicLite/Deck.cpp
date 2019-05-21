@@ -15,7 +15,7 @@ Deck<T>::Deck() { }
 // *******************************************************************************************
 // **     Function: Deck (constructor)														**
 // **   Parameters: City* cityLinkedList													**
-// **				unsigned int drawCount													**
+// **				unsigned int drawCount (optional) [Default = 1]							**
 // **       Return: N/A																		**
 // **  Description: Initializes a PlayerCard instance with the input parameter values.		**
 // *******************************************************************************************
@@ -97,7 +97,7 @@ void Deck<T>::setDrawCount(unsigned int count)
 
 // *******************************************************************************************
 // **     Function: shuffle																	**
-// **   Parameters: Pile pile																**
+// **   Parameters: Pile pile (optional) [Default = Both]									**
 // **       Return: bool																	**
 // **  Description: Shuffles the provided deck's pile. Returns true to signify that work 	**
 // **				has been completed.														**
@@ -170,8 +170,8 @@ bool Deck<T>::rand_shuffle(Stack<T>* deckStack)
 
 // *******************************************************************************************
 // **     Function: draw																	**
-// **   Parameters: bool SkipDrawAction														**
-// **				Pile pile																**
+// **   Parameters: bool SkipDrawAction	(optional) [Default = false]						**
+// **				Pile pile (optional) [Default = Draw]									**
 // **       Return: T																		**
 // **  Description: Draws a card off the specified stack and completes the draw action.		**
 // **				Returns the card.														**
@@ -209,8 +209,8 @@ T Deck<T>::draw(bool SkipDrawAction, Pile pile)
 
 // *******************************************************************************************
 // **     Function: drawBottom																**
-// **   Parameters: bool SkipDrawAction														**
-// **				Pile pile																**
+// **   Parameters: bool SkipDrawAction	(optional) [Default = false]						**
+// **				Pile pile (optional) [Default = Draw]									**
 // **       Return: T																		**
 // **  Description: Draws a card off the bottom of the specified stack and completes the 	**
 // **				draw action. Returns the card.											**
@@ -233,7 +233,7 @@ T Deck<T>::drawBottom(bool SkipDrawAction, Pile pile)
 // *******************************************************************************************
 // **     Function: discard																	**
 // **   Parameters: T card																	**
-// **				Pile pile																**
+// **				Pile pile (optional) [Default = Discard]								**
 // **       Return: bool																	**
 // **  Description: Discards the card into the specified pile. Returns true to signify that **
 // **				work has been completed.												**
@@ -265,7 +265,7 @@ bool Deck<T>::discard(T card, Pile pile)
 
 // *******************************************************************************************
 // **     Function: isEmpty																	**
-// **   Parameters: Pile pile																**
+// **   Parameters: Pile pile (optional) [Default = Draw]									**
 // **       Return: bool																	**
 // **  Description: Returns true if the specified stack is empty.							**
 // *******************************************************************************************

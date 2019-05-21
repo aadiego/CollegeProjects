@@ -87,7 +87,7 @@ bool Disease::infect(City* city, int count)
 // **     Function: infect																	**
 // **   Parameters: City* city																**
 // **				int count																**
-// **				vector<City*> priorOutbreaks										 	**
+// **				vector<City*>* priorOutbreaks										 	**
 // **       Return: bool																	**
 // **  Description: Infects the city with the number of infection markers for the disease.	**
 // **				Returns a true if it has infected at least one city or false if it has	**
@@ -216,41 +216,67 @@ void Disease::discoverCure()
 	isCured = true;
 }
 
+// *******************************************************************************************
+// **     Function: print																	**
+// **   Parameters: bool ShowDiseaseName (optional) [Default = true] 						**
+// **				int NumberOfMarkers (optional) [Default = 1]							**
+// **				bool ShowIsCured (optional) [Default = false]							**
+// **				bool ShowRemainingCount (optional) [Default = false]					**
+// **       Return: void																	**
+// **  Description: Prints out the formatted Disease object data.							**
+// *******************************************************************************************
 void Disease::print(bool ShowDiseaseName, int NumberOfMarkers, bool ShowIsCured, bool ShowRemainingCount) const
 {
-	if(ShowIsCured && isCured)
+	// Check if the 'ShowIsCured' flag is set. If so, print out if the disease is cured or whitespace (if not) out to the screen.
+	if(ShowIsCured)
 	{
+		// Reset the font color to DEFAULT in case it wasn't already.
 		ChangeFontColor(DEFAULT);
-		cout << "(X) ";
-	}
-	else
-	{
-		cout << "    ";
+
+		// Check if the disease is cured. If so, output an '(X)' or, if not, prefix whitespace equal to the length of the is cured symbol.
+		if (isCured)
+		{
+			cout << "(X) ";
+		}
+		else
+		{
+			cout << "    ";
+		}
 	}
 
+	// Check if the 'ShowDiseaseName' flag is set. If so, print out the formatted disease name.
 	if (ShowDiseaseName)
 	{
+		// Set the font color to the disease color and output the disease name.
 		ChangeFontColor(color);
 		cout << name;
 	}
 
+	// Loop through the number of markers for output.
 	for (int iteration = 0; iteration < NumberOfMarkers; ++iteration)
 	{
+		// Check if the 'ShowDiseaseName' flag is set and if this is the first iteration. If both are true, add a padding before starting to output infection markers.
 		if (ShowDiseaseName && iteration ==0)
 		{
 			cout << "  ";
 		}
 
+		// Set the font color to the infection color and output the marker (3 whitespaces with colored background).
 		ChangeFontColor(infectioncolor);
 		cout << "  ";
+
+		// Reset the font color to DEFAULT and output a space
 		ChangeFontColor(DEFAULT);
 		cout << " ";
 	}
 
+	// Check if the 'ShowRemainingCount' flag is set. If so, output the number of remaining infection markers for this disease.
 	if (ShowRemainingCount)
 	{
 		cout << remainingInfectionCount;
 	}
+
+	// Reset the font color to DEFAULT
 	ChangeFontColor(DEFAULT);
 }
 
@@ -276,7 +302,7 @@ bool Disease::outbreak(City* city, vector<City*>* priorOutbreaks)
 		if (!hasOutbroken(neighbor, priorOutbreaks))
 		{
 			// Output prefix message so the player can distinguish between chained outbreaks
-			cout << "FROM OUTBREAK IN " + city->getName() + ": ";
+			cout << "FROM OUTBREAK IN " << *city << ": ";
 
 			// Infect the neighboring city with one infection marker matching this disease. Also pass along the prior outbreaks vector to prevent
 			// potential other outbreaks from causing a feedback loop.
@@ -289,7 +315,7 @@ bool Disease::outbreak(City* city, vector<City*>* priorOutbreaks)
 // *******************************************************************************************
 // **     Function: hasOutbroken															**
 // **   Parameters: City* searchCity														**
-// **				vector<City*> priorOutbreaks (optional)									**
+// **				vector<City*>* priorOutbreaks											**
 // **       Return: bool																	**
 // **  Description: Checks the priorOutbreaks vector to see if the searchCity exists.		**
 // **				Returns true of the city exists in the vector or false if it does not.	**
@@ -319,9 +345,10 @@ bool Disease::hasOutbroken(City* searchCity, vector<City*>* priorOutbreaks)
 // *******************************************************************************************
 bool Disease::operator==(Disease* rhs) const
 {
-	// Return true if the name, color, remainingInfectionCount, isCured, and isEradicated variables match.
+	// Return true if the name, color, infectioncolor, remainingInfectionCount, isCured, and isEradicated variables match.
 	return name == rhs->name
 		&& color == rhs->color
+		&& infectioncolor == rhs->infectioncolor
 		&& remainingInfectionCount == rhs->remainingInfectionCount
 		&& isCured == rhs->isCured
 		&& isEradicated == rhs->isEradicated;
@@ -348,8 +375,11 @@ bool Disease::operator!=(Disease* rhs) const
 // *******************************************************************************************
 ostream& operator<<(ostream& stream, Disease& object)
 {
+	// Set the font color to the disease color and output the disease name.
 	ChangeFontColor(object.color);
 	stream << object.name;
+
+	// Reset the font color to DEFAULT before returning the stream
 	ChangeFontColor(DEFAULT);
 	return stream;
 }

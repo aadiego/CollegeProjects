@@ -37,18 +37,18 @@ class City
 		~City();
 
 		// Accessors (Getters)
-		bool hasResearchStation() const;
-		Infection* getInfection(Disease*) const;
 		string getName() const;
-		vector<City*> getNeighbors() const;
 		Infection* getPrimaryInfection() const;
-		void print(bool = false, bool = false, bool = false, bool = false) const;
-
+		Infection* getInfection(Disease*) const;
+		vector<City*> getNeighbors() const;
+		bool hasResearchStation() const;
+		
 		// Mutators (Setters)
 		void setNeighbors(vector<City*>);
 
 		// Public functions
 		void buildResearchStation();
+		void print(bool = false, bool = false, bool = false, bool = false) const;
 	
 		// Variables
 		City* nextNode = nullptr;							// Holds the next city in the linked list for calling a world print.

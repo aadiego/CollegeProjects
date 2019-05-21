@@ -7,14 +7,14 @@
 #include "City.h"
 using namespace std;
 
-template <class T> class Deck;
+template <class T> class Deck;								// Empty Deck template class declaration required for some Card member functions to work. This fully gets defined in Deck.h
 
 class Card
 {
 	protected:
 		// Variables and constants
-		string name;
-		City* city;
+		string name;										// Holds the name of the card
+		City* city;											// Holds a pointer to the city
 
 	public:
 		// Constructors
@@ -55,12 +55,15 @@ class PlayerCard : public Card
 {
 	private:
 		// Variables and constants
-		bool isEpidemic = false;
+		bool isEpidemic = false;							// Holds whether this player card is an epidemic or not
 
 	public:
 		// Constructor
 		PlayerCard();
 		PlayerCard(City*, bool = false);
+
+		// Destructor
+		~PlayerCard() = default;
 
 		// Accessors (Getters)
 		string getName() const override;
@@ -78,12 +81,15 @@ class InfectionCard : public Card
 {
 	private:
 		// Variables and constants
-		Disease* disease = nullptr;
+		Disease* disease = nullptr;							// Holds a pointer to the disease this infection card affects.
 
 	public:
 		// Constructor
 		InfectionCard();
 		InfectionCard(City*);
+
+		// Destructor
+		~InfectionCard() = default;
 
 		// Accessors (Getters)
 		string getName() const override;
