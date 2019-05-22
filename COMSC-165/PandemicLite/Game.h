@@ -10,8 +10,8 @@
 
 using namespace std;
 
-class City;
-class BasePlayer;
+class City;														// Empty City class declaration required for some Game member functions to work. This fully gets defined in City.h
+class BasePlayer;												// Empty BasePlayer class declaration required for some Game member functions to work. This fully gets defined in BasePlayer.h
 
 class Game
 {
@@ -80,6 +80,7 @@ class Game
 
 };
 
+// Function prototypes
 Game* GetCurrentGame();
 string GetStringInput(string);
 bool GetDestinationFromInputString(City*&, string&);
@@ -90,6 +91,7 @@ string ToLower(string);
 string ToUpper(string);
 void GamePauseUntilKeyPress(string, WORD);
 
+// Exception classes
 class InvalidArgumentException : public exception
 {
 	private:

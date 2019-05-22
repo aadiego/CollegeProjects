@@ -508,8 +508,11 @@ bool BasePlayer::TreatDisease(bool IsMedic)
 	if(IsMedic)
 	{
 		// The Medic can clear all the infection markers of a disease in the player city. If the disease is cured, this action is free else it counts as 1 action.
-		currentDiseases[userSelection]->disinfect(playerLocation, 3);
-		ret = !currentDiseases[userSelection]->getIsCured();
+		if (!currentDiseases.empty())
+		{
+			currentDiseases[userSelection]->disinfect(playerLocation, 3);
+			ret = !currentDiseases[userSelection]->getIsCured();
+		}
 	}
 	else
 	{
