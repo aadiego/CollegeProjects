@@ -1,7 +1,7 @@
 #include "Program.h"
 
 Game::Options options;								// Holds the game options used by the Game class constructor to build the game objects.
-Game* CurrentGame = nullptr;									// Holds a pointer to the current game
+Game* CurrentGame = nullptr;						// Holds a pointer to the current game
 
 // *******************************************************************************************
 // **     Function: main (Program entry point)												**
@@ -26,23 +26,32 @@ int main(int argc, char *argv[])
 			SetupConsole();
 			Game newGame;
 
+			// Title Screen & Main Menu
 			menu:
+				// Clear the screen and print the logo
 				ClearScreen();
 				PrintLogo();
 
+				// Constants that hold the menu options
 				const int charsPerRow = 19;
 				const string PlayGame = "     PLAY GAME     ";
 				const string HowToPlay = "    HOW TO PLAY    ";
 				const string ExitGame = "     EXIT GAME     ";
 
+				// Variable the holds the selecting index and current user selection.
 				int selectionIndex = 0;
 				int userSelection = INT_MIN;
+
+				// Loop that takes in the user input and selects the menu option based off of the selection index variable.
 				do
 				{
+					// Print the menu options to the screen.
 					PrintCenterScreenAtPosition(PlayGame, 30, charsPerRow, selectionIndex == 0 ? SELECTED_TEXT : DEFAULT);
 					PrintCenterScreenAtPosition(HowToPlay, 32, charsPerRow, selectionIndex == 1 ? SELECTED_TEXT : DEFAULT);
 					PrintCenterScreenAtPosition(ExitGame, 34, charsPerRow, selectionIndex == 2 ? SELECTED_TEXT : DEFAULT);
 
+					// Switch statement that waits until a key is pressed and either modifies the selection index variable (which will redraw the menu options on the next loop), select the menu option
+					// by setting the user selection variable, or exits the game (hitting the Escape key).
 					switch (_getch())
 					{
 						case KEY_UP:
@@ -57,8 +66,9 @@ int main(int argc, char *argv[])
 						case KEY_ESCAPE:
 							userSelection = 2;
 					}
-				} while (userSelection == INT_MIN);
+				} while (userSelection == INT_MIN);				// Loop while the user selection variable is INT_MIN (the default initialization value).
 
+				// Switch statement to redirect the user to the appropriate path using goto labels.
 				switch(userSelection)
 				{
 					case 0:
@@ -72,20 +82,30 @@ int main(int argc, char *argv[])
 						break;
 				}
 
+			// Play Game
 			playgame:
+				// Setup the game using the options set from command line arguments (or the default values if none supplied) 
 				newGame.SetupGame(options);
+
+				// Call Play which will start the game. Return true to play again, or false to return to the main menu.
 				if (newGame.Play())
 				{
+					// Override the seed value (if provided) back to the default value of 0 to prevent the game from using the same seed. And goto the playgame label to play again.
 					options.seed = 0;
 					goto playgame;
 				}
+
+				// Override the seed value (if provided) back to the default value of 0 to prevent the game from using the same seed. And goto the menu label.
 				options.seed = 0;
 				goto menu;
 
+			// How to Play
 			howtoplay:
+				// Display an output of the game instructions nnd goto the menu label when complete.
 				displayHowToPlayMessage();
 				goto menu;
 
+			// Exit
 			exit:
 				return EXIT_SUCCESS;
 		}
@@ -303,7 +323,7 @@ void displayHowToPlayMessage()
 				cout << "Player Turn (continued)" << endl
 					<< "----------------------------" << endl
 					<< "Other Actions" << endl
-					<< " " << (char)175 << " Build a Research Station: Discard the City card that matches the city you are in to place a research station there." << endl
+					<< " " << (char)175 << " Build a Research Station: Discard the card that matches the city you are in to place a research station there. (max 6)" << endl
 					<< " " << (char)175 << " Treat Disease: Remove 1 infection marker from the city you are in. Returning it back to the disease supply." << endl
 					<< " " << (char)175 << " Discover a Cure: At any research station, discard 5 City cards of the same disease from your hand to cure the disease." << endl
 					<< endl

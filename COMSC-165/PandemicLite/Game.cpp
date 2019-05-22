@@ -167,7 +167,9 @@ void Game::SetupGame(Options options)
 	Sydney->setNeighbors({ Jakarta, Manila, LosAngeles });
 
 	ClearScreen();
-	cout << "Initial infections:" << endl << endl;
+	cout << "The world is falling apart. Four diseases are sweeping the planet and you are on the front lines. We've identified the" << endl;
+	cout << "following nine cities as the origin of the infections. Travel the world helping to treat the diseases and gather samples" << endl;
+	cout << "to help discover cures. Can you save humanity before it becomes a world wide pandemic?" << endl << endl;
 
 	infectionCardDeck = new Deck<InfectionCard>(cityLinkedList, getInfectionRate());
 	for(int initialInfection = 0; initialInfection < 9; ++initialInfection)
@@ -299,8 +301,42 @@ bool Game::Play()
 		}
 	} while (!gameOver);
 
-	// TODO: Show win/lose message and prompt if they want to play again
-	return false;
+	Disease* diseaseNodePtr = diseaseLinkedList;
+	switch(reason)
+	{
+		case WIN:
+			cout << "Congratulations! You have saved humanity this time... But can you do it again?" << endl;
+			break;
+		case LOSS_INFECTIONMARKERS:
+			while (diseaseNodePtr != nullptr)
+			{
+				if (diseaseNodePtr->getRemainingInfectionCount() == 0)
+				{
+					break;
+				}
+				diseaseNodePtr = diseaseNodePtr->nextNode;
+			}
+			cout << "The " << *diseaseNodePtr << " disease has started to overrun the populate. You have failed to save humanity...\nWant to play again?" << endl;
+			break;
+		case LOSS_OUTBREAKS:
+			cout << "Due to the large number of outbreaks the four diseases have overrun the populate. You have failed to save humanity...\nWant to play again?" << endl;
+			break;
+		case LOSS_PLAYERDECKEMPTY:
+			cout << "You have ran out of time. The four diseases have spread too far to contain. You have failed to save humanity...\nWant to play again?" << endl;
+			break;
+	}
+
+	cout << endl << "Please press the ENTER key to play again or ESCAPE to return to the Main Menu...";
+	do
+	{
+		switch(_getch())
+		{
+			case KEY_ENTER:
+				return true;
+			case KEY_ESCAPE:
+				return false;
+		}
+	} while (true);
 }
 
 bool Game::DoPlayerAction(BasePlayer* player, string &action)
