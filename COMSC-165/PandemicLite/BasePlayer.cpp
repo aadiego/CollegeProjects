@@ -161,14 +161,14 @@ vector<string> BasePlayer::getAvailableActions()
 
 	// Check if the player's current location has a research station and that there are more than 1 on the board. If so, then the player can
 	// take the Shuttle Flight action.
-	if(playerLocation->hasResearchStation() && GetResearchStationCount() > 1)
+	if(playerLocation->hasResearchStation() && GetCurrentGame()->getResearchStationCount() > 1)
 	{
 		ret.push_back("Shuttle Flight");
 	}
 
 	// Check if the player's current location already has a research station. If not, and the player has the city in their hand and there are available
 	// research stations, then make the Build a Research Station action available.
-	if (!(playerLocation->hasResearchStation()) && playerHand.contains(PlayerCard(playerLocation, false)) && GetResearchStationCount() < MAXRESEARCHSTATIONS)
+	if (!(playerLocation->hasResearchStation()) && playerHand.contains(PlayerCard(playerLocation, false)) && GetCurrentGame()->getResearchStationCount() < GetCurrentGame()->getMaxResearchStations())
 	{
 		ret.push_back("Build a Research Station");
 	}
@@ -300,7 +300,7 @@ bool BasePlayer::DirectFlight()
 
 	// Set the player's location to the selected location, add the card to the player deck discard pile, remove it from the player's hand, and set the return value to true.
 	playerLocation = playerHand.nth(userSelection).getCity();
-	DiscardPlayerCard(playerHand.nth(userSelection));
+	GetCurrentGame()->DiscardPlayerCard(playerHand.nth(userSelection));
 	playerHand.pop_Nth(userSelection);
 	ret = true;
 
@@ -352,7 +352,7 @@ bool BasePlayer::CharterFlight()
 
 	// Set the player's location to the selected location, add the card to the player deck discard pile, remove it from the player's hand, and set the return value to true.
 	playerLocation = destination;
-	DiscardPlayerCard(playerHand.nth(index));
+	GetCurrentGame()->DiscardPlayerCard(playerHand.nth(index));
 	playerHand.pop_Nth(index);
 	ret = true;
 
@@ -436,7 +436,7 @@ bool BasePlayer::BuildResearchStation()
 
 	// Set the player's location to the selected location, add the card to the player deck discard pile, remove it from the player's hand, and set the return value to true.
 	playerLocation->buildResearchStation();
-	DiscardPlayerCard(playerHand.nth(index));
+	GetCurrentGame()->DiscardPlayerCard(playerHand.nth(index));
 	playerHand.pop_Nth(index);
 	ret = true;
 
@@ -582,7 +582,7 @@ bool BasePlayer::DiscoverCure()
 		for (int iteration = 0; iteration < discoverCureNumber; ++iteration)
 		{
 			// Redraw the game screen (makes the output look nicer)
-			DrawGameScreen();
+			GetCurrentGame()->DrawGameScreen();
 
 			// Display a message to the user about performing this action.
 			cout << "Please select which cards you would like to discard to Discover a Cure for " << *availableCures[userCureSelection][0].getCity()->getPrimaryInfection()->disease << "." << endl;
@@ -634,7 +634,7 @@ bool BasePlayer::DiscoverCure()
 			++index;
 			playerCards = playerCards->nextNode;
 		}
-		DiscardPlayerCard(playerHand.nth(index));
+		GetCurrentGame()->DiscardPlayerCard(playerHand.nth(index));
 		playerHand.pop_Nth(index);
 	}
 
@@ -670,22 +670,22 @@ vector<vector<PlayerCard>> BasePlayer::calcDiscoverCureCards() const
 	while (playerCards != nullptr)
 	{
 		// If the disease on the current player cards matches the Blue disease and the Blue disease is not cured then add it to the blue disease vector.
-		if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == globalGameOptions.BlueDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
+		if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == GetCurrentGame()->getGameOptions().BlueDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
 		{
 			BluePlayerCards.push_back(playerCards->data);
 		}
 		// If the disease on the current player cards matches the Blue disease and the Yellow disease is not cured then add it to the yellow disease vector.
-		else if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == globalGameOptions.YellowDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
+		else if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == GetCurrentGame()->getGameOptions().YellowDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
 		{
 			YellowPlayerCards.push_back(playerCards->data);
 		}
 		// If the disease on the current player cards matches the Blue disease and the Purple disease is not cured then add it to the purple disease vector.
-		else if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == globalGameOptions.PurpleDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
+		else if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == GetCurrentGame()->getGameOptions().PurpleDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
 		{
 			PurplePlayerCards.push_back(playerCards->data);
 		}
 		// If the disease on the current player cards matches the Blue disease and the Red disease is not cured then add it to the red disease vector.
-		else if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == globalGameOptions.RedDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
+		else if (playerCards->data.getCity()->getPrimaryInfection()->disease->getName() == GetCurrentGame()->getGameOptions().RedDiseaseName && !playerCards->data.getCity()->getPrimaryInfection()->disease->getIsCured())
 		{
 			RedPlayerCards.push_back(playerCards->data);
 		}

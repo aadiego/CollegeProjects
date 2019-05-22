@@ -134,20 +134,20 @@ bool PlayerCard::DrawAction()
 	if(isEpidemic)
 	{
 		// 1. Increase: Move the infection rate marker forward 1 space on the Infection Rate Track.
-		int infectionRate = IncrementInfectionRate();
+		int infectionRate = GetCurrentGame()->IncrementInfectionRate();
 
 		// 2. Infect: Draw the bottom card from the Infection Deck. Unless its disease color has been eradicated, put 3 disease cubes of that color on the named city.
-		City* newlyInfectedCity = DrawBottomInfectionCard();
+		City* newlyInfectedCity = GetCurrentGame()->DrawBottomInfectionCard();
 
 		// Output information pertaining to this epidemic.
 		cout << "EPIDEMIC! " << endl;
-		cout << " - Infection rate has increased to " << GetInfectionRate() << "," << endl;;
+		cout << " - Infection rate has increased to " << GetCurrentGame()->getInfectionRate() << "," << endl;;
 		cout << " - " << *newlyInfectedCity << " has become infected with the " << *newlyInfectedCity->getPrimaryInfection()->disease << " disease," << endl;
 		cout << " - and existing infections continue to intensify.";
 		cout << endl;
 
 		// 3. Intensify: Reshuffle just the cards in the Infection Discard Pile and place them on top of the Infection Deck
-		IntensifyInfectionDeck();
+		GetCurrentGame()->IntensifyInfectionDeck();
 
 		// Set the return boolean flag to true to signify that work has been completed.
 		ret = true;
@@ -183,10 +183,10 @@ void PlayerCard::PreparePlayerDeck(Deck<PlayerCard>* deck)
 	deck->shuffle(Deck<PlayerCard>::Draw);
 
 	// Calculate the individual pile size based off of the number of epidemics.
-	int partialPileSize = deck->getDeckSize() / globalGameOptions.NumberOfEpidemics;
+	int partialPileSize = deck->getDeckSize() / GetCurrentGame()->getGameOptions().NumberOfEpidemics;
 
 	// Loop through creating the individual piles.
-	for (int EpidemicCard = 0; EpidemicCard < globalGameOptions.NumberOfEpidemics; ++EpidemicCard)
+	for (int EpidemicCard = 0; EpidemicCard < GetCurrentGame()->getGameOptions().NumberOfEpidemics; ++EpidemicCard)
 	{
 		// Store the cards in a temporary vector for easy shuffling.
 		vector<PlayerCard> partialPile;

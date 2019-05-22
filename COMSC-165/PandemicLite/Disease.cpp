@@ -112,9 +112,9 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 			if (cityInfection->count == MAXPERCITY)
 			{
 				// Increment the total outbreaks counter and check if we have hit the maximum outbreaks. If so, call the losing end game condition.
-				if(IncrementOutbreaks() == MAXOUTBREAKS)
+				if(GetCurrentGame()->IncrementOutbreaks() == GetCurrentGame()->getMaxOutbreaks())
 				{
-					EndGame(GameOverReason::LOSS_OUTBREAKS);
+					GetCurrentGame()->EndGame(Game::GameOverReason::LOSS_OUTBREAKS);
 					return ret;
 				}
 
@@ -144,7 +144,7 @@ bool Disease::infect(City* city, int count, vector<City*>* priorOutbreaks)
 			// Check if the number of remaining disease count is zero (0). If so, call the losing end game condition.
 			if (remainingInfectionCount == 0)
 			{
-				EndGame(GameOverReason::LOSS_INFECTIONMARKERS);
+				GetCurrentGame()->EndGame(Game::GameOverReason::LOSS_INFECTIONMARKERS);
 				return ret;
 			}
 

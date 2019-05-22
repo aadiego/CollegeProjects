@@ -30,7 +30,7 @@ class BasePlayer
 		BasePlayer(string, City*, unsigned int = 4, unsigned int = 5, unsigned int = 9);
 
 		// Destructor
-		~BasePlayer() = default;
+		virtual ~BasePlayer() = default;
 
 		// Accessors (Getters)
 		string getName() const;
