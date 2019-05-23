@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="City.cpp">
@@ -39,7 +40,6 @@
     <ClCompile Include="Stack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="makefile" />
     <ClCompile Include="BasePlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
