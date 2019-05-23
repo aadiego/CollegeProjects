@@ -53,9 +53,20 @@ Game::~Game()
 	}
 
 	// Delete the player, playerCardDeck, and infectionCardDeck objects
-	delete player;
-	delete playerCardDeck;
-	delete infectionCardDeck;
+	if (player != nullptr)
+	{
+		delete player;
+	}
+
+	if (playerCardDeck != nullptr)
+	{
+		delete playerCardDeck;
+	}
+
+	if (infectionCardDeck != nullptr)
+	{
+		delete infectionCardDeck;
+	}
 }
 
 // *******************************************************************************************

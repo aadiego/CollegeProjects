@@ -116,6 +116,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="CMakeLists.txt" />
     <Text Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +127,6 @@
     <ClCompile Include="Deck.cpp" />
     <ClCompile Include="Disease.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="makefile" />
     <ClCompile Include="MedicRole.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Stack.cpp" />

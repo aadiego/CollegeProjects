@@ -26,6 +26,7 @@ Prerequisites
 ---------------------------------------------------------------------------------------
  - Microsoft Windows 10
  - Microsoft Windows SDK 10.0 or Microsoft Visual Studio 2019
+ - CMake (optional)
 
 
 
@@ -37,7 +38,8 @@ https://visualstudio.microsoft.com/
 2) Launch your git client and execute: 
 git clone https://github.com/aadiego/CollegeProjects.git
 
-3) Open the project in Visual Studio and compile.
+3) Open the project in Visual Studio and compile, or use CMake with the provided
+CMakeLists.txt file.
 
 
 
