@@ -417,7 +417,7 @@ bool Game::Play()
 			cout << "Congratulations! You have saved humanity this time... But can you do it again?" << endl;
 			break;
 		case LOSS_INFECTIONMARKERS:
-			while (diseaseNodePtr != nullptr)
+			while (diseaseNodePtr->nextNode != nullptr)
 			{
 				if (diseaseNodePtr->getRemainingInfectionCount() == 0)
 				{
